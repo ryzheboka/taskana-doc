@@ -39,13 +39,6 @@ const config = {
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -69,7 +62,10 @@ const config = {
             position: 'left',
             label: 'User Guide',
           },
-          {to: '/blog', label: 'Contributor Guide', position: 'left'},
+          {type: 'doc',
+          docId: 'blog/contributor',
+          position: 'left',
+          label: 'Conributor Guide',},
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
@@ -111,7 +107,7 @@ const config = {
             items: [
               {
                 label: 'Conributor Guide',
-                to: '/blog',
+                to: 'docs/blog',
               },
               {
                 label: 'GitHub',
