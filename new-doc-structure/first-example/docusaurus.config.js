@@ -62,10 +62,18 @@ const config = {
             position: 'left',
             label: 'User Guide',
           },
-          {type: 'doc',
-          docId: 'contributor-guide/intro',
-          position: 'left',
-          label: 'Conributor Guide',},
+          {
+            type: 'doc',
+            docId: 'contributor-guide/intro',
+            position: 'left',
+            label: 'Contributor Guide',
+          },
+          {
+            type: 'doc',
+            docId: 'community/intro',
+            position: 'left',
+            label: 'Community',
+          },
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',

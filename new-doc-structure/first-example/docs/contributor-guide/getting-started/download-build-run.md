@@ -1,8 +1,8 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
 
-# Module Overview - Frontend
+# Download, Build and Run TASKANA
 
 Add **Markdown or React** files to `src/pages` to create a **standalone page**:
 

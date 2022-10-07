@@ -1,8 +1,8 @@
 ---
-sidebar_position: 6
+sidebar_position: 2
 ---
 
-# Manual Testing Using Dbeaver
+# Continious Integration
 
 Documents are **groups of pages** connected through:
 

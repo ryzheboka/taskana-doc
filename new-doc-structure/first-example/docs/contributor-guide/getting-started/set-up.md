@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Set up Environment
+# Set up Development Environment
 
 Documents are **groups of pages** connected through:
 

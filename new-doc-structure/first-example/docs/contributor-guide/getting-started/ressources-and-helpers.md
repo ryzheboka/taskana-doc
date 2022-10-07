@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Coding Guidelines - Backend
+# Useful Ressources and Helpers
 
 Documents are **groups of pages** connected through:
 
@@ -49,7 +49,7 @@ module.exports = {
     'hello',
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'User Guide',
       items: ['tutorial-basics/create-a-document'],
     },
   ],
