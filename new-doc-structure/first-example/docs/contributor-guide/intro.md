@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# User Guide Intro
+# Contributor Guide Intro
 
 Let's discover **TASKANA**! This User Guide covers installation and setup of TASKANA. The guide explains the basic functionality of TASKANA as well as its additional features.
 
