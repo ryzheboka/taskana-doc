@@ -58,12 +58,12 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'user-guide/intro',
             position: 'left',
             label: 'User Guide',
           },
           {type: 'doc',
-          docId: 'blog/contributor',
+          docId: 'contributor-guide/intro',
           position: 'left',
           label: 'Conributor Guide',},
           {
