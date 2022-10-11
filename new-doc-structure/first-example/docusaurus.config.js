@@ -27,6 +27,10 @@ const config = {
     locales: ['en'],
   },
 
+  plugins: [
+    ['drawio', {}],
+  ],
+
   presets: [
     [
       'classic',
@@ -75,7 +79,7 @@ const config = {
             label: 'Community',
           },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Taskana/taskana',
             label: 'GitHub',
             position: 'right',
           },

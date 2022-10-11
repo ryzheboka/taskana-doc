@@ -4,9 +4,14 @@ sidebar_position: 1
 
 # Contributor Guide Intro
 
-Let's discover **TASKANA**! This User Guide covers installation and setup of TASKANA. The guide explains the basic functionality of TASKANA as well as its additional features.
+Let's discover **TASKANA**! This Contributor Guide covers installation and setup of TASKANA for developers. The guide explains how to work on TASKANA. It introduces the project and its implementation details.   
 
-## Supported Environments
+For basic functionality of TASKANA, please read the [Core Concepts](../category/core-concepts) page before proceesing with the Contributor Guide.
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## What you'll need
+
+- IDE (preferably IntelliJ)
+- Java 11
+- Docker
+- yarn
+- ...

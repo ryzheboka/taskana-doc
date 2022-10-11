@@ -1,8 +1,13 @@
 ---
-sidebar_position: 5
+
 ---
 
 # Deploy your site
+
+import Drawio from '@theme/Drawio'
+import simpleGraph from '!!raw-loader!./simple.drawio';
+
+<Drawio content={simpleGraph} />
 
 Docusaurus is a **static-site-generator** (also called **[Jamstack](https://jamstack.org/)**).
 

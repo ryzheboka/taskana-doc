@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Configure Spring Boot
+# Configuration of TASKANA-jobs
 
 Documents are **groups of pages** connected through:
 
