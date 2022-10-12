@@ -4,20 +4,77 @@ sidebar_position: 4
 
 # UI Configuration
 
-You have just learned the **basics of Docusaurus** and made some changes to the **initial template**.
+## Environment Configuration
 
-Docusaurus has **much more to offer**!
+During startup the TASKANA UI loads the environment information from the URL 
 
-Have **5 more minutes**? Take a look at **[versioning](../tutorial-extras/manage-docs-versions.md)** and **[i18n](../tutorial-extras/translate-your-site.md)**.
+http://{taskana-root}/environments/data-sources/environment-information.json
 
-Anything **unclear** or **buggy** in this tutorial? [Please report it!](https://github.com/facebook/docusaurus/discussions/4610)
+where {taskana-root} points to the deployment location of TASKANA.
 
-## What's next?
+This file contains two parameters:
+{
+	"taskanaRestUrl": "http://localhost:8080/taskana/api",
+	"taskanaLogoutUrl": "http://localhost:8080/taskana"
+}
 
-- Read the [official documentation](https://docusaurus.io/)
-- Modify your site configuration with [`docusaurus.config.js`](https://docusaurus.io/docs/api/docusaurus-config)
-- Add navbar and footer items with [`themeConfig`](https://docusaurus.io/docs/api/themes/configuration)
-- Add a custom [Design and Layout](https://docusaurus.io/docs/styling-layout)
-- Add a [search bar](https://docusaurus.io/docs/search)
-- Find inspirations in the [Docusaurus showcase](https://docusaurus.io/showcase)
-- Get involved in the [Docusaurus Community](https://docusaurus.io/community/support)
+In this case, TASKANA is deployed on localhost, port 8080 using the context root ‘/taskana’.
+
+The REST API is found underneath ‘/api’ which is the default and cannot be changed. Please make sure you use the correct root for the REST API.
+
+## General TASKANA user-defined configuration
+
+There is also the possibility to specify parameters which can be administered by business administrators in the UI. You can use these parameters for example to let your business administrators configure some behaviour like the routing of tasks or the prioritization without a deployment. The parameters are basically a list of name/value pairs.
+
+You can configure the parameters in the TASKANA UI under the option “UI Settings”. 
+
+**Screenshot**
+
+These parameters are saved in the CONFIGURATION table in the data base. The data structure is divided in two parts: The fields with their corresponding values and a field named “schema”. That field contains all information which is needed in the UI to display those parameters. The default object can be found here.
+
+Currently the UI supports the following types of parameters: 
+
+|Type     | What the UI shows                                          |
+|---------|------------------------------------------------------------|
+|text     |an input field where text can be typed in                   |
+|interval |two input fields for numbers, a lower and an upper boundary |
+|color    |a color picker                                              |
+|json     |a text area where a string in json format can be typed in   |
+
+Those parameters can by administered in the UI by opening the side navigation and selecting “UI Settings”.
+
+## REST API Configuration
+
+The REST Endpoint for the Frontend application can be configured using a JSON file. That JSON file has to be served at /environments/data-sources/environment-information.json and will be loaded on initial request.
+
+The environment-information.json contains two configurations:
+
+| Property         | Description                                |
+| -----------------|--------------------------------------------|
+| taskanaRestUrl   |The root path of the REST Service. Please note that you have append  /api . Otherwise the Frontend application will not find the REST Service.
+| taskanaLogoutUrl |The location a user is redirected to when a logout is triggered.
+
+The default environment-information.json file can be found in our GitHub repository.
+
+## UI Customization
+
+Some TASKANA UI elements, such as custom properties, can be configured using a JSON file. That json file has to be served at /environments/data-sources/taskana-customization.json and will be loaded on initial request.
+
+The default taskana-customization.json will be found in our GitHub repository. 
+
+If you have any questions regarding the UI Customization, please don’t hesitate to contact us.
+
+## How to serve configuration files
+
+There are multiple ways to serve these configuration files. Our example project showcases two:
+
+- Using the /static folder in order to serve a static file. 
+
+- Using a REST Controller in order to serve a static file.
+
+ 
+
+Our example project serves the environment-information.json using the /static folder. Here is a link to the repository: 
+
+
+In our example the taskana-customization.json is served via a REST Controller. This allows further customization. E.g. Based on some environment properties you can serve a different taskana-customization.json. This can be done programmatically within the REST Controller.
