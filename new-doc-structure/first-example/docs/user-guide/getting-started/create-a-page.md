@@ -2,42 +2,18 @@
 sidebar_position: 1
 ---
 
-# Example Spring Boot
+# What you will need
 
-Add **Markdown or React** files to `src/pages` to create a **standalone page**:
-
-- `src/pages/index.js` → `localhost:3000/`
-- `src/pages/foo.md` → `localhost:3000/foo`
-- `src/pages/foo/bar.js` → `localhost:3000/foo/bar`
-
-## Create your first React Page
-
-Create a file at `src/pages/my-react-page.js`:
-
-```jsx title="src/pages/my-react-page.js"
-import React from 'react';
-import Layout from '@theme/Layout';
-
-export default function MyReactPage() {
-  return (
-    <Layout>
-      <h1>My React page</h1>
-      <p>This is a React page</p>
-    </Layout>
-  );
-}
-```
-
-A new page is now available at [http://localhost:3000/my-react-page](http://localhost:3000/my-react-page).
-
-## Create your first Markdown Page
-
-Create a file at `src/pages/my-markdown-page.md`:
-
-```mdx title="src/pages/my-markdown-page.md"
-# My Markdown page
-
-This is a Markdown page
-```
-
-A new page is now available at [http://localhost:3000/my-markdown-page](http://localhost:3000/my-markdown-page).
+### Supported JVM
+  - Java 11
+### Supported Databases
+- H2 version 2.0
+- or DB2 version ???
+- or PostgresSQL version ???
+### Container/Application Server (optional)
+  - Embedded Tomcat of Spring Boot (Spring Boot version 2.X.X.RELEASE)
+  - or Wildfly Application Server 15.0
+### Web Browser (optional)
+  - Google Chrome (latest 2 version)
+  - or Mozilla Firefox (latest 2 version)
+  - or Microsoft Edge (latest 2 version)

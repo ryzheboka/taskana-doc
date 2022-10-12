@@ -74,9 +74,9 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'community/intro',
+            docId: 'get-in-touch/intro',
             position: 'left',
-            label: 'Community',
+            label: 'Get In Touch',
           },
           {
             href: 'https://github.com/Taskana/taskana',
