@@ -1,8 +1,8 @@
 ---
-
+sidebar_position: 1
 ---
 
-# Deploy your site
+# Task
 
 import Drawio from '@theme/Drawio'
 import simpleGraph from '!!raw-loader!./simple.drawio';

@@ -1,8 +1,13 @@
 ---
-sidebar_position: 9
+sidebar_position: 3
 ---
 
-# Logging Concept
+# Classification
+
+import Drawio from '@theme/Drawio'
+import simpleGraph from '!!raw-loader!./simple.drawio';
+
+<Drawio content={simpleGraph} />
 
 Docusaurus is a **static-site-generator** (also called **[Jamstack](https://jamstack.org/)**).
 

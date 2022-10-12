@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Let's discover **TASKANA**! This Contributor Guide covers installation and setup of TASKANA for developers. The guide explains how to work on TASKANA. It introduces the project and its implementation details.   
 
-For basic functionality of TASKANA, please read the [Core Concepts](../category/core-concepts) page before proceesing with the Contributor Guide.
+For basic functionality of TASKANA, please read the [Core Concepts](../category/core-concepts) page before proceesing with the Contributor Guide. A more detailed list of features can be found [here](../category/features).
 
 ## What you'll need
 

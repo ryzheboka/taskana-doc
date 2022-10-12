@@ -1,8 +1,8 @@
 ---
-sidebar_position: 1
+sidebar_position: 6
 ---
 
-# Create a Page
+# TASKANA Jobs
 
 Add **Markdown or React** files to `src/pages` to create a **standalone page**:
 

@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 7
 ---
 
-# Create a Document
+# Customize Behaviour with SPIs
 
 Documents are **groups of pages** connected through:
 
@@ -49,7 +49,7 @@ module.exports = {
     'hello',
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'User Guide',
       items: ['tutorial-basics/create-a-document'],
     },
   ],

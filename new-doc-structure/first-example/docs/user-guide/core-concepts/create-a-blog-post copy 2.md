@@ -1,8 +1,8 @@
 ---
-sidebar_position: 8
+sidebar_position: 4
 ---
 
-# HistoryService
+# REST API
 
 Docusaurus creates a **page for each blog post**, but also a **blog index page**, a **tag system**, an **RSS** feed...
 
