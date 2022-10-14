@@ -76,7 +76,7 @@ const config = {
             type: 'doc',
             docId: 'get-in-touch/intro',
             position: 'left',
-            label: 'Get In',
+            label: 'Get In Touch',
           },
           {
             href: 'https://github.com/Taskana/taskana',
