@@ -4,54 +4,44 @@ sidebar_position: 2
 
 # Continious Integration
 
-Documents are **groups of pages** connected through:
+## Overview:
 
-- a **sidebar**
-- **previous/next navigation**
-- **versioning**
+  - Reference to out .yml file
+  - !! Diagramm for Taskana and for Adapter!! not there yet
 
-## Create your first Doc
+### Workflow triggers
 
-Create a Markdown file at `docs/hello.md`:
+  - git push (except on dependabot branches)
+  - merging branch into master
+  - creation of a version tag
+  - rerun jobs button on Github
 
-```md title="docs/hello.md"
-# Hello
+## Secrets on Organization Level
 
-This is my **first Docusaurus document**!
-```
+| Name                        | Description                                      | Used for                                                                                                                                                 |
+|-----------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GH_EMAIL                    | the github email address (defined in git config) | This  configuration (e-mail & username) is used as author for the commit  in which the pom’s are updated to the next SNAPSHOT version after a  release.  |
+| GH_USERNAME                 | the gitub user name (defined in git config)      |                                                                                                                                                          |
+| GPG_KEY                     | the gpg private key encoded in base64            | This key is used to sign our artifacts when deploying to OSS Sonatype                                                                                    |
+| GPG_KEY_NAME                | the e-mail address of the gpg key                |                                                                                                                                                          |
+| GPG_PASSPHRASE              | password for the gpg key                         |                                                                                                                                                          |
+| OSSRH_JIRA_USERNAME         | username for OSS Sonatype                        | Credentials used to authenticate against OSS Sonatype during release                                                                                     |
+| OSSRH_JIRA_PASSWORD         | password for OSS Sonatype                        |                                                                                                                                                          |
+| SONAR_ORGANIZATION          | the sonarcloud organization                      | Used to identify the sonarcloud organization during SonarQube analysis upload                                                                            |
+| SONAR_TOKEN                 | the authentication token for sonarcloud          | Used to authenticate during SonarQube analysis upload                                                                                                    |
+| ADMIN_PERSONAL_ACCESS_TOKEN | the PAT of an organization admin                 | Used  to A) avoid the branch restriction and B) force Github Actions to build  a workflow when the dependencies for a release build update.              |
 
-A new document is now available at [http://localhost:3000/docs/hello](http://localhost:3000/docs/hello).
+## Secrets on Repository Level of TASKANA
 
-## Configure the Sidebar
+| Name               | Description                    | Used for                                                                 |
+|--------------------|--------------------------------|--------------------------------------------------------------------------|
+| SONAR_PROJECT_KEY  | the sonarcloud project key     | Used to identify the sonarcloud project during SonarQube analysis upload |
+| IBM_CLOUD_API_KEY  | the api key                    | Used to upload taskana-rest-spring-example-boot to IBM Cloud Foundry     |
+| IBM_CLOUD_CF_API   | the Cloud Foundry api          |                                                                          |
+| IBM_CLOUD_CF_ORG   | the Cloud Foundry organization |                                                                          |
+| IBM_CLOUD_CF_SPACE | the Cloud Foundry space        |                                                                          |
 
-Docusaurus automatically **creates a sidebar** from the `docs` folder.
-
-Add metadata to customize the sidebar label and position:
-
-```md title="docs/hello.md" {1-4}
----
-sidebar_label: 'Hi!'
-sidebar_position: 3
----
-
-# Hello
-
-This is my **first Docusaurus document**!
-```
-
-It is also possible to create your sidebar explicitly in `sidebars.js`:
-
-```js title="sidebars.js"
-module.exports = {
-  tutorialSidebar: [
-    'intro',
-    // highlight-next-line
-    'hello',
-    {
-      type: 'category',
-      label: 'Tutorial',
-      items: ['tutorial-basics/create-a-document'],
-    },
-  ],
-};
-```
+## Secrets on Repository Level of Adapter
+| Name              | Description                | Used for                                                                 |
+|-------------------|----------------------------|--------------------------------------------------------------------------|
+| SONAR_PROJECT_KEY | the sonarcloud project key | Used to identify the sonarcloud project during SonarQube analysis upload |
