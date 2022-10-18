@@ -4,28 +4,14 @@ sidebar_position: 2
 
 # Implementation of the tests - Overview
 
-Docusaurus is a **static-site-generator** (also called **[Jamstack](https://jamstack.org/)**).
+## Test Data
 
-It builds your site as simple **static HTML, JavaScript and CSS files**.
+### Test Users
 
-## Build your site
+!! redraw Diagramm, rework text !!
+Furthermore, the these groups are available to configure the permissions:
 
-Build your site **for production**:
-
-```bash
-npm run build
-```
-
-The static files are generated in the `build` folder.
-
-## Deploy your site
-
-Test your production build locally:
-
-```bash
-npm run serve
-```
-
-The `build` folder is now served at [http://localhost:3000/](http://localhost:3000/).
-
-You can now deploy the `build` folder **almost anywhere** easily, **for free** or very small cost (read the **[Deployment Guide](https://docusaurus.io/docs/deployment)**).
+| dn                                           | Users                                                                                                        | Description       |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------------------|-------------------|
+| cn=ksc-users,cn=groups,OU=Test,O=TASKANA     | user-1-1 user-1-2 user-2-1 user-2-2 user-2-3 user-2-4 user-2-5 user-2-6 user-2-7 user-2-8 user-2-9 user-2-10 | All KSC users     |
+| cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA | teamlead-1 teamlead-2                                                                                        | All KSC teamleads |
