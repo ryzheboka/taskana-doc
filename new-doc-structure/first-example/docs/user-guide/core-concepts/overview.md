@@ -4,15 +4,17 @@ sidebar_position: 1
 
 # Overview
 
-The core of taskana is a lightweight java library that manages human tasks.
-Taskana depends only to the Java standard edition.
-Human tasks in Taskana are organized in Workbaskets.
-Workbaskets are the main structure to distribute tasks to the available workers.
+Taskana manages human tasks. This includes classifying the tasks and putting them into the corresponding workbaskets. Workbaskets are the main structure to distribute tasks to the available workers. Taskana also offers options for customizing each task with attachments, object references etc.. In the following article, the basic entities and operations on them are explained.
 
-The API for taskana is contained in package pro.taskana.
-It is structured along the major concepts of taskana:
-Tasks, Workbaskets and Classifications.
+### Taskana Entities
+ Entities that can be found in the Java API (link) are capitalized. Taskana operates using Tasks, Classifications and Workbaskets. Besides Tasks, Classifications and Workbaskets, there are also TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important imformation. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, it does not contain the Attachment of the Task as well as some other information.
 
+### Operations on Entities
+ Operations on entities can be found either in the corresponding Services (TaskService ...) or in the corresponding queries (TaskQuery ...)
+
+### Task
+
+The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. Each Task has exactly one Classification and exactly one Workbasket. These are specified by the properties ClassificationSummary and WorkbasketSummary. See here (link) to read more about the properties of Tasks as well as provided functionality.
 The major Interfaces are:
 
 
