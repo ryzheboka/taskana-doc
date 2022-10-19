@@ -11,12 +11,10 @@ In production, the used log level should usually be WARNING or ERROR. With this 
 In case of problems, when the system runs in 'analysis' mode (log level DEBUG), a certain performance impact may be tolerated, but probably not more than 20-30%.
 
 Therefore, log entries should be judiciously according to the following guidelines.
+Use appropriate severity levels.
+Use log levels as follows
 
-    Use appropriate severity levels.
-
-    Use log levels as follows
-
-    | Loglevel | Usage                                                                                                                                                                                                      | Examples                                                                                                                                                                                                                               |
+| Loglevel | Usage                                                                                                                                                                                                      | Examples                                                                                                                                                                                                                               |
 |----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | TRACE    | For detailed failure and control flow analysis                                                                                                                                                             | performance behaviour                                                                                                                                                                                                                  |
 | DEBUG    | All relevant details needed to understand control flow                                                                                                                                                     | Info about method entry and exit Details to method parameters Entry into entry points of interfaces Calls to Databases, APIs or services Modification of internal state as e.g. a Task was created, claimed, transferred or completed. |
@@ -53,3 +51,14 @@ If you rethrow an exception it will probably be logged somewhere on its way out.
 Exceptions should be logged (including the call stack) with level ERROR or WARNING if they are caught and swallowed.
 
 The correct syntax to log an exception including its stack is
+
+    LOGGER.error("Error doing something ", e);
+
+    If we create and throw an exception, a log record should be written (w/o Exception stack) indicating the reason for the exception.
+
+    Logging an exception without stack is done via
+
+    LOGGER.error("Throwing exception {} because something bad happened", e.getClass().getName());
+
+
+    Avoid print just the cause of the exception getCause() or the message getMessage(). We should send the whole exception.

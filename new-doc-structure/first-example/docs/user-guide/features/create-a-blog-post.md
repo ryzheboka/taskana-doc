@@ -4,31 +4,44 @@ sidebar_position: 8
 
 # HistoryService
 
-Docusaurus creates a **page for each blog post**, but also a **blog index page**, a **tag system**, an **RSS** feed...
+Use Cases for the History Service:
 
-## Create your first Post
 
-Create a file at `blog/2021-02-28-greetings.md`:
+    See history of one business process as a specialist working on a task of that process
+        see who worked on it before
+        see who transferred it to me
+        see what happened in the process before it got assigned to the user
+    See all corresponding processes
+        belonging to the same parent process id
+        belonging to the same customer / contract...
+    auditing
+        is everything completed?
+        what happend to a specific document / process?
+        who aprroved what?
+        who changed something?
+    reporting (SLA/KPI)
+        how long took a process/task in average...
+        how long did it take until a new message from a customer is assigned to a specialist
+        how often was is required to change the classification of the task/document
+    reporting
+        how many tasks of what classification did we receive this day/week/month?
+        how many tasks have been completed by team/location/...?
 
-```md title="blog/2021-02-28-greetings.md"
----
-slug: greetings
-title: Greetings!
-authors:
-  - name: Joel Marcey
-    title: Co-creator of Docusaurus 1
-    url: https://github.com/JoelMarcey
-    image_url: https://github.com/JoelMarcey.png
-  - name: Sébastien Lorber
-    title: Docusaurus maintainer
-    url: https://sebastienlorber.com
-    image_url: https://github.com/slorber.png
-tags: [greetings]
----
+## Getting Started
 
-Congratulations, you have made your first post!
+!! Screenshots !!
 
-Feel free to play around and edit this post as much you like.
-```
+Build the plugin
+Taskana history library
+./mvnw clean install
+REST API
+with console:
+./mvnw spring-boot:run -P history.plugin -pl :taskana-rest-spring-example-boot
+with Intellij:
 
-A new blog post is now available at [http://localhost:3000/blog/greetings](http://localhost:3000/blog/greetings).
+    Open the Maven tab on the right
+    Open the first entry 'Profiles'
+    Select the checkbox 'history.plugin'
+    Start ExampleRestApplication
+
+REST API will be available: http://localhost:8080/v1/task-history-event
