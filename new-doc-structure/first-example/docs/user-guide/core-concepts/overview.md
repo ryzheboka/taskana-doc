@@ -15,11 +15,11 @@ Note: !! make Note beautiful in Markdown !! Besides Tasks, Classifications and W
 
 ### Task
 
-The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. Each Task has exactly one Classification. This Classification determines some properties of the Task. For example, you can prioritize Tasks differently by using different Classifications. The Task is assigned to exactly one Workbasket so that different users have access to different Tasks. In order to enable the Task lifecycle, the Task has a state. It's READY after the Task creation, and COMPLETED after the Task completion. See here (link) to read more about the properties, the Task lifecycle as well as provided functionality. 
+The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. A Task is identified by unique id. Each Task has exactly one Classification. This Classification determines some properties of the Task. For example, you can prioritize Tasks differently by using different Classifications. The Task is assigned to exactly one Workbasket so that different users have access to different Tasks. In order to enable the Task lifecycle, the Task has a state. It's READY after the Task creation, and COMPLETED after the Task completion. See here (link) to read more about the properties, the Task lifecycle as well as provided functionality. 
 
 ### Classification
 
-...
+The Classification interface can be found in (path to Classification). It represents the 
 
 ### Workbasket
 
@@ -34,7 +34,7 @@ You can create, update and delete entities. These operations on entities can be 
 2. Then set some properties of that Task via its setter methods.
 3. Finally persist this Task to the database via ```TaskSerivce.createTask()```
 
-### How to manipulate a Task, Workbasket or Classification?
+### How to manipulate a Task?
 
 
 Not all properties of a task can be set via the API. You must rather use the Action methods of TaskService to manipulate these properties.
@@ -56,11 +56,3 @@ When you intend to use taskana in your application, you have to follow the follo
     Call TaskanaEngineConfiguration.buildEngine to obtain a TaskanaEngine.
 
     Use TaskanaEngine's method getClassificationService, getTaskService and getWorkbasketService in order to obtain the various service objects that are required to create, delete and manipulate tasks, workbaskets and classifications.
-
-What to watch out for when contributing?
-
- 
-
-As mentioned above our backend code is written in Java. We now updated to Java 11 but still we have to ensure downward compatibility to Java 8. The reason is that possible users may keep on working with their Java 8 environment. By providing downward compatibility we take care that yet those users stay able to integrate TASKANA without upgrading.
-
-For that reason in our main classes we should only use the Java feature set which is available in jdk8. In our test classes we can additionally implement functionality up to Java 11.
