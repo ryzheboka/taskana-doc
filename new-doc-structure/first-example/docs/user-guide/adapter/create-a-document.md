@@ -49,7 +49,7 @@ module.exports = {
     'hello',
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'User Guide',
       items: ['tutorial-basics/create-a-document'],
     },
   ],

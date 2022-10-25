@@ -19,7 +19,7 @@ The Task interface can be found in (path to Task). It represents a human task th
 
 ### Classification
 
-The Classification interface can be found in (path to Classification). It represents the 
+The Classification interface can be found in (path to Classification). It represents a 
 
 ### Workbasket
 

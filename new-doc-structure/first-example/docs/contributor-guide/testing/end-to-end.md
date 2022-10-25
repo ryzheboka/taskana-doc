@@ -23,7 +23,7 @@ With this Cypress window you can execute either all tests, or alternativly execu
 Picture of the web interface when after running a test
 
  
-Adding Tests
+## Adding Tests
 
 The test files for cypress can be found in taskana/web/cypress/integration/ in their respective folders (this substructure is subject to change). 
 

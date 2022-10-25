@@ -4,20 +4,33 @@ sidebar_position: 2
 
 # Example Spring Boot
 
-### Step 1: Initialize an empty project
+import styles from '../../../src/components/HomepageFeatures/styles.module.css';
+import Link from '@docusaurus/Link';
+
+## Step 1: Initialize an empty project
 
 Go to [Spring Initializer](https://start.spring.io/) and create an example project. Choose the same options as in the Screenshot, then click on "Generate"
 
-![empty spring boot project](../images/Schritt1besserbesser.png)
+![empty spring boot project](../static/Schritt1besserbesser.png)
 
 Unpack the project and open it in InelliJ
 
-![unpacked project](../images/Schritt2.png)
+![unpacked project](../static/Schritt2.png)
 
-### Step 2: Add dependencies
+## Step 2: Add dependencies
 Add following dependencies to the pom in the demo project:
 
-1. ldap and security dependencies:
+1. spring core depenpendency:
+
+```
+<dependency>
+    <groupId>org.springframework.plugin</groupId>
+    <artifactId>spring-plugin-core</artifactId>
+    <version>2.0.0.RELEASE</version>
+</dependency>
+
+```
+2. ldap and security dependencies:
 ```
 <dependency>
     <groupId>org.springframework.ldap</groupId>
@@ -36,7 +49,7 @@ Add following dependencies to the pom in the demo project:
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ```
-2. database dependencies:
+3. database dependencies:
 
 ```
 <dependency>
@@ -48,7 +61,7 @@ Add following dependencies to the pom in the demo project:
     <artifactId>spring-boot-starter-jdbc</artifactId>
 <dependency>
 ```
-3. taskana dependencies:
+4. taskana dependencies:
 
 ```
 <dependency>
@@ -72,7 +85,7 @@ Add following dependencies to the pom in the demo project:
     <version>5.7.0</version>
 </dependency>
 ```
-4. web dependencies:
+5. web dependencies:
 
 ```
 <dependency>
@@ -83,18 +96,6 @@ Add following dependencies to the pom in the demo project:
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-thymeleaf</artifactId>
 </dependency>
-```
-
-5. spring depenpendencies:
-
-```
-<dependency>
-    <groupId>org.springframework.plugin</groupId>
-    <artifactId>spring-plugin-core</artifactId>
-    <version>2.0.0.RELEASE</version>
-</dependency>
-
-
 ```
 
 ** All dependencies **
@@ -159,8 +160,9 @@ Add following dependencies to the pom in the demo project:
 <dependency>
 ```
 
-### Step 3: Add properties configuration
+## Step 3: Add properties configuration
 
+### Step 3a: Fill out ```application.properties```
 The example already has the configuration file ```application.properties```. You need to add following content into that file:
 
 ```
@@ -254,7 +256,9 @@ spring.ldap.embedded.validation.enabled=false
 
 You can read more about ```application.properties``` here (link).
 
-Then, you should create ```taskana.properties``` in the recources folder. You can copy following content into that file:
+### Step 3b: Add ```taskana.properties```
+
+Create ```taskana.properties``` in the recources folder. You can copy following content into that file:
 
 ```
 taskana.roles.user=cn=ksc-users,cn=groups,OU=Test,O=TASKANA | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2
@@ -286,7 +290,9 @@ taskana.routing.dmn=/dmn-table.dmn
 
 See here (link) for more details and configuration options.
 
-### Step 4: Add rest configuration
+## Step 4: Add rest configuration
+
+!! TODO: Screenshot von vor Schritt 4 hinzufügen !!
 Add a ```config``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Copy following content into that class:
 
 ```
@@ -341,14 +347,25 @@ public class ExampleRestConfiguration {
 }
 
 ```
+!! TODO: Screenshot von nach Schritt 4 hinzufügen !!
 
-### Step 5: Add controllers
+## Step 5: Add controllers
 Add a ```controller``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
 - LoginController
 - ResourcesController
 - ViewController
 
-Create three java classes with names LoginController, ResourcesController and ViewController. The LoginController will handle the login into taskana. It will need the template/login.html in the recources folder. Please copy the template folder from here: (link). Then, copy following code into LoginController:
+### Step 5a: Add ```LoginController.java```
+The LoginController will handle the login into taskana. It will need the template/login.html in the recources folder. You can download the template folder here:
+
+<div className={styles.buttons}>
+<Link
+            className="button button--secondary button--lg">
+    <a target="_blank" href={ require("../static/template.zip").default } download>Download template </a>
+    </Link>
+</div>
+
+Then, copy following code into LoginController:
 
 ```
 package com.example.demo.controller;
@@ -368,7 +385,29 @@ public class LoginController implements WebMvcConfigurer {
     }
 }
 ```
-The ResourcesController handles resources like images and additional customizations. Copy the "static" folder from here (link) into the recources folder. Then add a controllers folder into the recources. Create a ```taskana-customization.json``` file inside the controllers folder. Then, please copy following code into the ResourcesController:
+
+### Step 5b: Add ```ResourcesController.java```
+The ResourcesController handles resources like images and additional customizations. You'll need a static folder in the recouces folder. You can download the static folder here:
+
+<div className={styles.buttons}>
+<Link
+            className="button button--secondary button--lg">
+    <a target="_blank" href={ require("../static/static.zip").default } download>Download static </a>
+    </Link>
+</div> <br/>
+
+After you copied the static folder into resources, downlad the controllers folder:
+
+
+<div className={styles.buttons}>
+<Link
+            className="button button--secondary button--lg">
+    <a target="_blank" href={ require("../static/controllers.zip").default } download>Download controllers </a>
+    </Link>
+</div> 
+<br/>
+
+Add the downloaded controllers folder into recources. Then, please copy following code into the ResourcesController:
 
 ```
 package com.example.demo.controller;
@@ -411,6 +450,7 @@ public class ResourcesController {
 }
 ```
 
+### Step 5c: Add ```ViewController.java```
 The ViewController manages the root view of taskana. It consists of following code:
 
 ```
@@ -429,11 +469,13 @@ public class ViewController {
     }
 }
 ```
+!! TODO: Screenshot von nach Schritt 5 hinzufügen !!
 
-### Step 6: Add security
+## Step 6: Add security
 
 Add a ```security``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: ```BootWebSecurityConfigurer``` (will be replaced), one mvc configuration for handling recources and messages of the application: ```WebMvcConfig```, and one example configuration ```ExampleWebSecurityConfig```. Please create the three java classes inside the ```security``` folder.
 
+### Step 6a: Add ```BootWebSecurityConfigurer.java```
 Copy following content into the ```BootWebSecurityConfigurer```:
 
 ```
@@ -562,6 +604,7 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+### Step 6b: Add ```WebMvcConroller.java```
 
 Then copy following content into ```WebMvcConroller```:
 
@@ -630,6 +673,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 
 ```
+
+### Step 6c: Add ```ExampleWebConfig.java```
 
 Then add following ```ExampleWebConfig```:
 
@@ -1138,17 +1183,18 @@ uniquemember: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organ
 objectclass: groupofuniquenames
 
 ```
+!! TODO: Screenshot von nach Schritt 6 hinzufügen !!
 
-### Step 8: Start and open the application
+## Step 7: Start and open the application
 
 Type ```localhost:8080/taskana``` into your browser. You should see the login screen:
 
-![Log in](../images/login.png)
+![Log in](../static/login.png)
 
 Log in using "admin" as username and "admin" as password. Now, you should see following:
 
-![Workbaskets](../images/workbaskets.png)
+![Workbaskets](../static/workbaskets.png)
 
-Here, you can open an existing Workbasket or add a new one. Press the menu button in the upper left to navigate.
+Press the menu button in the upper left to navigate.
 
-![Navigate](../images/navigate.png)
+![Navigate](../static/navigate.png)
