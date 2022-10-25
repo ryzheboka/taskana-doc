@@ -1140,3 +1140,15 @@ objectclass: groupofuniquenames
 ```
 
 ### Step 8: Start and open the application
+
+Type ```localhost:8080/taskana``` into your browser. You should see the login screen:
+
+![Log in](../images/login.png)
+
+Log in using "admin" as username and "admin" as password. Now, you should see following:
+
+![Workbaskets](../images/workbaskets.png)
+
+Here, you can open an existing Workbasket or add a new one. Press the menu button in the upper left to navigate.
+
+![Navigate](../images/navigate.png)
