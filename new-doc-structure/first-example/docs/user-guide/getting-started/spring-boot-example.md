@@ -343,12 +343,12 @@ public class ExampleRestConfiguration {
 ```
 
 ### Step 5: Add controllers
-Add a ```controller``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the conterells for different requests. Our application needs following three controllers:
+Add a ```controller``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
 - LoginController
 - ResourcesController
 - ViewController
 
-Create three java classes with names LoginController, ResourcesController and ViewController. The LoginController will handle the login into taskana. Copy following code into LoginController:
+Create three java classes with names LoginController, ResourcesController and ViewController. The LoginController will handle the login into taskana. It will need the template/login.html in the recources folder. Please copy the template folder from here: (link). Then, copy following code into LoginController:
 
 ```
 package com.example.demo.controller;
@@ -368,7 +368,7 @@ public class LoginController implements WebMvcConfigurer {
     }
 }
 ```
-The ResourcesController handles resources like images and additional customizations. Please copy following code into the ResourcesController:
+The ResourcesController handles resources like images and additional customizations. Copy the "static" folder from here (link) into the recources folder. Then add a controllers folder into the recources. Create a ```taskana-customization.json``` file inside the controllers folder. Then, please copy following code into the ResourcesController:
 
 ```
 package com.example.demo.controller;
@@ -428,11 +428,715 @@ public class ViewController {
         return "forward:/index.html";
     }
 }
-
 ```
 
 ### Step 6: Add security
 
-### Step 7: Add static recources
+Add a ```security``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: ```BootWebSecurityConfigurer``` (will be replaced), one mvc configuration for handling recources and messages of the application: ```WebMvcConfig```, and one example configuration ```ExampleWebSecurityConfig```. Please create the three java classes inside the ```security``` folder.
+
+Copy following content into the ```BootWebSecurityConfigurer```:
+
+```
+package com.example.demo.security;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pro.taskana.common.rest.SpringSecurityToJaasFilter;
+
+/** Default basic configuration for taskana web example. */
+@EnableWebSecurity
+public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    private final LdapAuthoritiesPopulator ldapAuthoritiesPopulator;
+    private final GrantedAuthoritiesMapper grantedAuthoritiesMapper;
+
+    private final String ldapServerUrl;
+    private final String ldapBaseDn;
+    private final String ldapGroupSearchBase;
+    private final String ldapUserDnPatterns;
+
+    private final boolean devMode;
+    private final boolean enableCsrf;
+
+    public BootWebSecurityConfigurer(
+            @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
+            @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
+            @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
+            @Value("${taskana.ldap.userDnPatterns:uid={0},cn=users}") String ldapUserDnPatterns,
+            @Value("${enableCsrf:false}") boolean enableCsrf,
+            LdapAuthoritiesPopulator ldapAuthoritiesPopulator,
+            GrantedAuthoritiesMapper grantedAuthoritiesMapper,
+            @Value("${devMode:false}") boolean devMode) {
+        this.enableCsrf = enableCsrf;
+        this.ldapAuthoritiesPopulator = ldapAuthoritiesPopulator;
+        this.grantedAuthoritiesMapper = grantedAuthoritiesMapper;
+        this.ldapServerUrl = ldapServerUrl;
+        this.ldapBaseDn = ldapBaseDn;
+        this.ldapGroupSearchBase = ldapGroupSearchBase;
+        this.ldapUserDnPatterns = ldapUserDnPatterns;
+        this.devMode = devMode;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.ldapAuthentication()
+                .userDnPatterns(ldapUserDnPatterns)
+                .groupSearchBase(ldapGroupSearchBase)
+                .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
+                .authoritiesMapper(grantedAuthoritiesMapper)
+                .contextSource()
+                .url(ldapServerUrl + "/" + ldapBaseDn)
+                .and()
+                .passwordCompare()
+                .passwordAttribute("userPassword");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        HttpSecurity httpSecurity =
+                http.authorizeRequests()
+                        .antMatchers("/css/**", "/img/**")
+                        .permitAll()
+                        .and()
+                        .authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/docs/**")
+                        .permitAll()
+                        .and()
+                        .addFilter(jaasApiIntegrationFilter())
+                        .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
+
+        if (enableCsrf) {
+            CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+            csrfTokenRepository.setCookiePath("/");
+            httpSecurity.csrf().csrfTokenRepository(csrfTokenRepository);
+        } else {
+            httpSecurity.csrf().disable().httpBasic();
+        }
+
+        if (devMode) {
+            http.headers()
+                    .frameOptions()
+                    .sameOrigin()
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers("/h2-console/**")
+                    .permitAll();
+        } else {
+            addLoginPageConfiguration(http);
+        }
+    }
+
+    protected void addLoginPageConfiguration(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .anyRequest()
+                .fullyAuthenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .deleteCookies("JSESSIONID")
+                .permitAll();
+    }
+
+    protected JaasApiIntegrationFilter jaasApiIntegrationFilter() {
+        JaasApiIntegrationFilter filter = new JaasApiIntegrationFilter();
+        filter.setCreateEmptySubject(true);
+        return filter;
+    }
+}
+```
+
+Then copy following content into ```WebMvcConroller```:
+
+```
+package com.example.demo.security;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+
+/**
+ * The Web MVC Configuration.
+ */
+@Configuration
+@EnableWebMvc
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/META-INF/resources/", "classpath:/resources/",
+            "classpath:/static/", "classpath:/public/"
+    };
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public WebMvcConfig(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (!registry.hasMappingForPattern("/webjars/**")) {
+            registry
+                    .addResourceHandler("/webjars/**")
+                    .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        }
+        if (!registry.hasMappingForPattern("/**")) {
+            registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+        }
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter jacksonConverter =
+                        (MappingJackson2HttpMessageConverter) converter;
+                jacksonConverter.setPrettyPrint(true);
+            }
+        }
+    }
+
+    @PostConstruct
+    public void enableObjectIndent() {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
+}
+
+```
+
+Then add following ```ExampleWebConfig```:
+
+```
+package com.example.demo.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+@Configuration
+public class ExampleWebSecurityConfig {
+
+    private final String ldapServerUrl;
+    private final String ldapBaseDn;
+    private final String ldapGroupSearchBase;
+    private final String ldapGroupSearchFilter;
+
+    @Autowired
+    public ExampleWebSecurityConfig(
+            @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
+            @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
+            @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
+            @Value("${taskana.ldap.groupSearchFilter:uniqueMember={0}}") String ldapGroupSearchFilter) {
+        this.ldapServerUrl = ldapServerUrl;
+        this.ldapBaseDn = ldapBaseDn;
+        this.ldapGroupSearchBase = ldapGroupSearchBase;
+        this.ldapGroupSearchFilter = ldapGroupSearchFilter;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new CorsWebMvcConfigurer();
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        bean.setOrder(0);
+        return bean;
+    }
+
+    @Bean
+    public LdapAuthoritiesPopulator authoritiesPopulator(
+            DefaultSpringSecurityContextSource contextSource) {
+        Function<Map<String, List<String>>, GrantedAuthority> authorityMapper =
+                recordVar -> new SimpleGrantedAuthority(recordVar.get("spring.security.ldap.dn").get(0));
+
+        DefaultLdapAuthoritiesPopulator populator =
+                new DefaultLdapAuthoritiesPopulator(contextSource, ldapGroupSearchBase);
+        populator.setGroupSearchFilter(ldapGroupSearchFilter);
+        populator.setSearchSubtree(true);
+        populator.setRolePrefix("");
+        populator.setAuthorityMapper(authorityMapper);
+        return populator;
+    }
+
+    @Bean
+    public DefaultSpringSecurityContextSource defaultSpringSecurityContextSource() {
+        return new DefaultSpringSecurityContextSource(ldapServerUrl + "/" + ldapBaseDn);
+    }
+
+    @Bean
+    public GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
+        SimpleAuthorityMapper grantedAuthoritiesMapper = new SimpleAuthorityMapper();
+        grantedAuthoritiesMapper.setPrefix("");
+        return grantedAuthoritiesMapper;
+    }
+
+    private static class CorsWebMvcConfigurer implements WebMvcConfigurer {
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**").allowedOrigins("*");
+        }
+    }
+}
+
+```
+
+In order for security to work, we need to define ldap users. Please create an ```example-users.ldif``` file in the resouces folder. Fill the file with following content:
+
+```
+######################
+# Base Structure
+######################
+dn: OU=Test,O=TASKANA
+ou: Organisationseinheit
+objectclass: top
+objectclass: organizationalUnit
+
+dn: cn=groups,OU=Test,O=TASKANA
+cn: groups
+objectclass: top
+objectclass: container
+
+dn: cn=users,OU=Test,O=TASKANA
+cn: users
+objectclass: top
+objectclass: container
+
+dn: cn=organisation,OU=Test,O=TASKANA
+cn: organisation
+objectclass: top
+objectclass: container
+
+
+########################
+# Users General
+########################
+dn: uid=monitor,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Monitor
+description: desc
+uid: monitor
+sn: Monitor
+ou: Organisationseinheit/Organisationseinheit IT
+cn: monitor monitor
+userPassword: monitor
+
+dn: uid=taskadmin,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Task
+description: desc
+uid: taskadmin
+sn: Admin
+ou: Organisationseinheit/Organisationseinheit IT
+cn: Task admin
+userPassword: taskadmin
+
+dn: uid=admin,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Admin
+description: desc
+uid: admin
+sn: Admin
+ou: Organisationseinheit/Organisationseinheit IT
+cn: Admin Admin
+userPassword: admin
+
+dn: uid=businessadmin,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Business
+description: desc
+memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
+uid: businessadmin
+sn: Admin
+ou: Organisationseinheit/Organisationseinheit IT
+cn: Business Admin
+userPassword: businessadmin
+
+########################
+# Users KSC 1
+########################
+dn: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Titus
+description: desc
+phoneNumber: 012345678
+mobileNumber: 09876554321
+email: Titus.Toll@taskana.de
+orgLevel1: QWERT
+orgLevel2: DEF/GHI
+someDepartement: JKL
+orgLevel4: MNO/PQR
+memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+memberOf: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
+uid: teamlead-1
+sn: Toll
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
+cn: Titus Toll
+userPassword: teamlead-1
+
+dn: uid=user-1-1,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Max
+description: desc
+memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-1-1
+sn: Mustermann
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
+cn: Max Mustermann
+userPassword: user-1-1
+
+dn: uid=user-1-2,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Elena
+description: desc
+memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-1-2
+sn: Eifrig
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
+cn: Elena Eifrig
+userPassword: user-1-2
+
+dn: uid=user-1-3,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Elena
+description: desc
+uid: user-1-3
+sn: Faul
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
+cn: Elena Faul
+userPassword: user-1-3
+
+########################
+# Users KSC 2
+########################
+dn: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Frauke
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+memberOf: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
+memberOf: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
+uid: teamlead-2
+sn: Faul
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Frauke Faul
+userPassword: teamlead-2
+
+dn: uid=user-2-1,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Simone
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+uid: user-2-1
+sn: Müller
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Simone Müller
+userPassword: user-2-1
+
+dn: uid=user-2-2,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Tim
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+uid: user-2-2
+sn:: U2NobMOkZnJpZw==
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn:: VGltIFNjaGzDpGZyaWc=
+userPassword: user-2-2
+
+dn: uid=user-2-3,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Thomas
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-3
+sn: Bach
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Thomas Bach
+userPassword: user-2-3
+
+dn: uid=user-2-4,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Rolf
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-4
+sn: Wieland
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Rolf Wieland
+userPassword: user-2-4
+
+dn: uid=user-2-5,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Heike
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-5
+sn: Schmidt
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Heike Schmidt
+userPassword: user-2-5
+
+dn: uid=user-2-6,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Kurt
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-6
+sn: Maier
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Kurt Maier
+userPassword: user-2-6
+
+dn: uid=user-2-7,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Wiebke
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-7
+sn: Meyer
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Wiebke Meyer
+userPassword: user-2-7
+
+dn: uid=user-2-8,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Jana
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-8
+sn: Heeg
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Jana Heeg
+userPassword: user-2-8
+
+dn: uid=user-2-9,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Nathalie
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-9
+sn: Fuchs
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Nathalie Fuchs
+userPassword: user-2-9
+
+dn: uid=user-2-10,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Johannes
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: user-2-10
+sn: Renz
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Johannes Renz
+userPassword: user-2-10
+
+dn: uid=das_ist_eine_sehr_sehr_sehr_sehr_sehr_lange_user_id,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Max
+description: desc
+memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uid: das_ist_eine_sehr_sehr_sehr_sehr_sehr_lange_user_id
+sn: Renz
+ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
+cn: Max Renz
+userPassword: user-2-11
+
+########################
+# Users Domäne B
+########################
+dn: uid=user-b-1,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Bernd
+description: desc
+uid: user-b-1
+sn: Bern
+ou: Organisationseinheit/Organisationseinheit B
+cn: Bernd Bern
+userPassword: user-b-1
+
+dn: uid=User-b-2,cn=users,OU=Test,O=TASKANA
+objectclass: inetorgperson
+objectclass: organizationalperson
+objectclass: person
+objectclass: top
+givenName: Brunhilde
+description: desc
+uid: User-b-2
+sn: Bio
+ou: Organisationseinheit/Organisationseinheit B
+cn: Brunhilde Bio
+userPassword: user-b-2
+
+
+########################
+# Groups
+########################
+dn: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=user-1-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-1-2,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-2,cn=users,OU=Test,O=TASKANA
+cn: ksc-users
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
+cn: ksc-teamleads
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=business-admins,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=businessadmin,cn=users,OU=Test,O=TASKANA
+cn: business-admins
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
+cn: monitor-users
+objectclass: groupofuniquenames
+objectclass: top
+
+######################
+# Organizational Units
+######################
+dn: cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+cn: Organisationseinheit KSC
+uniquemember: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uniquemember: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+objectclass: groupofuniquenames
+
+```
 
 ### Step 8: Start and open the application
