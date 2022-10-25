@@ -287,8 +287,149 @@ taskana.routing.dmn=/dmn-table.dmn
 See here (link) for more details and configuration options.
 
 ### Step 4: Add rest configuration
+Add a ```config``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Copy following content into that class:
+
+```
+package com.example.demo.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import pro.taskana.TaskanaEngineConfiguration;
+import pro.taskana.common.api.TaskanaEngine;
+import pro.taskana.common.internal.configuration.DbSchemaCreator;
+import pro.taskana.sampledata.SampleDataGenerator;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
+@Configuration
+public class ExampleRestConfiguration {
+
+    @Bean
+    public PlatformTransactionManager txManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+
+    @Bean
+    @DependsOn("taskanaEngineConfiguration") // generate sample data after schema was inserted
+    public SampleDataGenerator generateSampleData(
+            TaskanaEngineConfiguration taskanaEngineConfiguration,
+            DataSource dataSource,
+            @Value("${generateSampleData:true}") boolean generateSampleData)
+            throws SQLException {
+        DbSchemaCreator dbSchemaCreator =
+                new DbSchemaCreator(dataSource, taskanaEngineConfiguration.getSchemaName());
+        dbSchemaCreator.run();
+        SampleDataGenerator sampleDataGenerator =
+                new SampleDataGenerator(dataSource, taskanaEngineConfiguration.getSchemaName());
+        if (generateSampleData) {
+            sampleDataGenerator.generateSampleData();
+        }
+        return sampleDataGenerator;
+    }
+
+    @Bean
+    @DependsOn("generateSampleData")
+    public TaskanaEngine getTaskanaEngine(TaskanaEngineConfiguration taskanaEngineConfiguration)
+            throws SQLException {
+        return taskanaEngineConfiguration.buildTaskanaEngine();
+    }
+}
+
+```
 
 ### Step 5: Add controllers
+Add a ```controller``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the conterells for different requests. Our application needs following three controllers:
+- LoginController
+- ResourcesController
+- ViewController
+
+Create three java classes with names LoginController, ResourcesController and ViewController. The LoginController will handle the login into taskana. Copy following code into LoginController:
+
+```
+package com.example.demo.controller;
+
+import org.springframework.core.Ordered;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Controller
+public class LoginController implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
+}
+```
+The ResourcesController handles resources like images and additional customizations. Please copy following code into the ResourcesController:
+
+```
+package com.example.demo.controller;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import pro.taskana.common.internal.util.ResourceUtil;
+
+import java.io.IOException;
+
+@Controller
+public class ResourcesController {
+
+    public static final String TASKANA_CUSTOMIZATION_FILE_NAME = "taskana-customization.json";
+
+    @GetMapping(
+            value = "/environments/data-sources/taskana-customization.json",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> taskanaCustomization() throws IOException {
+        return ResponseEntity.ok(readResourceAsString(TASKANA_CUSTOMIZATION_FILE_NAME));
+    }
+
+    // the environment-information.json file will be served via "static" folder
+    //  @GetMapping(
+    //      value = "/environments/data-sources/environment-information.json",
+    //      produces = MediaType.APPLICATION_JSON_VALUE)
+    //  public ResponseEntity<String> environmentInformation() throws Exception {
+    //    return ResponseEntity.ok(readResourceAsString("environment-information.json"));
+    //  }
+
+    private String readResourceAsString(String resource) throws IOException {
+        String resourceAsString = ResourceUtil.readResourceAsString(getClass(), resource);
+        if (resourceAsString == null) {
+            return "{}";
+        }
+        return resourceAsString;
+    }
+}
+```
+
+The ViewController manages the root view of taskana. It consists of following code:
+
+```
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+/** The view controller. */
+@Controller
+public class ViewController {
+
+    @GetMapping(path = {"", "taskana/**"})
+    public String index() {
+        return "forward:/index.html";
+    }
+}
+
+```
 
 ### Step 6: Add security
 
