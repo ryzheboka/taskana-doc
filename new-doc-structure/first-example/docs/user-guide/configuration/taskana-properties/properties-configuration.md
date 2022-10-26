@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Configuration of TASKANA properties
+# General Configuration
 
 Taskana is configured via a configuration file taskana.properties. This configuration file contains all parameters to control the behaviour of the taskana library.
 

@@ -1,11 +1,18 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Example Spring Boot
 
 import styles from '../../../src/components/HomepageFeatures/styles.module.css';
 import Link from '@docusaurus/Link';
+
+## Step 0: What you'll need
+
+In order to set up the example, please install:
+
+- an IDE of your choice (preferably IntelliJ)
+- Java 11
 
 ## Step 1: Initialize an empty project
 
@@ -255,7 +262,7 @@ spring.ldap.embedded.validation.enabled=false
 
 ### Step 3b: Add ```taskana.properties```
 
-Create ```taskana.properties``` in the recources folder. This file contains taskana specific configuration, like custom holidays etc. You can look up more configuration options here (link).Please  copy following content into ```taskana.properties```:
+Create ```taskana.properties``` in the recources folder. This file contains taskana specific configuration, like custom holidays etc. You can look up more configuration options [here](../../category/taskana-properties/). Please  copy following content into ```taskana.properties```:
 
 ```
 taskana.roles.user=cn=ksc-users,cn=groups,OU=Test,O=TASKANA | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2

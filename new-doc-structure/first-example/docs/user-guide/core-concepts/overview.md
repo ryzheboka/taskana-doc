@@ -15,7 +15,13 @@ Note: !! make Note beautiful in Markdown !! Besides Tasks, Classifications and W
 
 ### Task
 
-The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. A Task is identified by unique id. Each Task has exactly one Classification. This Classification determines some properties of the Task. For example, you can prioritize Tasks differently by using different Classifications. The Task is assigned to exactly one Workbasket so that different users have access to different Tasks. In order to enable the Task lifecycle, the Task has a state. It's READY after the Task creation, and COMPLETED after the Task completion. See here (link) to read more about the properties, the Task lifecycle as well as provided functionality. 
+The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. A Task is identified by unique id that is generated upon Task creation. 
+
+Each Task has exactly one Classification. This Classification determines some properties of the Task. For example, you can prioritize Tasks differently by using different Classifications. The Task is assigned to exactly one Workbasket so that different users have access to different Tasks. 
+
+!! Diagramm fürs Verhältnis zwischen Tasks, Workbaskets und Classifications !! 
+
+In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm shows the states of a Task as well as the transitions between them.  
 
 ### Classification
 

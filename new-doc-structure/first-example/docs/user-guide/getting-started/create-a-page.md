@@ -1,12 +1,12 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
-# What you will need
+# Supported Environments
 
 ### Supported JVM
   - Java 11
-### Supported Databases
+### Supported Databases (optional)
 - H2 version 2.0
 - or DB2 version ???
 - or PostgresSQL version ???
