@@ -20,7 +20,7 @@ Unpack the project and open it in InelliJ
 ## Step 2: Add dependencies
 Add following dependencies to the pom in the demo project:
 
-1. spring core depenpendency:
+** 1. spring core depenpendency: **
 
 ```
 <dependency>
@@ -28,9 +28,8 @@ Add following dependencies to the pom in the demo project:
     <artifactId>spring-plugin-core</artifactId>
     <version>2.0.0.RELEASE</version>
 </dependency>
-
 ```
-2. ldap and security dependencies:
+** 2. ldap and security dependencies: **
 ```
 <dependency>
     <groupId>org.springframework.ldap</groupId>
@@ -49,7 +48,7 @@ Add following dependencies to the pom in the demo project:
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ```
-3. database dependencies:
+** 3. database dependencies: **
 
 ```
 <dependency>
@@ -61,7 +60,7 @@ Add following dependencies to the pom in the demo project:
     <artifactId>spring-boot-starter-jdbc</artifactId>
 <dependency>
 ```
-4. taskana dependencies:
+** 4. taskana dependencies: **
 
 ```
 <dependency>
@@ -85,7 +84,7 @@ Add following dependencies to the pom in the demo project:
     <version>5.7.0</version>
 </dependency>
 ```
-5. web dependencies:
+** 5. web dependencies: **
 
 ```
 <dependency>
@@ -163,7 +162,7 @@ Add following dependencies to the pom in the demo project:
 ## Step 3: Add properties configuration
 
 ### Step 3a: Fill out ```application.properties```
-The example already has the configuration file ```application.properties```. You need to add following content into that file:
+The example already has the configuration file ```application.properties```. It's a standard configuration file used by spring. You can read more about spring configuration in the [spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html) You need to add following content into that file:
 
 ```
 logging.level.pro.taskana=INFO
@@ -254,11 +253,9 @@ spring.ldap.embedded.validation.enabled=false
 
 ```
 
-You can read more about ```application.properties``` here (link).
-
 ### Step 3b: Add ```taskana.properties```
 
-Create ```taskana.properties``` in the recources folder. You can copy following content into that file:
+Create ```taskana.properties``` in the recources folder. This file contains taskana specific configuration, like custom holidays etc. You can look up more configuration options here (link).Please  copy following content into ```taskana.properties```:
 
 ```
 taskana.roles.user=cn=ksc-users,cn=groups,OU=Test,O=TASKANA | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2
@@ -288,12 +285,10 @@ taskana.historylogger.name=AUDIT
 taskana.routing.dmn=/dmn-table.dmn
 ```
 
-See here (link) for more details and configuration options.
-
 ## Step 4: Add rest configuration
 
 !! TODO: Screenshot von vor Schritt 4 hinzufügen !!
-Add a ```config``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Copy following content into that class:
+Add a ```config``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Copy following content into ```ExampleRestConfiguration.java```:
 
 ```
 package com.example.demo.config;
@@ -350,13 +345,13 @@ public class ExampleRestConfiguration {
 !! TODO: Screenshot von nach Schritt 4 hinzufügen !!
 
 ## Step 5: Add controllers
-Add a ```controller``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
+Add a ```controller``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
 - LoginController
 - ResourcesController
 - ViewController
 
 ### Step 5a: Add ```LoginController.java```
-The LoginController will handle the login into taskana. It will need the template/login.html in the recources folder. You can download the template folder here:
+The LoginController will handle the login into taskana. It will need the ```template/login.html``` in the ```recources``` folder. You can download the template folder here:
 
 <div className={styles.buttons}>
 <Link
@@ -365,7 +360,7 @@ The LoginController will handle the login into taskana. It will need the templat
     </Link>
 </div>
 
-Then, copy following code into LoginController:
+Please unzip the ```template``` folder and put it into the ```resources``` folder. Then, copy following code into ```LoginController.java```:
 
 ```
 package com.example.demo.controller;
@@ -387,7 +382,7 @@ public class LoginController implements WebMvcConfigurer {
 ```
 
 ### Step 5b: Add ```ResourcesController.java```
-The ResourcesController handles resources like images and additional customizations. You'll need a static folder in the recouces folder. You can download the static folder here:
+The ResourcesController handles resources like images and additional customizations. You'll need  the ```static``` folder for it. You can download the ```static``` folder here:
 
 <div className={styles.buttons}>
 <Link
@@ -396,7 +391,7 @@ The ResourcesController handles resources like images and additional customizati
     </Link>
 </div> <br/>
 
-After you copied the static folder into resources, downlad the controllers folder:
+Please copy the ```static``` folder into ```resources```. Additionaly, there is the ```controllers``` folder for further customizations. Please downlad it here:
 
 
 <div className={styles.buttons}>
@@ -407,7 +402,7 @@ After you copied the static folder into resources, downlad the controllers folde
 </div> 
 <br/>
 
-Add the downloaded controllers folder into recources. Then, please copy following code into the ResourcesController:
+Unzip the ```controllers``` folder put it into ```recources```. Then, please copy following code into ```ResourcesController-java```:
 
 ```
 package com.example.demo.controller;
@@ -451,7 +446,7 @@ public class ResourcesController {
 ```
 
 ### Step 5c: Add ```ViewController.java```
-The ViewController manages the root view of taskana. It consists of following code:
+The ViewController manages the root view of taskana. Copy following code into ```ViewController.java```:
 
 ```
 package com.example.demo.controller;
@@ -473,10 +468,10 @@ public class ViewController {
 
 ## Step 6: Add security
 
-Add a ```security``` folder into the com.example.demo package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: ```BootWebSecurityConfigurer``` (will be replaced), one mvc configuration for handling recources and messages of the application: ```WebMvcConfig```, and one example configuration ```ExampleWebSecurityConfig```. Please create the three java classes inside the ```security``` folder.
+Add a ```security``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: BootWebSecurityConfigurer (will be replaced), one mvc configuration for handling recources and messages of the application: WebMvcConfig, and one example configuration ExampleWebSecurityConfig. Please create the three java classes inside the ```security``` folder.
 
 ### Step 6a: Add ```BootWebSecurityConfigurer.java```
-Copy following content into the ```BootWebSecurityConfigurer```:
+Copy following content into the ```BootWebSecurityConfigurer.java```:
 
 ```
 package com.example.demo.security;
@@ -606,7 +601,7 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 ```
 ### Step 6b: Add ```WebMvcConroller.java```
 
-Then copy following content into ```WebMvcConroller```:
+Then copy following content into ```WebMvcConroller.java```:
 
 ```
 package com.example.demo.security;
@@ -676,7 +671,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 ### Step 6c: Add ```ExampleWebConfig.java```
 
-Then add following ```ExampleWebConfig```:
+Then add following ```ExampleWebConfig.java```:
 
 ```
 package com.example.demo.security;
@@ -780,409 +775,16 @@ public class ExampleWebSecurityConfig {
 
 ```
 
-In order for security to work, we need to define ldap users. Please create an ```example-users.ldif``` file in the resouces folder. Fill the file with following content:
+In order for security to work, we need to define ldap users. Please download the ```example-users.ldif``` file here:
 
-```
-######################
-# Base Structure
-######################
-dn: OU=Test,O=TASKANA
-ou: Organisationseinheit
-objectclass: top
-objectclass: organizationalUnit
+<div className={styles.buttons}>
+<Link
+            className="button button--secondary button--lg">
+    <a target="_blank" href="../static/example-users.ldif" download>Download example users </a>
+    </Link>
+</div> 
+<br/>
 
-dn: cn=groups,OU=Test,O=TASKANA
-cn: groups
-objectclass: top
-objectclass: container
-
-dn: cn=users,OU=Test,O=TASKANA
-cn: users
-objectclass: top
-objectclass: container
-
-dn: cn=organisation,OU=Test,O=TASKANA
-cn: organisation
-objectclass: top
-objectclass: container
-
-
-########################
-# Users General
-########################
-dn: uid=monitor,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Monitor
-description: desc
-uid: monitor
-sn: Monitor
-ou: Organisationseinheit/Organisationseinheit IT
-cn: monitor monitor
-userPassword: monitor
-
-dn: uid=taskadmin,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Task
-description: desc
-uid: taskadmin
-sn: Admin
-ou: Organisationseinheit/Organisationseinheit IT
-cn: Task admin
-userPassword: taskadmin
-
-dn: uid=admin,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Admin
-description: desc
-uid: admin
-sn: Admin
-ou: Organisationseinheit/Organisationseinheit IT
-cn: Admin Admin
-userPassword: admin
-
-dn: uid=businessadmin,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Business
-description: desc
-memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
-uid: businessadmin
-sn: Admin
-ou: Organisationseinheit/Organisationseinheit IT
-cn: Business Admin
-userPassword: businessadmin
-
-########################
-# Users KSC 1
-########################
-dn: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Titus
-description: desc
-phoneNumber: 012345678
-mobileNumber: 09876554321
-email: Titus.Toll@taskana.de
-orgLevel1: QWERT
-orgLevel2: DEF/GHI
-someDepartement: JKL
-orgLevel4: MNO/PQR
-memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-memberOf: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
-uid: teamlead-1
-sn: Toll
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
-cn: Titus Toll
-userPassword: teamlead-1
-
-dn: uid=user-1-1,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Max
-description: desc
-memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-1-1
-sn: Mustermann
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
-cn: Max Mustermann
-userPassword: user-1-1
-
-dn: uid=user-1-2,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Elena
-description: desc
-memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-1-2
-sn: Eifrig
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
-cn: Elena Eifrig
-userPassword: user-1-2
-
-dn: uid=user-1-3,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Elena
-description: desc
-uid: user-1-3
-sn: Faul
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 1
-cn: Elena Faul
-userPassword: user-1-3
-
-########################
-# Users KSC 2
-########################
-dn: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Frauke
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-memberOf: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=business-admins,cn=groups,OU=Test,O=TASKANA
-memberOf: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
-uid: teamlead-2
-sn: Faul
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Frauke Faul
-userPassword: teamlead-2
-
-dn: uid=user-2-1,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Simone
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
-uid: user-2-1
-sn: Müller
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Simone Müller
-userPassword: user-2-1
-
-dn: uid=user-2-2,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Tim
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
-uid: user-2-2
-sn:: U2NobMOkZnJpZw==
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn:: VGltIFNjaGzDpGZyaWc=
-userPassword: user-2-2
-
-dn: uid=user-2-3,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Thomas
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-3
-sn: Bach
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Thomas Bach
-userPassword: user-2-3
-
-dn: uid=user-2-4,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Rolf
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-4
-sn: Wieland
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Rolf Wieland
-userPassword: user-2-4
-
-dn: uid=user-2-5,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Heike
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-5
-sn: Schmidt
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Heike Schmidt
-userPassword: user-2-5
-
-dn: uid=user-2-6,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Kurt
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-6
-sn: Maier
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Kurt Maier
-userPassword: user-2-6
-
-dn: uid=user-2-7,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Wiebke
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-7
-sn: Meyer
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Wiebke Meyer
-userPassword: user-2-7
-
-dn: uid=user-2-8,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Jana
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-8
-sn: Heeg
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Jana Heeg
-userPassword: user-2-8
-
-dn: uid=user-2-9,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Nathalie
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-9
-sn: Fuchs
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Nathalie Fuchs
-userPassword: user-2-9
-
-dn: uid=user-2-10,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Johannes
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: user-2-10
-sn: Renz
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Johannes Renz
-userPassword: user-2-10
-
-dn: uid=das_ist_eine_sehr_sehr_sehr_sehr_sehr_lange_user_id,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Max
-description: desc
-memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uid: das_ist_eine_sehr_sehr_sehr_sehr_sehr_lange_user_id
-sn: Renz
-ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
-cn: Max Renz
-userPassword: user-2-11
-
-########################
-# Users Domäne B
-########################
-dn: uid=user-b-1,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Bernd
-description: desc
-uid: user-b-1
-sn: Bern
-ou: Organisationseinheit/Organisationseinheit B
-cn: Bernd Bern
-userPassword: user-b-1
-
-dn: uid=User-b-2,cn=users,OU=Test,O=TASKANA
-objectclass: inetorgperson
-objectclass: organizationalperson
-objectclass: person
-objectclass: top
-givenName: Brunhilde
-description: desc
-uid: User-b-2
-sn: Bio
-ou: Organisationseinheit/Organisationseinheit B
-cn: Brunhilde Bio
-userPassword: user-b-2
-
-
-########################
-# Groups
-########################
-dn: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
-uniquemember: uid=user-1-1,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=user-1-2,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=user-2-1,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=user-2-2,cn=users,OU=Test,O=TASKANA
-cn: ksc-users
-objectclass: groupofuniquenames
-objectclass: top
-
-dn: cn=ksc-teamleads,cn=groups,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
-cn: ksc-teamleads
-objectclass: groupofuniquenames
-objectclass: top
-
-dn: cn=business-admins,cn=groups,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=businessadmin,cn=users,OU=Test,O=TASKANA
-cn: business-admins
-objectclass: groupofuniquenames
-objectclass: top
-
-dn: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
-uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
-cn: monitor-users
-objectclass: groupofuniquenames
-objectclass: top
-
-######################
-# Organizational Units
-######################
-dn: cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-cn: Organisationseinheit KSC
-uniquemember: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-uniquemember: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
-objectclass: groupofuniquenames
-
-```
 !! TODO: Screenshot von nach Schritt 6 hinzufügen !!
 
 ## Step 7: Start and open the application
