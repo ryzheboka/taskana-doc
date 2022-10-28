@@ -13,19 +13,25 @@ In order to set up the example, please install:
 
 - an IDE of your choice (preferably IntelliJ)
 - Java 11
+- maven
+
+Note: Please name your folder and files exactly like in the example!
 
 ## Step 1: Initialize an empty project
 
-Go to [Spring Initializer](https://start.spring.io/) and create an example project. Choose the same options as in the Screenshot, then click on "Generate"
+Go to [Spring Initializer](https://start.spring.io/) and create an example project. Choose the same options as in the Screenshot, except the spring version. Please check Java 11, then click on "Generate". 
 
 ![empty spring boot project](../static/Schritt1besserbesser.png)
 
-Unpack the project and open it in InelliJ
+Unpack the project in the folder of your choice and open it in InelliJ
 
 ![unpacked project](../static/Schritt2.png)
 
+Add ```@ComponentScan({"pro.taskana","com.example"})``` to the ExampleApplication
+
+
 ## Step 2: Add dependencies
-Add following dependencies to the pom in the demo project:
+Following text splits the needed dependecies by topic. All dependencies can be copied as one block at the end of step 2. After adding the dependencies, please run ```mvn clean install```
 
 ** 1. spring core depenpendency: **
 
@@ -65,7 +71,7 @@ Add following dependencies to the pom in the demo project:
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-jdbc</artifactId>
-<dependency>
+</dependency>
 ```
 ** 4. taskana dependencies: **
 
@@ -163,7 +169,7 @@ Add following dependencies to the pom in the demo project:
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-jdbc</artifactId>
-<dependency>
+</dependency>
 ```
 
 ## Step 3: Add properties configuration
@@ -289,7 +295,6 @@ taskana.jobs.user.refresh.firstRunAt=2018-07-25T23:00:00Z
 taskana.german.holidays.enabled=true
 taskana.german.holidays.corpus-christi.enabled=true
 taskana.historylogger.name=AUDIT
-taskana.routing.dmn=/dmn-table.dmn
 ```
 
 ## Step 4: Add rest configuration
@@ -358,16 +363,16 @@ Add a ```controller``` folder into the ```com.example.demo``` package (in src/ma
 - ViewController
 
 ### Step 5a: Add ```LoginController.java```
-The LoginController will handle the login into taskana. It will need the ```template/login.html``` in the ```recources``` folder. You can download the template folder here:
+The LoginController will handle the login into taskana. It will need the ```template/login.html``` in the ```recources``` folder. You can download the templates folder here:
 
 <div className={styles.buttons}>
 <Link
             className="button button--secondary button--lg">
-    <a target="_blank" href={ require("../static/template.zip").default } download>Download template </a>
+    <a target="_blank" href={ require("../static/templates.zip").default } download>Download template </a>
     </Link>
 </div>
 
-Please unzip the ```template``` folder and put it into the ```resources``` folder. Then, copy following code into ```LoginController.java```:
+Please unzip the ```templates``` folder and put it into the ```resources``` folder. Then, copy following code into ```LoginController.java```:
 
 ```
 package com.example.demo.controller;
@@ -606,9 +611,9 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-### Step 6b: Add ```WebMvcConroller.java```
+### Step 6b: Add ```WebMvcConfig.java```
 
-Then copy following content into ```WebMvcConroller.java```:
+Then copy following content into ```WebMvcConfig.java```:
 
 ```
 package com.example.demo.security;
@@ -676,9 +681,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 ```
 
-### Step 6c: Add ```ExampleWebConfig.java```
+### Step 6c: Add ```ExampleWebSecurityConfig.java```
 
-Then add following ```ExampleWebConfig.java```:
+Then add following ```ExampleWebSecuriryConfig.java```:
 
 ```
 package com.example.demo.security;
@@ -787,16 +792,18 @@ In order for security to work, we need to define ldap users. Please download the
 <div className={styles.buttons}>
 <Link
             className="button button--secondary button--lg">
-    <a target="_blank" href="../static/example-users.ldif" download>Download example users </a>
+    <a target="_blank" href={ require("../static/example-users.zip").default } download>Download controllers </a>
     </Link>
 </div> 
 <br/>
+
+Put the file into the ```recources``` folder.
 
 !! TODO: Screenshot von nach Schritt 6 hinzufügen !!
 
 ## Step 7: Start and open the application
 
-Type ```localhost:8080/taskana``` into your browser. You should see the login screen:
+Run ```mvn clean compile``` Go to the Application in the IDE and start it. Then type ```localhost:8080/taskana``` into your browser. You should see the login screen:
 
 ![Log in](../static/login.png)
 
