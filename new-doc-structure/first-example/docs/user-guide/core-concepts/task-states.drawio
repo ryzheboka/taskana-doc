@@ -1,0 +1,73 @@
+<mxfile host="65bd71144e">
+    <diagram id="ABNCZyfbNFh-MfdMv4a-" name="Page-1">
+        <mxGraphModel dx="445" dy="569" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="21" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="405" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="275" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry y="535" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry y="405" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry y="275" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="145" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry y="145" width="320" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;b&gt;CLAIMED&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="292.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="&lt;b&gt;READY&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="162.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;b&gt;READY_FOR_REVIEW&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="162.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;b&gt;IN_REVIEW&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="292.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;b&gt;COMPLETED&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="422.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;b&gt;CANCELLED&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="422.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;b&gt;TERMINATED&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="552.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="160" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="292.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="422.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="552.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="162.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="292.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="Text" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="422.5" width="140" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

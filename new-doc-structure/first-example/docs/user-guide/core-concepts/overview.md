@@ -4,12 +4,22 @@ sidebar_position: 1
 
 # Overview
 
-Taskana manages human tasks. This includes defining the tasks, distributing them to the corresponding workers and keeping track of the task execution. Taskana also offers options for customizing each task with attachments, object references etc.. In the following article, the basic entities of Taskana and operations on them are explained.
+import Drawio from '@theme/Drawio'
+import simpleGraph from '!!raw-loader!./task-states.drawio';
+import entities from '!!raw-loader!./entities.drawio';
+import architecture from '!!raw-loader!./architecture.drawio';
+
+Taskana manages human tasks. This includes defining the tasks, distributing them to the corresponding workers and keeping track of the task execution. Taskana also offers options for customizing each task with attachments, object references etc.. In the following article, the basic entities of Taskana and operations on them are explained. 
+
+<Drawio content={architecture} />
 
 ## Taskana Entities
-All Taskana Entities can be found in the Java API (link). For better readability, they are capitalized in the documentation. 
+All Taskana Entities can be found in the Java API (link). You can read more about our Java API here (link). For better readability, entites are capitalized in the documentation. 
 
-Taskana operates using Tasks, Classifications and Workbaskets. The entities are stored in the configured database (link). 
+Taskana operates using Tasks, Classifications and Workbaskets. The entities are stored in the configured database (link). You can see the detailed data model here (link)
+
+<Drawio content={entities} />
+
 
 Note: !! make Note beautiful in Markdown !! Besides Tasks, Classifications and Workbaskets, there are also interfaces for summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important imformation. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information.
 
@@ -21,7 +31,10 @@ Each Task has exactly one Classification. This Classification determines some pr
 
 !! Diagramm fürs Verhältnis zwischen Tasks, Workbaskets und Classifications !! 
 
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm shows the states of a Task as well as the transitions between them.  
+In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm describes the states of a Task.  
+
+<Drawio content={simpleGraph} />
+
 
 ### Classification
 
