@@ -42,7 +42,7 @@ The Classification interface can be found in (path to Classification). It repres
 
 ### Workbasket
 
-...
+A Workbasket is a list of Tasks. Each user has access to a set of Workbaskets. For example, each team member has access to the Workbasket of the team. 
 
 ## Operations on Entities
 You can create, update and delete entities. These operations on entities can be found in the corresponding Services: TaskService, CLassificationService and WorkbasketService. You can also make queries with filtering and sorting by properties.  
