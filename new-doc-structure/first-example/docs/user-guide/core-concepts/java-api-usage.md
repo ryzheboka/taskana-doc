@@ -3,31 +3,22 @@ sidebar_position: 3
 ---
 
 # Java-API usage
+import Drawio from '@theme/Drawio'
+import simpleGraph from '!!raw-loader!./lib-structure.drawio';
+import entities from '!!raw-loader!./entities.drawio';
+import architecture from '!!raw-loader!./architecture.drawio';
+
+Java-API can be found in the "api" folders in the "lib" folder.
+
+<Drawio content={simpleGraph} />
 
 ## Taskana Entities
 All Taskana Entities can be found in the Java API (link). For better readability, they are capitalized in the documentation. 
 
 Taskana operates using Tasks, Classifications and Workbaskets. The entities are stored in the configured database (link). 
 
-Note: !! make Note beautiful in Markdown !! Besides Tasks, Classifications and Workbaskets, there are also interfaces for summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important imformation. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information.
+ Besides Tasks, Classifications and Workbaskets, there are also interfaces for summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important imformation. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information.
 
-### Task
-
-The Task interface can be found in (path to Task). It represents a human task that should be perfomed by one of the relevant users. A Task is identified by unique id that is generated upon Task creation. 
-
-Each Task has exactly one Classification. This Classification determines some properties of the Task. For example, you can prioritize Tasks differently by using different Classifications. The Task is assigned to exactly one Workbasket so that different users have access to different Tasks. 
-
-!! Diagramm fürs Verhältnis zwischen Tasks, Workbaskets und Classifications !! 
-
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm shows the states of a Task as well as the transitions between them.  
-
-### Classification
-
-The Classification interface can be found in (path to Classification). It represents a 
-
-### Workbasket
-
-...
 
 ## Operations on Entities
 You can create, update and delete entities. These operations on entities can be found in the corresponding Services: TaskService, CLassificationService and WorkbasketService. You can also make queries with filtering and sorting by properties.  
