@@ -12,6 +12,21 @@ Java-API can be found in the "api" folders in the "lib" folder.
 
 <Drawio content={simpleGraph} />
 
+- ``pro.taskana.classification.api`` 
+
+- ``pro.taskana.task.api ``
+
+- ``pro.taskana.workbasket.api``: 
+
+- ``pro.taskana.common.api``: 
+
+- ``pro.taskana.monitor.api``: 
+
+- ``pro.taskana.user.api``: 
+
+- ``pro.taskana.spi``: 
+
+
 ## Taskana Entities
 All Taskana Entities can be found in the Java API (link). For better readability, they are capitalized in the documentation. 
 

@@ -46,8 +46,8 @@
                 <mxCell id="12" value="&lt;b&gt;TERMINATED&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=none;" parent="1" vertex="1">
                     <mxGeometry x="10" y="617.5" width="140" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="&lt;div style=&quot;text-align: justify&quot;&gt;&lt;span&gt;The state of a Task after its creation. READY Tasks are seen by all users with access to the Workbasket of the Task. A READY Task can be claimed by a user.&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" parent="1" vertex="1">
-                    <mxGeometry x="155" y="145" width="165" height="97.5" as="geometry"/>
+                <mxCell id="14" value="&lt;div style=&quot;text-align: justify&quot;&gt;&lt;span&gt;The state of a Task after its creation. READY Tasks are seen by all users with access to the Workbasket of the Task. A READY Task can be claimed by a user who wants to work on it.&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="155" y="135" width="165" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" value="&lt;div style=&quot;text-align: justify&quot;&gt;&lt;span&gt;After a Task has been claimed by a user, its state is CLAIMED. It means that the Task is being processed by the user. The user processing the Task is calles owner.&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;strokeColor=none;verticalAlign=top;" parent="1" vertex="1">
                     <mxGeometry x="155" y="290" width="165" height="107.5" as="geometry"/>

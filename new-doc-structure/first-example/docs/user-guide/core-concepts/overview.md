@@ -38,10 +38,12 @@ In order to enable the Task lifecycle, the Task has a state. For example, after 
 
 ### Classification
 
-The Classification interface can be found in (path to Classification). It represents a 
+The Classification interface can be found in (path to Classification). It represents a category of Tasks. The Tasks with the same Classification have some common attributes. For example, the due date and priority of a Task is computed using its Classification.
 
 ### Workbasket
 
 The Workbasket interface can be found in (). A Workbasket is a list of Tasks. Each user has access to a set of Workbaskets. For example, each team member has access to the Workbasket of the team. Workbasket can be identified either by an id or by the (key, domain) pair. There can be mutliple workbaskets with the same key but different domains. 
 
-The Workbasket for a specific Task can be chosen differently. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. A 
+There different forms of access to a Workbasket. You can read more about permissions [here](./security-permissions.md).
+
+The Workbasket for a specific Task can be chosen differently. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
