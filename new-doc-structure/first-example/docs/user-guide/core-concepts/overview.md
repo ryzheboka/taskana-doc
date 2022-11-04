@@ -16,9 +16,9 @@ In order to prvide its functionality, TASKANA consists of different components. 
 <Drawio content={architecture} />
 
 ## Taskana Entities
-All Taskana Entities can be found in the [Java API](../java-api-usage.md). You can read more about our Java API here (link). For better readability, entites are capitalized in the documentation. 
+All Taskana Entities can be found in the Java API. You can read more about our Java API [here](../java-api-usage.md). For better readability, entites are capitalized in the documentation. 
 
-Taskana operates using Tasks, Classifications and Workbaskets. The entities are stored in the configured database (link). You can see the detailed data model here (link)
+Taskana operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database] (../configuration/database-configuration.md). You can see the detailed data model here (link).
 
 <Drawio content={entities} />
 
@@ -35,10 +35,16 @@ In order to enable the Task lifecycle, the Task has a state. For example, after 
 
 <Drawio content={simpleGraph} />
 
+### Object Reference
+ObjectReference refers to document or some other real world object that the Task is about. The document is identified by the value field of ObjectReference. Each Task must have one primary ObjectReference. The primary ObjectReference defines the main involved document. A Task can have several secundary ObjectReferences that are also relevant for the Task.
+
+
+### Attachment
+An Attachment ??? 
 
 ### Classification
 
-The Classification interface can be found in (path to Classification). It represents a category of Tasks. The Tasks with the same Classification have some common attributes. For example, the due date and priority of a Task is computed using its Classification.
+The Classification interface can be found in (path to Classification). It represents a category of Tasks. The Tasks with the same Classification have some common attributes. For example, the due date and priority of a Task is computed using its Classification. A Classification can be identified either by an id or by the (key, domain) pair. There can be mutliple Classification with the same key but different domains. However, for each key, there is a master Classification. A master Classification has a domain value "" (empty String). If a Classification is not found in a given domain, then the master Classification with the same key is returned. The successfull deletion of the master Classification means the deletion of all Classifications with that key.
 
 ### Workbasket
 
