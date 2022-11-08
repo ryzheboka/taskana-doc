@@ -62,3 +62,8 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 
 - Create, Update, Delete
 - Query
+
+## List of important features
+- Monitoring: ???
+- History: ???
+- ...

@@ -6,42 +6,35 @@ sidebar_position: 4
 
 ## Security Overview
 
-Taskana is based on JAAS. Its security features start from the REST service.
+Kadai Java library uses JAAS subjects for its authentication. Its security features can be used based on the REST service. The authentification cannot be run without the REST service. Client side authorization is required to view Tasks and Workbaskets or to make any changes. If the client side authorization does not work, the unauthorized user will not be able to use Kadai properly.
 
-Due to authentication requirements an additional wrapper is necessary to run the REST service. 
+We provide an example (taskana-rest-spring-example) which is using ldap. You can build a simpler step-by-step example in our [Getting Started](../getting-started/spring-boot-example.md) as well.
 
-Its main purpose (besides starting the REST service as e.g. a web-container) is to implement server-side security. Worst case: The client side authorization does not work. The unauthorized user will only see the UI without any data.
-
-We provide an example (taskana-rest-spring-example) which is using basicauth.
-
-Taskana relies on its client to set up a JAAS context whose Subject is used to retrieve the UserPrincipal and 0-n GroupPrincipals. The Ids of these principals form the list of 'accessIds' that are used to grant/deny access to workbaskets. The accessIds are retrieved at runtime by class CurrentUserContext of module taskana-core.
-
-In a production environment, it is the responsibility of taskana's client to establish the correct JAAS context.
-
-In the rest-spring-example, the JAAS context is established with the help of Spring in classes WebSecurityConfig / SampleLoginModule / SampleRoleGranter of project taskana-rest-spring-base
-
-In taskana-rest-spring-example-wildfly, class ElytronToJaasFilter is used to set up a JAAS subject from Elytron security.
+Kadai Java library needs its client to provide a mapping to the Jaas Subject used for users and groups. The client should create a JAAS context for the Java library. The ids of users and groups, e. g. "user-1-1" or "admin", are then used for the internal logic in the Java library. Our REST Service already provides ldap support. When using REST Service with ldap, you need to provide ??? your ldap congiguration ???
 
 ## Security Roles in TASKANA
 
-Taskana distinguishes between five different roles:
+Users can have one of the six different roles:
 
-    USER
+- **USER**
     The USER role grants access to Taskana. USER is everybody who gets assigned to and completes tasks. 
-    TASK_ADMIN
+- **TASK_ADMIN**
     The TASK_ADMIN role includes all permissions on tasks with the exception of deleting a task/tasks. It can also READ all workbaskets in case to create/transfer tasks in/to them.
-    BUSINESS_ADMINISTRATOR
+- **BUSINESS_ADMINISTRATOR**
     The BUSINESS_ADMINISTRATOR role allows to change the business configuration (workbaskets, classifications, ...)
-    ADMINISTRATOR
+- **ADMINISTRATOR**
     The ADMINISTRATOR role includes all permissions on the system.
-    MONITOR
+- **MONITOR**
     The MONITOR role grants access to all monitoring operations and to the monitoring UI.
+- **TASK_ROUTER**
+    The TASK_ROUTER role implies acess to creating Tasks in all Workbaskets without having READ permissions for them. This role is used for automateted scripts, not for persons.
 
 
-Since Taskana is based on JAAS, it provides a basic role mapping for Principals to roles. This is configured in the TaskanaEngineConfiguration. You can assign a list of Principal names to each role. Taskana will check if one of the user principals is contained in the required role.
+ You can assigns roles to users or groups in the ```taskana.properties```file. Read more about ldap configuration [here](../configuration/taskana-properties/ldap-configuration.md)
 
 ## Access to Workbaskets
-Authorization is bound to Workbaskets via WorkbasketAccessList, a DB table that contains so-called workbasketAccessItems. Each workbasketAccessItem contains permissions for a specific workbasket, a specific access id and the actions 'READ', 'OPEN', 'APPEND', 'TRANSFER', 'DISTRIBUTE' and CUSTOM_1 through CUSTOM_12. 
+
+Kadai Java library uses WorkbasketAccessItems for authorization. WorkbasketAccessItems are stored in the WorkbasketAccessList database table. Each WorkbaketAccessItems contains values for each of the following permissions: *READ, OPEN, APPEND, TRANSFER, DISTRIBUTE and CUSTOM_1 through CUSTOM_12*. A WorkbasketAccessItem belong to a specific Workbasket-User or Workbasket-Group pair. The user or group are specified by their accessId (for example "user-1-1"). The different permissions have following meaning:
 
 | Permission            | Meaning                                                                                                                                                                                                                                                               |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -52,25 +45,15 @@ Authorization is bound to Workbaskets via WorkbasketAccessList, a DB table that 
 | DISTRIBUTE            | The  user is allowed to distribute Tasks from this Workbasket to the  configured distribution targets. For distribution the APPEND and  TRANSFER permissions are checked also.                                                                                        |
 | CUSTOM_1 .. CUSTOM_12 | Permissions to be used in custom code to configure application specific scenarios which are not directly checked by TASKANA.                                                                                                                                          |
 
-### Example WorkbasketAccesItem table
+### Example WorkbasketAccesList table
 
-A sample extract of the table might look like the following:
+Example WorkbasketAccessItems:
 
 | ID   | WB_ID | ,ACCESS_ID | ACCESS_NAME       | READ, | OPN,        | APPD, | TRSFR, | DISTR, | C1,    | ..,           | C12) |
 |------|------------------|-------------|---------|-------|-------------|-------|--------|--------|--------|---------------|------|
 | WA01 | WB01             | teamlead_1 | Dominik |  true | false  | true     | true  | true  | true,...false |      |
 | WA02 | WB01             | teamlead_2 | Holger  |  true       | true | false | false | true  | true,...true; |      |
 | WA03 | WB01             | group_1   | Schaden |  true       | true | false | true | false | true,...true; |      |
-
-If the access rights of a specific JAAS Subject for a specific workbasket are to be determined, all workbasket access items for this workbasket and each involved access id are retrieved. For example, if the subject contains accessIds 'teamlead_2' and 'group_1', and the requested workbasket is WB01, the following records are involved:
-
-
-| ID   | WB_ID | ACCESS_ID, | ACCESS_NAME | READ, | OPN, | APPD, | TRSFR, | DISTR, | C1, | ..,    | C12) |        |
-|------|------|-------------|------------------|--------|--------|-----|--------|--------|-------------------|---|-------|
-| WA02 | WB01 | teamlead_2 | Holger           | true  | true  | false    | false | false | true | true,...true; |               |
-| WA03 | WB01 | group_1    | Schaden          | true  | true  | false    | false | true  | false | true,...true; |
-
-In each column, the algorithm checks whether at least one 'true' is contained and if this is the case, the corresponding access right is granted. If all records in a specific column contain value 'false', the access right is denied. In the current case, access right 'APPEND' would be denied, all other rights are granted.
 
 ## securityEnabled-flag
 
