@@ -40,6 +40,38 @@ Taskana distinguishes between five different roles:
 
 Since Taskana is based on JAAS, it provides a basic role mapping for Principals to roles. This is configured in the TaskanaEngineConfiguration. You can assign a list of Principal names to each role. Taskana will check if one of the user principals is contained in the required role.
 
+## Access to Workbaskets
+Authorization is bound to Workbaskets via WorkbasketAccessList, a DB table that contains so-called workbasketAccessItems. Each workbasketAccessItem contains permissions for a specific workbasket, a specific access id and the actions 'READ', 'OPEN', 'APPEND', 'TRANSFER', 'DISTRIBUTE' and CUSTOM_1 through CUSTOM_12. 
+
+| Permission            | Meaning                                                                                                                                                                                                                                                               |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| READ                  | Read or query Workbasket metadata and its containing Tasks.   If a user does not have the READ permission, he does not even know about the existence of the Workbasket.  If a user does not have the READ permission, he can’t see the Tasks within that Workbasket.  |
+| OPEN                  | The user is allowed to explicitly query the Tasks of specific Workbaskets. If a user does not have the OPEN permission, he can’t query/filter Tasks by Workbaskets.                                                                                                   |
+| APPEND                | The  user is allowed to append a Task to the Workbasket. This applies to  creation of Tasks in this Workbasket as well as for transferring Tasks  to this Workbasket.                                                                                                 |
+| TRANSFER              | Allows the user to transfer Tasks from this Workbasket to another one.                                                                                                                                                                                                |
+| DISTRIBUTE            | The  user is allowed to distribute Tasks from this Workbasket to the  configured distribution targets. For distribution the APPEND and  TRANSFER permissions are checked also.                                                                                        |
+| CUSTOM_1 .. CUSTOM_12 | Permissions to be used in custom code to configure application specific scenarios which are not directly checked by TASKANA.                                                                                                                                          |
+
+### Example WorkbasketAccesItem table
+
+A sample extract of the table might look like the following:
+
+| ID   | WB_ID | ,ACCESS_ID | ACCESS_NAME       | READ, | OPN,        | APPD, | TRSFR, | DISTR, | C1,    | ..,           | C12) |
+|------|------------------|-------------|---------|-------|-------------|-------|--------|--------|--------|---------------|------|
+| WA01 | WB01             | teamlead_1 | Dominik |  true | false  | true     | true  | true  | true,...false |      |
+| WA02 | WB01             | teamlead_2 | Holger  |  true       | true | false | false | true  | true,...true; |      |
+| WA03 | WB01             | group_1   | Schaden |  true       | true | false | true | false | true,...true; |      |
+
+If the access rights of a specific JAAS Subject for a specific workbasket are to be determined, all workbasket access items for this workbasket and each involved access id are retrieved. For example, if the subject contains accessIds 'teamlead_2' and 'group_1', and the requested workbasket is WB01, the following records are involved:
+
+
+| ID   | WB_ID | ACCESS_ID, | ACCESS_NAME | READ, | OPN, | APPD, | TRSFR, | DISTR, | C1, | ..,    | C12) |        |
+|------|------|-------------|------------------|--------|--------|-----|--------|--------|-------------------|---|-------|
+| WA02 | WB01 | teamlead_2 | Holger           | true  | true  | false    | false | false | true | true,...true; |               |
+| WA03 | WB01 | group_1    | Schaden          | true  | true  | false    | false | true  | false | true,...true; |
+
+In each column, the algorithm checks whether at least one 'true' is contained and if this is the case, the corresponding access right is granted. If all records in a specific column contain value 'false', the access right is denied. In the current case, access right 'APPEND' would be denied, all other rights are granted.
+
 ## securityEnabled-flag
 
 It is only possible to set the securityEnabled-flag in the TaskanaEngineConfiguration constructor to false if the corresponding ENFORCE_SECURITY flag from the CONFIGURATION table in the database is also set to false. Otherwise the TASKANA start-up process will be stopped.
@@ -50,42 +82,3 @@ If no value is set in the database then it is assumed that this is the first Tas
 TaskanaEngineConfiguration(DataSource dataSource, boolean useManagedTransactions,
         boolean securityEnabled, String propertiesFileName, String propertiesSeparator)
 ```
-
-Authorization is bound to Workbaskets via WorkbasketAccessList, a DB table that contains so-called workbasketAccessItems. Each workbasketAccessItem contains permissions for a specific workbasket, a specific access id and the actions 'READ', 'OPEN', 'APPEND', 'TRANSFER', 'DISTRIBUTE' and CUSTOM_1 through CUSTOM_12. See 
-
- for details of these permissions.
-
-## Example
-
-A sample extract of the table might look like the following:
-
-ID      WB_ID,ACCESS_ID,     ACCESS_NAME   , READ, OPN, APPD, TRSFR, DISTR, C1, .., C12)
-------+------+------------+-------------------+-----+-----+------+-------+------+-------
-WA01 WB01 'teamlead_1', ' Dominik'              , true,false,   true ,   true,     true,     true,...false
-WA02 WB01 'teamlead_2', ' Holger '               , true, true,   false,   false,    true,      true,...true;
-WA03 WB01 'group_1   ', ' Schaden'                , true, true,   false,   true,     false,     true,...true;
-
-
-If the access rights of a specific JAAS Subject for a specific workbasket are to be determined, all workbasket access items for this workbasket and each involved access id are retrieved. For example, if the subject contains accessIds 'teamlead_2' and 'group_1', and the requested workbasket is WB01, the following records are involved
-
-ID      WB_ID,ACCESS_ID,     ACCESS_NAME   , READ, OPN, APPD, TRSFR, DISTR, C1, .., C12)
-------+------+------------+-------------------+-----+-----+------+-------+------+-------
-WA02 WB01 'teamlead_2', ' Holger '               , true, true,   false,   false,    true,      true,...true;
-WA03 WB01 'group_1   ', ' Schaden'                , true, true,   false,   true,     false,     true,...true;
-
-In each column, the algorithm checks whether at least one 'true' is contained and if this is the case, the corresponding access right is granted. If all records in a specific column contain value 'false', the access right is denied. In the current case, access right 'APPEND' would be denied, all other rights are granted.
-
-This access logic complicates our queries since we show to a user only those objects that he is allowed to see.  As an example, the QueryMapper.queryTaskSummaries() method contains the following snippet:
-
-…. AND t.WORKBASKET_ID IN ( "
-+ "SELECT WID from (SELECT WORKBASKET_ID as WID, MAX(PERM_READ::int) as MAX_READ FROM WORKBASKET_ACCESS_LIST AS s where "
-+ "ACCESS_ID IN (<foreach item='item' collection='accessIdIn' separator=',' >#{item}</foreach>) "
-+ "group by WORKBASKET_ID ) AS f where max_read = 1 ) " …
-
-This snippet checks that only tasks are returned that are in a workBasket for which at least one access_id has the READ permission.
-
-## Authorization checks in action methods of services
-
-During action methods of the services, authorization is checked by method WorkbasketServiceImpl.checkAuthorization().
-This method has to be called by all action methods in services that are subject to access restrictions. The first parameter of this method is the id of the work basket that controls the access, the second (and following) parameter(s) specify the requested permission(s). The method retrieves the user and group ids that request this access by calling CurrentUserContext.getAccessIds(). Then it checks whether there exist WorkbasketAccessItem(s) that grant the requested permission(s) for the specified work basket to the current user. An instance of a CurrentUserContext class can be received from the TaskanaEngine. 
-As an example, method TaskServiceImpl.createTask checks that the current user has the right to insert the task into the specified work basket. This is done by calling  workbasketService.checkAuthorization(workbasketId,WorkbasketPermission.APPEND);
