@@ -31,7 +31,7 @@ Unpack the project in the folder of your choice and open it in InelliJ
 
 ![unpacked project](../static/Schritt2.png)
 
-Add ```@ComponentScan({"pro.taskana","com.example"})``` to the ExampleApplication
+Add ```@ComponentScan({"pro.taskana","com.example"})``` as an annotation above the class definition of the ExampleApplication
 
 
 ### Step 2: Add dependencies
@@ -78,7 +78,7 @@ Following text splits the needed dependecies by topic. All dependencies can be c
     <version>5.7.0</version>
 </dependency>
 ```
-** 5. web dependencies: **
+** 5.  tomcat application server dependency: **
 
 ```
 <dependency>
@@ -622,14 +622,29 @@ It should return a list of Tasks in the response body. Here is a screenshot of t
 ![example request](../static/request-security.png)
 ## Set up Kadai UI
 
-### Step 5: Add controllers
-Add a ```controller``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
+### Step 6: Add web dependencies
+
+Add following dependencies to your pom:
+```
+<dependency>
+    <groupId>pro.taskana</groupId>
+    <artifactId>taskana-web</artifactId>
+    <version>5.7.0</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+### Step 13: Add controllers
+Add a ```controllers``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
 - LoginController
 - ResourcesController
 - ViewController
 
-### Step 5a: Add ```LoginController.java```
-The LoginController will handle the login into taskana. It will need the ```template/login.html``` in the ```recources``` folder. You can download the templates folder here:
+#### Step 32a: Add ```LoginController.java```
+The LoginController will handle the login into taskana. It will need the ```templates/login.html``` in the ```recources``` folder. You can download the templates folder here:
 
 <div className={styles.buttons}>
 <Link
@@ -659,7 +674,7 @@ public class LoginController implements WebMvcConfigurer {
 }
 ```
 
-### Step 5b: Add ```ResourcesController.java```
+#### Step 13b: Add ```ResourcesController.java```
 The ResourcesController handles resources like images and additional customizations. You'll need  the ```static``` folder for it. You can download the ```static``` folder here:
 
 <div className={styles.buttons}>
@@ -669,18 +684,18 @@ The ResourcesController handles resources like images and additional customizati
     </Link>
 </div> <br/>
 
-Please copy the ```static``` folder into ```resources```. Additionaly, there is the ```controllers``` folder for further customizations. Please downlad it here:
+Please copy the ```static``` folder into ```resources```. Additionaly, there is the ```com.example.demo.controllers``` folder for further customizations. Please downlad it here:
 
 
 <div className={styles.buttons}>
 <Link
             className="button button--secondary button--lg">
-    <a target="_blank" href={ require("../static/controllers.zip").default } download>Download controllers </a>
+    <a target="_blank" href={ require("../static/com.zip").default } download>Download controllers </a>
     </Link>
 </div> 
 <br/>
 
-Unzip the ```controllers``` folder put it into ```recources```. Then, please copy following code into ```ResourcesController-java```:
+Unzip the ```com``` folder put it into ```recources```. Then, please copy following code into ```ResourcesController-java```:
 
 ```
 package com.example.demo.controller;
@@ -723,7 +738,7 @@ public class ResourcesController {
 }
 ```
 
-### Step 5c: Add ```ViewController.java```
+### Step 14c: Add ```ViewController.java```
 The ViewController manages the root view of taskana. Copy following code into ```ViewController.java```:
 
 ```
@@ -742,142 +757,8 @@ public class ViewController {
     }
 }
 ```
-!! TODO: Screenshot von nach Schritt 5 hinzufügen !!
 
-## Step 6: Add security
-
-Add a ```security``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: BootWebSecurityConfigurer (will be replaced), one mvc configuration for handling recources and messages of the application: WebMvcConfig, and one example configuration ExampleWebSecurityConfig. Please create the three java classes inside the ```security``` folder.
-
-### Step 6a: Add ```BootWebSecurityConfigurer.java```
-Copy following content into the ```BootWebSecurityConfigurer.java```:
-
-```
-package com.example.demo.security;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pro.taskana.common.rest.SpringSecurityToJaasFilter;
-
-/** Default basic configuration for taskana web example. */
-@EnableWebSecurity
-public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-    private final LdapAuthoritiesPopulator ldapAuthoritiesPopulator;
-    private final GrantedAuthoritiesMapper grantedAuthoritiesMapper;
-
-    private final String ldapServerUrl;
-    private final String ldapBaseDn;
-    private final String ldapGroupSearchBase;
-    private final String ldapUserDnPatterns;
-
-    private final boolean devMode;
-    private final boolean enableCsrf;
-
-    public BootWebSecurityConfigurer(
-            @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
-            @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
-            @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
-            @Value("${taskana.ldap.userDnPatterns:uid={0},cn=users}") String ldapUserDnPatterns,
-            @Value("${enableCsrf:false}") boolean enableCsrf,
-            LdapAuthoritiesPopulator ldapAuthoritiesPopulator,
-            GrantedAuthoritiesMapper grantedAuthoritiesMapper,
-            @Value("${devMode:false}") boolean devMode) {
-        this.enableCsrf = enableCsrf;
-        this.ldapAuthoritiesPopulator = ldapAuthoritiesPopulator;
-        this.grantedAuthoritiesMapper = grantedAuthoritiesMapper;
-        this.ldapServerUrl = ldapServerUrl;
-        this.ldapBaseDn = ldapBaseDn;
-        this.ldapGroupSearchBase = ldapGroupSearchBase;
-        this.ldapUserDnPatterns = ldapUserDnPatterns;
-        this.devMode = devMode;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.ldapAuthentication()
-                .userDnPatterns(ldapUserDnPatterns)
-                .groupSearchBase(ldapGroupSearchBase)
-                .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
-                .authoritiesMapper(grantedAuthoritiesMapper)
-                .contextSource()
-                .url(ldapServerUrl + "/" + ldapBaseDn)
-                .and()
-                .passwordCompare()
-                .passwordAttribute("userPassword");
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        HttpSecurity httpSecurity =
-                http.authorizeRequests()
-                        .antMatchers("/css/**", "/img/**")
-                        .permitAll()
-                        .and()
-                        .authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/docs/**")
-                        .permitAll()
-                        .and()
-                        .addFilter(jaasApiIntegrationFilter())
-                        .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
-
-        if (enableCsrf) {
-            CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-            csrfTokenRepository.setCookiePath("/");
-            httpSecurity.csrf().csrfTokenRepository(csrfTokenRepository);
-        } else {
-            httpSecurity.csrf().disable().httpBasic();
-        }
-
-        if (devMode) {
-            http.headers()
-                    .frameOptions()
-                    .sameOrigin()
-                    .and()
-                    .authorizeRequests()
-                    .antMatchers("/h2-console/**")
-                    .permitAll();
-        } else {
-            addLoginPageConfiguration(http);
-        }
-    }
-
-    protected void addLoginPageConfiguration(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest()
-                .fullyAuthenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .defaultSuccessUrl("/")
-                .permitAll()
-                .and()
-                .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .deleteCookies("JSESSIONID")
-                .permitAll();
-    }
-
-    protected JaasApiIntegrationFilter jaasApiIntegrationFilter() {
-        JaasApiIntegrationFilter filter = new JaasApiIntegrationFilter();
-        filter.setCreateEmptySubject(true);
-        return filter;
-    }
-}
-```
-### Step 6b: Add ```WebMvcConfig.java```
+### Step 15: Add ```WebMvcConfig.java```
 
 Then copy following content into ```WebMvcConfig.java```:
 
@@ -946,126 +827,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 
 ```
-
-### Step 6c: Add ```ExampleWebSecurityConfig.java```
-
-Then add following ```ExampleWebSecuriryConfig.java```:
-
-```
-package com.example.demo.security;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
-import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
-import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
-import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-@Configuration
-public class ExampleWebSecurityConfig {
-
-    private final String ldapServerUrl;
-    private final String ldapBaseDn;
-    private final String ldapGroupSearchBase;
-    private final String ldapGroupSearchFilter;
-
-    @Autowired
-    public ExampleWebSecurityConfig(
-            @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
-            @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
-            @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
-            @Value("${taskana.ldap.groupSearchFilter:uniqueMember={0}}") String ldapGroupSearchFilter) {
-        this.ldapServerUrl = ldapServerUrl;
-        this.ldapBaseDn = ldapBaseDn;
-        this.ldapGroupSearchBase = ldapGroupSearchBase;
-        this.ldapGroupSearchFilter = ldapGroupSearchFilter;
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new CorsWebMvcConfigurer();
-    }
-
-    @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(0);
-        return bean;
-    }
-
-    @Bean
-    public LdapAuthoritiesPopulator authoritiesPopulator(
-            DefaultSpringSecurityContextSource contextSource) {
-        Function<Map<String, List<String>>, GrantedAuthority> authorityMapper =
-                recordVar -> new SimpleGrantedAuthority(recordVar.get("spring.security.ldap.dn").get(0));
-
-        DefaultLdapAuthoritiesPopulator populator =
-                new DefaultLdapAuthoritiesPopulator(contextSource, ldapGroupSearchBase);
-        populator.setGroupSearchFilter(ldapGroupSearchFilter);
-        populator.setSearchSubtree(true);
-        populator.setRolePrefix("");
-        populator.setAuthorityMapper(authorityMapper);
-        return populator;
-    }
-
-    @Bean
-    public DefaultSpringSecurityContextSource defaultSpringSecurityContextSource() {
-        return new DefaultSpringSecurityContextSource(ldapServerUrl + "/" + ldapBaseDn);
-    }
-
-    @Bean
-    public GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        SimpleAuthorityMapper grantedAuthoritiesMapper = new SimpleAuthorityMapper();
-        grantedAuthoritiesMapper.setPrefix("");
-        return grantedAuthoritiesMapper;
-    }
-
-    private static class CorsWebMvcConfigurer implements WebMvcConfigurer {
-
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**").allowedOrigins("*");
-        }
-    }
-}
-
-```
-
-In order for security to work, we need to define ldap users. Please download the ```example-users.ldif``` file here:
-
-<div className={styles.buttons}>
-<Link
-            className="button button--secondary button--lg">
-    <a target="_blank" href={ require("../static/example-users.zip").default } download>Download controllers </a>
-    </Link>
-</div> 
-<br/>
-
-Put the file into the ```recources``` folder.
-
-!! TODO: Screenshot von nach Schritt 6 hinzufügen !!
 
 ## Step 7: Start and open the application
 
