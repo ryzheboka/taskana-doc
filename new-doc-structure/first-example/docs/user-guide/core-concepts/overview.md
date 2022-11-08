@@ -56,4 +56,9 @@ The Workbasket for a specific Task can be chosen differently. For example, there
 
 ### WorkbasketAccessItem
 
-A WorkbasketAccessItem specifies permissions for a given Workbasket and a specific user or group. You can read more about different permissions [here](./security-permissions.md#access-to-workbaskets). There is also an [example table](./security-permissions.md#example-workbasketaccesitem-table) containing WorkbasketAccessItems 
+A WorkbasketAccessItem specifies permissions for a given Workbasket and a specific user or group. You can read more about different permissions [here](./security-permissions.md#access-to-workbaskets). There is also an [example table](./security-permissions.md#example-workbasketaccesitem-table) containing WorkbasketAccessItems. 
+
+## Operations on entites
+
+- Create, Update, Delete
+- Query
