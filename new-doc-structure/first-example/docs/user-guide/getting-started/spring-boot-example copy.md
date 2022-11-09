@@ -32,9 +32,6 @@ Unpack the project in the folder of your choice and open it in InelliJ
 
 ![unpacked project](../static/Schritt2.png)
 
-Add ```@ComponentScan({"pro.taskana","com.example"})``` as annotation above the class definition of the ExampleApplication.
-
-
 ### Step 2: Add dependencies
 Following text splits the needed dependecies by topic. All dependencies can be copied as one block at the end of step 2. After adding the dependencies, please reload maven and run ```mvn clean compile```
 
@@ -252,8 +249,9 @@ taskana.historylogger.name=AUDIT
 ```
 
 ### Step 4: Add rest configuration
+First, Add ```@ComponentScan({"pro.taskana","com.example"})``` as annotation above the class definition of the ExampleApplication. This will allow the apllication to find needed components.
 
-Create a java class with the name ```ExampleRestConfiguration``` in the com.example.demo package. This class defines the Beans and their dependencies. Your project structure should look like this:
+Then, create a java class with the name ```ExampleRestConfiguration``` in the com.example.demo package. This class defines the Beans and their dependencies. Your project structure should look like this:
 
 ![basic project](../static/rest-api-project.png)
 
