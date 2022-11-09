@@ -16,8 +16,9 @@ In order to set up the example, please install:
 - an IDE of your choice (preferably IntelliJ)
 - Java 11
 - maven
+- optional: [postman](https://www.postman.com/) (makes REST API requests easier)
 
-Note: Please name your folder and files exactly like in the example!
+Note: Please name your packages, folders and files exactly like in the example!
 
 ## Set up Kadai REST-API
 
@@ -126,9 +127,9 @@ Following text splits the needed dependecies by topic. All dependencies can be c
 
 ### Step 3: Add properties configuration
 
-#### Step 3a: Fill out ```application.properties```
+#### Step 3a: Fill out application.properties
 
-The example already has the configuration file ```application.properties```. It's a standard configuration file used by spring. You can read more about spring configuration in the [spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html) You need to add following content into that file:
+The example already has the configuration file ```application.properties``` in the ressources folder. It's a standard configuration file used by spring. You can read more about spring configuration in the [spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html) You need to add following content into that file:
 
 ```
 logging.level.pro.taskana=INFO
@@ -219,7 +220,7 @@ spring.ldap.embedded.validation.enabled=false
 
 ```
 
-#### Step 3b: Add ```taskana.properties```
+#### Step 3b: Add taskana.properties
 
 Create ```taskana.properties``` in the recources folder. This file contains taskana specific configuration, like custom holidays etc. You can look up more configuration options [here](../../category/taskana-properties/). Please  copy following content into ```taskana.properties```:
 
@@ -252,14 +253,14 @@ taskana.historylogger.name=AUDIT
 
 ### Step 4: Add rest configuration
 
-Add a ```config``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Your project structure should look like this:
+Create a java class with the name ```ExampleRestConfiguration``` in the com.example.demo package. This class defines the Beans and their dependencies. Your project structure should look like this:
 
 ![basic project](../static/rest-api-project.png)
 
 Copy following content into ```ExampleRestConfiguration.java```:
 
 ```
-package com.example.demo.config;
+package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -312,7 +313,7 @@ public class ExampleRestConfiguration {
 ```
 
 ### Step 5: Try out the REST-API
-You can now make following request:
+run ```mvn clean compile``` and then start the ExampleApplication in your IDE. You can now make following request:
 
 ```
 GET http://localhost:8080/taskana/api/v1/classifications
@@ -324,12 +325,13 @@ You should get a list of different Classifications in the body of the response. 
 
 You can also request Tasks using following command:
 ```
-GET http://localhost:8080/taskana/api/v1/classifications
+GET http://localhost:8080/taskana/api/v1/tasks
 ```
 However, you will can an empty list as response. No Tasks can be seen without authorization. Taskana checks for permissions each time you access a Workbasket or a Task. The permission check cannot be successfull, as there are no users yet. You need to configure security as described below in order to access Tasks. You can read more about security [here](../core-concepts/security-permissions.md)
 
 ## Set up Kadai Security
-Add a ```security``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: BootWebSecurityConfigurer (will be replaced), and one example configuration ExampleWebSecurityConfig.
+Our example application uses [ldap](https://ldap.com/learn-about-ldap/) for its authorization.
+First, add a ```security``` package into the ```com.example.demo``` package (in src/main/java/com/example/demo). The package will consist of one configurer class: BootWebSecurityConfigurer (will be replaced), and one example configuration ExampleWebSecurityConfig. The classes will be created in the next steps.
 
 ### Step 6: Add security dependencies and change configuration
 
@@ -355,7 +357,7 @@ Add following dependencies to your pom:
 
 Then, set the ```devMode`` property in ``application.properties`` to false. This enables authorization checks.
 
-### Step 7: Add ```BootWebSecurityConfigurer.java```
+### Step 7: Add BootWebSecurityConfigurer.java
 Create ```BootWebSecurityConfigurer.java``` in the security folder and copy following content into it:
 
 ```
@@ -485,9 +487,9 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 }
 ```
 
-### Step 8: Add ```ExampleWebSecurityConfig.java```
+### Step 8: Add ExampleWebSecurityConfig.java
 
-Create ```ExampleWebSecurityConfig.java``` in the security folder and copy following content there:
+ExampleWebSecurityConfig specifies beans that are used for authorization by spring. Create ```ExampleWebSecurityConfig.java``` in the security package and copy following content there:
 
 ```
 package com.example.demo.security;
@@ -590,7 +592,7 @@ public class ExampleWebSecurityConfig {
 }
 
 ```
-### Step 10: Add users
+### Step 9: Add users
 
 In order for security to work, we need to define ldap users. Please download the ```example-users.ldif``` file here:
 
@@ -602,18 +604,18 @@ In order for security to work, we need to define ldap users. Please download the
 </div> 
 <br/>
 
-Put the file into the ```recources``` folder.
+Please unzip the ```example-users``` file and put it into the ```recources``` folder.
 
 Your project structure should now look like this:
 
 ![project structure](../static/project-structure-security.png)
 
-### Step 11: Try out the REST-API
+### Step 10: Try out the REST-API
 
-Now, you can authorize yourself using basicAuth. In [postman](https://www.postman.com/), so to the "Authorization" tab. There, select basicAuth and type "admin" as user and "admin" as password. Then, you can make the following request:
+First, restart the ExampleApplication. Now, you can authorize yourself using basicAuth. In [postman](https://www.postman.com/), so to the "Authorization" tab. There, select basicAuth and type "admin" as user and "admin" as password. Then, you can make the following request:
 
 ```
-GET http://localhost:8080/taskana/api/v1/classifications
+GET http://localhost:8080/taskana/api/v1/tasks
 ```
 
 It should return a list of Tasks in the response body. Here is a screenshot of the request and the response in [postman](https://www.postman.com/):
@@ -621,7 +623,7 @@ It should return a list of Tasks in the response body. Here is a screenshot of t
 ![example request](../static/request-security.png)
 ## Set up Kadai UI
 
-### Step 6: Add web dependencies
+### Step 11: Add web dependencies
 
 Add following dependencies to your pom:
 ```
@@ -636,13 +638,15 @@ Add following dependencies to your pom:
 </dependency>
 ```
 
-### Step 13: Add controllers
+### Step 12: Add controllers
 Add a ```controllers``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the controllers for different paths. Our application needs following three controllers:
 - LoginController
 - ResourcesController
 - ViewController
 
-#### Step 32a: Add ```LoginController.java```
+These will be added in the steps 12a, 12b and 12c.
+
+#### Step 12a: Add ```LoginController.java```
 The LoginController will handle the login into taskana. It will need the ```templates/login.html``` in the ```recources``` folder. You can download the templates folder here:
 
 <div className={styles.buttons}>
@@ -655,7 +659,7 @@ The LoginController will handle the login into taskana. It will need the ```temp
 Please unzip the ```templates``` folder and put it into the ```resources``` folder. Then, copy following code into ```LoginController.java```:
 
 ```
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Controller;
@@ -673,7 +677,7 @@ public class LoginController implements WebMvcConfigurer {
 }
 ```
 
-#### Step 13b: Add ```ResourcesController.java```
+#### Step 12b: Add ResourcesController.java
 The ResourcesController handles resources like images and additional customizations. You'll need  the ```static``` folder for it. You can download the ```static``` folder here:
 
 <div className={styles.buttons}>
@@ -683,7 +687,7 @@ The ResourcesController handles resources like images and additional customizati
     </Link>
 </div> <br/>
 
-Please copy the ```static``` folder into ```resources```. Additionaly, there is the ```com.example.demo.controllers``` folder for further customizations. Please downlad it here:
+Please unzip the ```static``` folder and copy it into ```resources```. Additionaly, there is the ```com.example.demo.controllers``` folder for further customizations. Please downlad it here:
 
 
 <div className={styles.buttons}>
@@ -694,10 +698,10 @@ Please copy the ```static``` folder into ```resources```. Additionaly, there is 
 </div> 
 <br/>
 
-Unzip the ```com``` folder put it into ```recources```. Then, please copy following code into ```ResourcesController-java```:
+Unzip the ```com``` folder and put it into ```recources```. Then, please copy following code into ```ResourcesController.java```:
 
 ```
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -737,11 +741,11 @@ public class ResourcesController {
 }
 ```
 
-### Step 14c: Add ```ViewController.java```
+#### Step 12c: Add ViewController.java
 The ViewController manages the root view of taskana. Copy following code into ```ViewController.java```:
 
 ```
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -757,12 +761,12 @@ public class ViewController {
 }
 ```
 
-### Step 15: Add ```WebMvcConfig.java```
+### Step 13: Add WebMvcConfig.java
 
 Create ```WebMvcConfig.java``` in the com.example.demo package. It handles recources and messages of the application. Copy following content into ```WebMvcConfig.java```:
 
 ```
-package com.example.demo.security;
+package com.example.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -830,7 +834,7 @@ Your project structure should look like this:
 
 ![project structure](../static/project-structure-end.png)
 
-### Step 16: Start and open the application
+### Step 14: Start and open the application
 
 Run ```mvn clean compile``` Go to the Application in the IDE and start it. Then type ```localhost:8080/taskana``` into your browser. You should see the login screen:
 
