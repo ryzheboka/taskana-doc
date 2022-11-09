@@ -826,8 +826,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 
 ```
+Your project structure should look like this:
 
-## Step 7: Start and open the application
+![project structure](../static/project-structure-end.png)
+
+### Step 16: Start and open the application
 
 Run ```mvn clean compile``` Go to the Application in the IDE and start it. Then type ```localhost:8080/taskana``` into your browser. You should see the login screen:
 
