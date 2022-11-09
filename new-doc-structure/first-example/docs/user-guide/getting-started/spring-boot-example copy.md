@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Example Spring Boot
 
-In the first four steps, we will set up Kadai without security. Then, we will show how to make requests to out REST-API using Postman. This guide sets up security and UI in its last steps.
+In the first 4 steps, we will set up Kadai REST API without security. Then, we will show how to use the resulting REST API with [postman](https://www.postman.com/). This guide then sets up security. In the end of the guide, we will add the UI.
 
 import styles from '../../../src/components/HomepageFeatures/styles.module.css';
 import Link from '@docusaurus/Link';
@@ -31,11 +31,11 @@ Unpack the project in the folder of your choice and open it in InelliJ
 
 ![unpacked project](../static/Schritt2.png)
 
-Add ```@ComponentScan({"pro.taskana","com.example"})``` as an annotation above the class definition of the ExampleApplication
+Add ```@ComponentScan({"pro.taskana","com.example"})``` as annotation above the class definition of the ExampleApplication.
 
 
 ### Step 2: Add dependencies
-Following text splits the needed dependecies by topic. All dependencies can be copied as one block at the end of step 2. After adding the dependencies, please run ```mvn clean install```
+Following text splits the needed dependecies by topic. All dependencies can be copied as one block at the end of step 2. After adding the dependencies, please reload maven and run ```mvn clean compile```
 
 ** 1. spring core depenpendency: **
 
@@ -154,7 +154,7 @@ taskana.schemaName=TASKANA
 devMode=true
 
 # This property enables the support of XSRF tokens. This will not work together with devMode.
-enableCsrf=true
+enableCsrf=false
 
 ####### property that control if the database is cleaned and sample data is generated
 generateSampleData=true
@@ -252,7 +252,6 @@ taskana.historylogger.name=AUDIT
 
 ### Step 4: Add rest configuration
 
-!! TODO: Screenshot von vor Schritt 4 hinzufügen !!
 Add a ```config``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain a file with the REST configuration of the project. Create a java class with the name ```ExampleRestConfiguration``` there. This class defines the Beans and their dependencies. Your project structure should look like this:
 
 ![basic project](../static/rest-api-project.png)
@@ -327,10 +326,10 @@ You can also request Tasks using following command:
 ```
 GET http://localhost:8080/taskana/api/v1/classifications
 ```
-However, you will can an empty list as response. No Tasks can be seen without authorization. Taskana checks for permissions each toime you access a Workbasket or a Task. The permission check cannot be successfull, as there are no users yet. You need to configure security as described below in order to access Tasks.
+However, you will can an empty list as response. No Tasks can be seen without authorization. Taskana checks for permissions each time you access a Workbasket or a Task. The permission check cannot be successfull, as there are no users yet. You need to configure security as described below in order to access Tasks. You can read more about security [here](../core-concepts/security-permissions.md)
 
 ## Set up Kadai Security
-Add a ```security``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: BootWebSecurityConfigurer (will be replaced), one mvc configuration for handling recources and messages of the application: WebMvcConfig, and one example configuration ExampleWebSecurityConfig.
+Add a ```security``` folder into the ```com.example.demo``` package (in src/main/java/com/example/demo). This folder will contain the ldap-security. The ldap-security consists of one configurer class: BootWebSecurityConfigurer (will be replaced), and one example configuration ExampleWebSecurityConfig.
 
 ### Step 6: Add security dependencies and change configuration
 
@@ -611,7 +610,7 @@ Your project structure should now look like this:
 
 ### Step 11: Try out the REST-API
 
-Now, you can authorize yourself using basicAuth. In [postman](https://www.postman.com/), so to the "Authorization" tab. There, select basicAuth and type admin as user and password. Then, you can make the following request:
+Now, you can authorize yourself using basicAuth. In [postman](https://www.postman.com/), so to the "Authorization" tab. There, select basicAuth and type "admin" as user and "admin" as password. Then, you can make the following request:
 
 ```
 GET http://localhost:8080/taskana/api/v1/classifications
@@ -760,7 +759,7 @@ public class ViewController {
 
 ### Step 15: Add ```WebMvcConfig.java```
 
-Then copy following content into ```WebMvcConfig.java```:
+Create ```WebMvcConfig.java``` in the com.example.demo package. It handles recources and messages of the application. Copy following content into ```WebMvcConfig.java```:
 
 ```
 package com.example.demo.security;
