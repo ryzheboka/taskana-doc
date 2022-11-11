@@ -4,23 +4,28 @@ sidebar_position: 1
 
 # General Configuration
 
-Taskana is configured via a configuration file taskana.properties. This configuration file contains all parameters to control the behaviour of the taskana library.
+The configuration of the Taskana Java library is in the file ```taskana.properties``` in the resources folder of the client. 
 
-## General Parameter
+> Note: You can change the name of the properties file when calling TaskanaEngineConfiguration via constructor. To change it, specify the *propertiesFileName* parameter. 
+> You can change the default separator in lists in the properties file as well. Use the *propertiesSeparator* parameter for it. If you specify a propertiesSeparator, no list item in the properties file can contain any character from the propertiesSeparator.
+
+
+Following parameters can be adjusted in ```taskana.properties```:
+
+## Basic Parameters
 
 | Parameter                                      | Description                                                                                                                                                                                                                                                                                                                                                             | Sample Value                         |
 |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| taskana.domains                                | The comma separated list of administrative domains                                                                                                                                                                                                                                                                                                                      | DOMAIN_A, DOMAIN_B                   |
-| taskana.domains.default                        | The default domain to create new tasks in if no other domain is specified                                                                                                                                                                                                                                                                                               | DOMAIN_A                             |
-| taskana.classification.types                   | The comma separated list of classification types                                                                                                                                                                                                                                                                                                                        | TASK, DOCUMENT                       |
-| taskana.classification.categories              | The comma separated list of classification categories                                                                                                                                                                                                                                                                                                                   | EXTERNAL, MANUAL, AUTOMATIC, PROCESS |
+| taskana.domains                                | A list of  domains, separated by comma                                                                                                                                                                                                                                                                                                                      | DOMAIN_C, DOMAIN_TEST                 |
+| taskana.classification.types                   | The comma separated list of classification types (case insensitive)                                                                                                                                                                                                                                                                                                                        | TASK, document                    |
+| taskana.classification.categories.<type\> (for example taskana.classification.categories.document)             | The comma separated list of classification categories for each type                                                                                                                                                                                                                                                                                                                   | EXTERNAL, manual, autoMAtic, Process |
 | taskana.user.minimalPermissionsToAssignDomains | The  list of minimal Workbasket permissions of a user needed to belong to  the domain. Needed to determine the domains of a user, which are  aggregated in the getUser() method of the UserService. Values have to match the Enum values of WorkbasketPermission. If this property is not defined the dynamic computation of the domain attribute will not be executed. | READ, OPEN                           |
+| taskana.addAdditionalUserInfo                  | Add attributes of the user from the USER_INFO table, for example during a Task request or Task Query, the default value is false                                                                                                                                                                                                                                                           | true
+| taskana.validation.allowTimestampWithServiceLevelMismatch | allows user to create Tasks with date-attributes independant of the serviceLevel                                                                                                                                                                                                                                                                              | true
 
-## Security Configuration
+## Roles Mapping
 
-The properties file contains the specification of the lists of access ids (i.e. users or groups) that belong to the roles user, business_admin or admin.
-
-The keywords to specify these roles are as follows:
+For each role, a list of access ids that refer to users or groups can be specified using following keywords:
 
 | Role           | Keyword                     |
 |----------------|-----------------------------|
@@ -28,63 +33,31 @@ The keywords to specify these roles are as follows:
 | business_admin | taskana.roles.businessadmin |
 | task_admin     | taskana.roles.taskadmin     |
 | admin          | taskana.roles.admin         |
+| monitor        | taskana.roles.monitor       |
+| task_router    | taskana.roles.taskrouter    |
 
-Each entry may contain a list of access ids that are separated by the '|' character. Whitespace at the begin or end of each access id is ignored. This is, as sample config may look like
+The access ids are separated by |. The assignment of roles to users or groups can look like this:
 ```
-taskana.roles.user = group1 | group2
-taskana.roles.admin= Holger  |  admingroup1| admingroup2|admingroup3 | uid=john.doe,ou=People,dc=example,dc=com
-taskana.roles.businessadmin=busadmgrpa|busadmgrpb | busadmgrpc
-taskana.roles.taskadmin=peter | taskadmin
+askana.roles.user=cn=ksc-users,cn=groups,OU=Test,O=TASKANA | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2
+taskana.roles.admin=admin | uid=admin,cn=users,OU=Test,O=TASKANA
+taskana.roles.businessadmin=businessadmin | cn=business-admins,cn=groups,OU=Test,O=TASKANA
+taskana.roles.monitor=monitor | cn=monitor-users,cn=groups,OU=Test,O=TASKANA
+taskana.roles.taskadmin=taskadmin
 ```
-
-By default, this configuration file has the name 'taskana.properties' and is searched in the classpath. In addition, the separator '|' is used. Both defaults can be changed by specifying the property filename and separator explicitly when creating the TaskanaEngineConfiguration via constructor.
-
-```  TaskanaEngineConfiguration(DataSource dataSource, boolean useManagedTransactions,
-        boolean securityEnabled, String propertiesFileName, String propertiesSeparator)
-```
-
-If in this call, either propertiesFileName or propertiesSeparator is null, Taskana uses the default value.
-
-If for example, you want Taskana to use the 'application.properties' file from the classpath, you should specify "/application.properties" as propertiesFileName.
-
-You may also specify a fully qualified filename that addresses a file directly. In this case, that file is not searched on the classpath but loaded by its name.
-
-Please note, that if you specify a non-default propertiesSeparator, the access ids must not contain any character that is contained in this propertiesSeparator.
-
-
-
-If Taskana doesn't find a configuration file, it operates with empty roles.
 
 ## Holidays
 
-By adding the property taskana.german.holidays.enabled to the taskana property file the german holidays can be activated. 
-Additionnally the holiday corpus christi can be enabled using the following property: taskana.german.holidays.corpus-christi.enabled
+Holidays can customized for the correct computation of duration in workdays. 
 
-## Holifdays Customization
+- ``taskana.german.holidays.enabled=true``: Standard German holidays will be enabled.
+- ``taskana.german.holidays.corpus-christi.enabled``: The holiday corpus christi will be activated.  
+- ``taskana.custom.holidays``: Specific holidays dates will be added. Specify each holiday in the dd.MM format. You can separate holidays by |. 
+        Example custom holidays: ```taskana.custom.holidays=31.07|16.12```
+        
 
-By adding the property taskana.custom.holidays to the taskana property file custom holidays can be configured while the startup of taskana. The format of an Holiday is in the format of dd.MM where dd stand for day and MM stand for month. The single custom holidays have to be separated by either by the default separator | (pipe - like used with the roles above) like in the following example. Or the separator which is defined while instantiating TaskanaEngineConfiguration.
- 
-```
-taskana.custom.holidays=31.07|16.12
-```
+## History
 
-## History deletion upon task deletion
-
-By adding the property taskana.history.deletion.on.task.deletion.enabled to the taskana.properties file the history deletion upon task deletion can be activated. If activated all history events concerning the deleted task/s will also be deleted#
-
-
-
-## History audit logger
-
-By adding the property taskana.historylogger.name it is possible to configure the name of the logger which you want to use to write to your audit file. Furthermore you can configure the audit logger through a custom log4j.xml file.
-
-example:
-``` taskana.historylogger.name=AUDIT ```
-
-## Validation of timestamps with a service level mismatch
-
-The taskana.validation.allowTimestampWithServiceLevelMismatch allows the user to create tasks with timestamps that do not match i.e. exceed the service level of the classification. If the property is set to true, the planned and due timestamp of a Task can be set to points in time, which are further apart than the service level of the classification would normally allow.
-
- 
-## Additional User Info
-If you are using the USER_INFO table you can add the Full/Long name when retrieveing Tasks/TaskComments/TaskHistoryEvents with the property taskana.addAdditionalUserInfo
+- ``taskana.history.deletion.on.task.deletion.enabled``: After deletion of a Task, all history events related to that Task will also be deleted.
+- ``` taskana.historylogger.name```: The name of the logger that writes to the audit file
+        example:
+        ``` taskana.historylogger.name=AUDIT ```

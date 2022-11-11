@@ -1,6 +1,6 @@
 {
-  "label": "taskana.properties",
-  "position": 4,
+  "label": "Java lib properties",
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "Configuration using taskana.properties"
