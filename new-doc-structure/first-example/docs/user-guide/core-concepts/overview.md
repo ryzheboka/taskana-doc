@@ -66,4 +66,5 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 ## List of important features
 - Monitoring: ???
 - History: ???
-- ...
+- SPIs: ???
+- ... 

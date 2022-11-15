@@ -38,14 +38,24 @@ Java-API can be found in the "api" folders in the "lib" folder.
     - Used Exceptions and Enums 
 
 
-- ``pro.taskana.common.api``: 
+- ``pro.taskana.common.api`` provides following:
+    - TaskanaEngine interface that brings all services of Kadai together
+    - Other, non entity-related services
 
-- ``pro.taskana.monitor.api``: 
 
-- ``pro.taskana.user.api``: 
+- ``pro.taskana.monitor.api`` provides following: 
+    - Report models for aggregating data on an entity can be found in the reports folder
+    - Reports can be created using ReportBuilders from the report folder. They make filtering of entities included in a Report possible
+    - Methods to create ReportBuilder are in the MonitorService interface
+
+
+- ``pro.taskana.user.api`` provides following: 
+    - The User entity that consists of the User interface in the models folder
+    - Methods to create, update and delete a User in the UserService interface
+    - Used Exceptions 
 
 - ``pro.taskana.spi``: 
-
+    - contains all Service Provider Interfaces (SPIs) of Kadai. An SPI allows the client to change the behavior of Kadai by implementing the SPI. More about SPIs can be found here (link)
 
 ## Taskana Entities
 All Taskana Entities can be found in the Java API (link). For better readability, they are capitalized in the documentation. 
@@ -56,7 +66,14 @@ Taskana operates using Tasks, Classifications and Workbaskets. The entities are 
 
 
 ## Operations on Entities
-You can create, update and delete entities. These operations on entities can be found in the corresponding Services: TaskService, CLassificationService and WorkbasketService. You can also make queries with filtering and sorting by properties.  
+Kadai provides follwing operations on its entities:
+ - create
+ - update
+ - delete
+ - query: allows filtering and sorting entites  by properties
+
+Create, update and delete can be found in the corresponding Services: TaskService, CLassificationService and WorkbasketService. Queries and their filtering/sorting opetions can be found in TaskQuery, CLassificationQuery and WorkbasketQuery.
+
 
 ### How to create an Entity? 
 
@@ -69,25 +86,12 @@ You can create, update and delete entities. These operations on entities can be 
 You can find coresponding functions ```WorkbasketService.newWorkbasket```, ```ClassificationService.newClassification```  ```WorkbasketService.createWorkbasket``` and ```ClassificationService.createClassification``` in other Services. They can be used to create other entities.
 
 ### How to manipulate an Entity? 
+Some properties of an entity can be set via the **entitity interface** (e. g. the Task interface) in the Kadai [Java-API](java-api-usage.md). For example, the method ``  Task.setDescription(String description)`` can be used to set the description of a Task.  However, some properties of entities cannot be set this way. For example, a Workbasket has to be specified during the creation of a Task. You can change the Workbasket by transferring the Task using ``TaskService.transfer(String taskId, String destinationWorkbasketId)``. The state of a Task can only be modified by corresponding TaskService methods ``claim``, ``forceClaim``, ``cancelClaim`` etc. You can read more about the status changes here (link).
 
-#### Example Task
+### How to integrate the Java API of Kadai?
 
-Not all properties of a task can be set via the API. You must rather use the Action methods of TaskService to manipulate these properties.
-For example, a task is created via TaskService.newTask(). In this call, you have to specify in which workbasket the task is to be created. This can either be done by specifying the Id of the workbasket or key and domain of the workbasket (note: a workbasket key is a human readable key that identifies a workbasket inside a specific domain. WorkbasketKey is not unique by itself, but only in combination with the domain).
-Once a task object is created, its associated workbasket can only be changed by method TaskSerivce.transfer().
-In addition, once a task is created, it is in the state READY. The state of a task can only be modified by TaskService methods claim, forceClaim, cancelClaim, forceCancelClaim, completeTask, forceCompleteTask, and deleteTask.
-In addition, once an action method modfies a task, several timestamps on the task, like claimed, completed, modfied, etc. are changed.
-Corresponding considerations apply to Workbasket and Classification objects.
-How to use Taskana’s java API in an application?
+- Find out the DataSource for your Kadai database. You can read here (link) about setting it up
+- Pass the DataSource to the constructor of ``pro.taskana.configuration.TaskanaEngineConfiguration``.
+- Build a KadaiEngine using ``TaskanaEngineConfiguration.buildEngine``.
 
- 
-
-When you intend to use taskana in your application, you have to follow the following steps:
-
-    get a DataSource that addresses taskana's database.
-
-    Create a pro.taskana.configuration.TaskanaEngineConfiguration passing in that DataSource.
-
-    Call TaskanaEngineConfiguration.buildEngine to obtain a TaskanaEngine.
-
-    Use TaskanaEngine's method getClassificationService, getTaskService and getWorkbasketService in order to obtain the various service objects that are required to create, delete and manipulate tasks, workbaskets and classifications.
+You can use the corresponding Services by getting them with the methods ``TaskanaEngine.getClassificationService``, ``TaskanaEngine.getTaskService`` and ``TaskanaEngine.getWorkbasketService``.
