@@ -4,37 +4,39 @@ sidebar_position: 2
 
 # Configuration of TASKANA-jobs
 
-The Job Configuration can be done by changing values or adding entries to the configuration file "taskana.properties".
+Jobs are automated process that run in the background of the application. For example, the TaskCleanupJob deletes Tasks a certain time after they have been completed. You can read more about jobs here (Link). The behavior of jobs in Kadai can be customized in the configuration file "taskana.properties" with following parameters:
+
+## General Jobs Configuration 
 
 | Parameter                          | Description                                                     | Sample Value |
 |------------------------------------|-----------------------------------------------------------------|--------------|
-| taskana.jobs.taskupdate.maxRetries | The maximum number of automatic retries if the job fails        | 3            |
-| taskana.jobs.taskupdate.batchSize  | The maximum number of task to be processed in one job           | 50           |
-| taskana.jobs.history.batchSize     | The maximum number of history events to be processed in one job | 50           |
+| taskana.jobs.taskupdate.maxRetries | number of automatic retries after the job has failed        | 5            |
+| taskana.jobs.taskupdate.batchSize  | upper bound of how many tasks can be processed by one job           | 45           |
+| taskana.jobs.history.batchSize     | upper bound of how many history events can be processed by one job | 45           |
 
-## Cleanup Job Configuration
+## TaskCleanupJob and HistoryCleanupJob Configuration
 
 | Parameter                               | Description                                                                                                               | Sample Value         |
 |-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------|----------------------|
-| taskana.jobs.cleanup.runEvery           | Cycle time for the cleanup job to run (Duration in ISO 8601 format)                                                       | P1D                  |
-| taskana.jobs.cleanup.firstRunAt         | First start of the cleanup job. (DateTime n ISO 8601 format)                                                              | 2018-07-25T08:00:00Z |
-| taskana.jobs.cleanup.minimumAge         | The minimum time between the completion of the task and the deletion by the cleanup  (Duration in ISO 8601 format)        | P14D                 |
-| taskana.jobs.history.cleanup.runEvery   | Cycle time for the cleanup job to run (Duration in ISO 8601 format)                                                       | P5D                  |
-| taskana.jobs.history.cleanup.firstRunAt | First start of the cleanup job. (DateTime n ISO 8601 format)                                                              | 2018-07-25T08:00:00Z |
-| taskana.jobs.history.cleanup.minimumAge | The minimum time between the creation of the history event and the deletion by the cleanup  (Duration in ISO 8601 format) | P30D                 |
+| taskana.jobs.cleanup.runEvery           | period of time between the executions of the cleanup job on tasks (Duration in ISO 8601) format)                                                       | P2D                  |
+| taskana.jobs.cleanup.firstRunAt         | first time the cleanup job on tasks is run (DateTime n ISO 8601 format)                                                              | 2021-08-03T08:00:00Z |
+| taskana.jobs.cleanup.minimumAge         | the completed task can be deleted by the cleanup only after this period of time or later  (Duration in ISO 8601 format)        | P10D                 |
+| taskana.jobs.history.cleanup.runEvery   | period of time between the executions of the cleanup job on history events (Duration in ISO 8601 format)                                                       | P7D                  |
+| taskana.jobs.history.cleanup.firstRunAt | first time the cleanup job on history events is run (DateTime n ISO 8601 format)                                                              | 2021-08-03T08:00:00Z |
+| taskana.jobs.history.cleanup.minimumAge | the created history event can be deleted by the cleanup only after this period of time or later  (Duration in ISO 8601 format) | P60D                 |
 
-## Task priority update Job Configuration
+## TaskUpdatePriorityJob Configuration
 
 | Parameter                        | Description                                                           | Sample Value         |
 |----------------------------------|-----------------------------------------------------------------------|----------------------|
-| taskana.jobs.priority.bachSize   | The maximum number of tasks to be processed in one job                | 100                  |
-| taskana.jobs.priority.runEvery   | Cycle time for the cleanup job to run (Duration in ISO 8601 format)   | P1D                  |
-| taskana.jobs.priority.firstRunAt | First start of the job. (DateTime in ISO 8601 format)                 | 2018-07-25T08:00:00Z |
-| taskana.jobs.priority.active     | Priority will only be updated by this job, if it is flagged as active | false                |
+| taskana.jobs.priority.bachSize   | upper bound of how many tasks can be processed by one TaskUpdatePriorityJob                | 70                  |
+| taskana.jobs.priority.runEvery   | period of time between the executions of the TaskUpdatePriorityJob (Duration in ISO 8601 format)   | P2D                  |
+| taskana.jobs.priority.firstRunAt | first time the job is executed (DateTime in ISO 8601 format)                 | 2021-08-03T08:00:00Z |
+| taskana.jobs.priority.active     | the job will only be executed if the flagg is set to true | true                |
 
-## User Refresh Job Configuration
+## UserInfoRefreshJob Configuration
 
 | Parameter                    | Description                                                         | Sample Value         |
 |------------------------------|---------------------------------------------------------------------|----------------------|
-| taskana.jobs.user.runEvery   | Cycle time for the refresh job to run (Duration in ISO 8601 format) | P1D                  |
-| taskana.jobs.user.firstRunAt | First start of the job. (DateTime in ISO 8601 format)               | 2018-07-25T22:00:00Z |
+| taskana.jobs.user.runEvery   | period of time between the executions of the UserInfoRefreshJob (Duration in ISO 8601 format) | P2D                  |
+| taskana.jobs.user.firstRunAt | first time the job is executed (DateTime in ISO 8601 format)               | 2021-08-03T22:00:00Z |
