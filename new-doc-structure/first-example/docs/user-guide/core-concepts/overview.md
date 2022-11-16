@@ -11,14 +11,14 @@ import architecture from '!!raw-loader!./architecture.drawio';
 
 Taskana is a Task Management System. This includes defining and creating the tasks, distributing them to the corresponding users and keeping track of the task execution. Taskana also offers options for detailed description of each task using attachments, object references, and many other properties. In the following article, the basic entities of Taskana and related concepts are explained. 
 
-In order to prvide its functionality, TASKANA consists of different components. They are shown in the diagram below. You can read more about the Java Library and its usage [here](../java-api-usage). 
+In order to prvide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](../java-api-usage). 
 
 <Drawio content={architecture} />
 
 ## Taskana Entities
 All Taskana Entities can be found in the Java API. You can read more about our Java API [here](../java-api-usage.md). For better readability, entites are capitalized in the documentation. 
 
-Taskana operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database] (../configuration/database-configuration.md). You can see the detailed data model here (link).
+Taskana operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database] (../configuration/database-configuration.md). You can see the detailed data model [here](../reference/create-a-page.md).
 
 <Drawio content={entities} />
 
@@ -33,7 +33,7 @@ The Task is assigned to exactly one Workbasket. A Workbasket describes the group
 
 !! Diagramm fürs Verhältnis zwischen Tasks, Workbaskets und Classifications !! 
 
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm describes the states of a Task.  
+In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm describes the states of a Task. The transitions between the states are defined [here](../reference/spring-boot-example%20copy.md)  
 
 <Drawio content={simpleGraph} />
 
