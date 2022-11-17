@@ -59,10 +59,11 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: 'Documentation',
+        title: 'Kadai',
+        hideOnScroll: true,
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'img/logo.ico',
         },
         items: [
           {
