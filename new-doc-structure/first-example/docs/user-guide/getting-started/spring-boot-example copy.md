@@ -20,7 +20,7 @@ In order to set up the example, please install:
 
 Note: Please name your packages, folders and files exactly like in the example!
 
-## Set up Kadai REST-API
+## Set up Kadai REST-API without security
 
 ### Step 1: Initialize an empty project
 
@@ -306,6 +306,11 @@ public class ExampleRestConfiguration {
             throws SQLException {
         return taskanaEngineConfiguration.buildTaskanaEngine();
     }
+
+    @Bean
+    public TaskanaEngineConfiguration taskanaEngineConfiguration(DataSource dataSource) {
+        return new SpringTaskanaEngineConfiguration(dataSource, true, false, "TASKANA");
+    }
 }
 
 ```
@@ -325,13 +330,12 @@ You can also request Tasks using following command:
 ```
 GET http://localhost:8080/taskana/api/v1/tasks
 ```
-However, you will can an empty list as response. No Tasks can be seen without authorization. Taskana checks for permissions each time you access a Workbasket or a Task. The permission check cannot be successfull, as there are no users yet. You need to configure security as described below in order to access Tasks. You can read more about security [here](../core-concepts/security-permissions.md)
 
 ## Set up Kadai Security
 Our example application uses [ldap](https://ldap.com/learn-about-ldap/) for its authorization.
 First, add a ```security``` package into the ```com.example.demo``` package (in src/main/java/com/example/demo). The package will consist of one configurer class: BootWebSecurityConfigurer (will be replaced), and one example configuration ExampleWebSecurityConfig. The classes will be created in the next steps.
 
-### Step 6: Add security dependencies and change configuration
+### Step 6: Add security dependencies and stop disabling security
 
 Add following dependencies to your pom:
 ```
@@ -354,6 +358,16 @@ Add following dependencies to your pom:
 ```
 
 Then, set the ```devMode`` property in ``application.properties`` to false. This enables authorization checks.
+You also need to remove following lines from the ``ExampleRestConfiguration.java``:
+
+```
+    @Bean
+    public TaskanaEngineConfiguration taskanaEngineConfiguration(DataSource dataSource) {
+        return new SpringTaskanaEngineConfiguration(dataSource, true, false, "TASKANA");
+    }
+```
+
+This way, you don't disable security manually.
 
 ### Step 7: Add BootWebSecurityConfigurer.java
 Create ```BootWebSecurityConfigurer.java``` in the security folder and copy following content into it:
