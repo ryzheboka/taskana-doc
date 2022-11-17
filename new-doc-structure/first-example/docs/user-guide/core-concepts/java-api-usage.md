@@ -8,12 +8,22 @@ import simpleGraph from '!!raw-loader!./lib-structure.drawio';
 import entities from '!!raw-loader!./entities.drawio';
 import architecture from '!!raw-loader!./architecture.drawio';
 
-Java-API can be found in the "api" folders in the "lib" folder.
+The following article describes the practical implementation of main concepts of Kadai, explained in the [Overview](./overview.md). Please be familiar with the contents of the Overview in order to understand this article.
 
+## Where to find entities and operations on them
+The Overview describes [entities](./overview.md#taskana-entities) and [operations on them](./overview.md#operations-on-entities). 
+
+The Task, Classification and Workbasket as well as related entities can be found in pro.taskana.task.api.models, pro.taskana.classification.api.models, pro.taskana.workbasket.api.models. Besides Tasks, Classifications and Workbaskets, Kadai also operates using summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. They represent the same concepts as Tasks, Classifications and Workbaskets. Each summary object refers to a full entity, but only contains the most important information. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information. The summary objects can be found in the same package as the complete entity interfaces.
+
+Creating, Deleting and Updating can be done using TaskService, ClassificationService and WorkbasketService. The Services can be found in pro.taskana.task.api, pro.taskana.classification.api, pro.taskana.workbasket.api. The corresponding queries can be also found in these packages. They are called  TaskQuery, ClassificationQuery and WorkbasketQuery.
+
+## The core of the Java-API 
+
+Below is the diagramm that shows different packages that make up the Java-API of Kadai. They can be found in the ``lib/taskana-core`` folder
 <Drawio content={simpleGraph} />
 <br />
 
-- ``pro.taskana.classification.api`` provides following:
+- ``pro.taskana.classification.api``:
     * The Classification entity that consists of the Classification and ClassificationSummary interfaces in the models folder
     * Methods to create, update and delete a Classification in the ClassificationService interface
     * Methods to query the Classification with filtering and sorting in the ClassificationQuery interface
@@ -21,7 +31,7 @@ Java-API can be found in the "api" folders in the "lib" folder.
 
 
 
-- ``pro.taskana.task.api `` provides following:
+- ``pro.taskana.task.api ``:
     - The Task entity that consists of the Task and TaskSummary interfaces in the models folder
     - The Attachment entity that consists of the Attachment and AttachmentSummary interfaces in the models folder
     - The ObjectReference entity that consists of the ObjectReference interface in the models folder
@@ -30,7 +40,7 @@ Java-API can be found in the "api" folders in the "lib" folder.
     - Used Exceptions and Enums
 
 
-- ``pro.taskana.workbasket.api`` provides following:
+- ``pro.taskana.workbasket.api``:
     - The Workbasket entity that consists of the Workbasket and WorkbasketSummary interfaces in the models folder
     - The WorkbasketAccessItem entity that consists of the WorkbasketAccessItem interface
     - Methods to create, update and delete a Workbasket in the WorkbasketService interface
@@ -38,18 +48,18 @@ Java-API can be found in the "api" folders in the "lib" folder.
     - Used Exceptions and Enums 
 
 
-- ``pro.taskana.common.api`` provides following:
+- ``pro.taskana.common.api``:
     - TaskanaEngine interface that brings all services of Kadai together
-    - Other, non entity-related services
+    - Other, non-entity-related services
 
 
-- ``pro.taskana.monitor.api`` provides following: 
+- ``pro.taskana.monitor.api``: 
     - Report models for aggregating data on an entity can be found in the reports folder
     - Reports can be created using ReportBuilders from the report folder. They make filtering of entities included in a Report possible
     - Methods to create ReportBuilder are in the MonitorService interface
 
 
-- ``pro.taskana.user.api`` provides following: 
+- ``pro.taskana.user.api``: 
     - The User entity that consists of the User interface in the models folder
     - Methods to create, update and delete a User in the UserService interface
     - Used Exceptions 
@@ -57,38 +67,20 @@ Java-API can be found in the "api" folders in the "lib" folder.
 - ``pro.taskana.spi``: 
     - contains all Service Provider Interfaces (SPIs) of Kadai. An SPI allows the client to change the behavior of Kadai by implementing the SPI. More about SPIs can be found here (link)
 
-## Taskana Entities
-All Taskana Entities can be found in the Java API (link). For better readability, they are capitalized in the documentation. 
-
-Taskana operates using Tasks, Classifications and Workbaskets. The entities are stored in the configured database (link). 
-
- Besides Tasks, Classifications and Workbaskets, there are also interfaces for summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important imformation. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information.
-
-
-## Operations on Entities
-Kadai provides follwing operations on its entities:
- - create
- - update
- - delete
- - query: allows filtering and sorting entites  by properties
-
-Create, update and delete can be found in the corresponding Services: TaskService, CLassificationService and WorkbasketService. Queries and their filtering/sorting opetions can be found in TaskQuery, CLassificationQuery and WorkbasketQuery.
-
-
-### How to create an Entity? 
+### How to create an Entity using the Java-API? 
 
 #### Example Task 
 1. First create a Task object that is not in the database yet with method 
     ```TaskService.newTask```
 2. Then set some properties of that Task via its setter methods.
-3. Finally persist this Task to the database via ```TaskSerivce.createTask```
+3. Finally, persist this Task to the database via ```TaskSerivce.createTask```
 
-You can find coresponding functions ```WorkbasketService.newWorkbasket```, ```ClassificationService.newClassification```  ```WorkbasketService.createWorkbasket``` and ```ClassificationService.createClassification``` in other Services. They can be used to create other entities.
+You can find corresponding functions ```WorkbasketService.newWorkbasket```, ```ClassificationService.newClassification```  ```WorkbasketService.createWorkbasket``` and ```ClassificationService.createClassification``` in other Services. They can be used to create other entities.
 
-### How to manipulate an Entity? 
-Some properties of an entity can be set via the **entitity interface** (e. g. the Task interface) in the Kadai [Java-API](java-api-usage.md). For example, the method ``  Task.setDescription(String description)`` can be used to set the description of a Task.  However, some properties of entities cannot be set this way. For example, a Workbasket has to be specified during the creation of a Task. You can change the Workbasket by transferring the Task using ``TaskService.transfer(String taskId, String destinationWorkbasketId)``. The state of a Task can only be modified by corresponding TaskService methods ``claim``, ``forceClaim``, ``cancelClaim`` etc. You can read more about the status changes here (link).
+### How to manipulate an Entity using the Java-API? 
+Some properties of an entity can be set via the entity interface (e.g. the Task interface) in the Kadai [Java-API](java-api-usage.md). For example, the method ``  Task.setDescription`` can be used to set the description of a Task.  However, some properties of entities cannot be set this way. For example, a Workbasket has to be specified during the creation of a Task. You can change the Workbasket by transferring the Task using ``TaskService.transfer``. The state of a Task can only be modified by corresponding TaskService methods ``claim``, ``forceClaim``, ``cancelClaim`` etc. You can read more about the status changes here (link).
 
-### How to integrate the Java API of Kadai?
+### How to integrate the Java API of Kadai- into your application?
 
 - Find out the DataSource for your Kadai database. You can read here (link) about setting it up
 - Pass the DataSource to the constructor of ``pro.taskana.configuration.TaskanaEngineConfiguration``.

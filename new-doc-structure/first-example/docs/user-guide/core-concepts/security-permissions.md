@@ -6,11 +6,11 @@ sidebar_position: 4
 
 ## Security Overview
 
-Kadai Java library uses JAAS subjects for its authentication. Its security features can be used based on the REST service. The authentification cannot be run without the REST service. Client side authorization is required to view Tasks and Workbaskets or to make any changes. If the client side authorization does not work, the unauthorized user will not be able to use Kadai properly.
+Kadai Java library uses JAAS subjects for its authentication. Its security features can be used based on the REST service. The authentication cannot be run without the REST service. Client side authorization is required to view Tasks and Workbaskets or to make any changes. If the client side authorization does not work, the unauthorized user will not be able to use Kadai properly.
 
-We provide an example (taskana-rest-spring-example) which is using ldap. You can build a simpler step-by-step example in our [Getting Started](../getting-started/spring-boot-example.md) as well.
+We provide an example (taskana-rest-spring-example) which is using LDAP. You can build a simple step-by-step example with our [Getting Started](../getting-started/spring-boot-example.md) as well.
 
-Kadai Java library needs its client to provide a mapping to the Jaas Subject used for users and groups. The client should create a JAAS context for the Java library. The ids of users and groups, e. g. "user-1-1" or "admin", are then used for the internal logic in the Java library. Our REST Service already provides ldap support. When using REST Service with ldap, you need to provide ??? your ldap congiguration ???
+Kadai Java library needs its client to provide a mapping to the JAAS Subject used for users and groups. The client should create a JAAS context for the Java library. The ids of users and groups, e.g. "user-1-1" or "admin", are then used for the internal logic in the Java library. Our REST Service already provides LDAP support. When using REST Service with LDAP, you need to provide ??? your LDAP configuration ???
 
 ## Security Roles in TASKANA
 
@@ -27,14 +27,14 @@ Users can have one of the six different roles:
 - **MONITOR**
     The MONITOR role grants access to all monitoring operations and to the monitoring UI.
 - **TASK_ROUTER**
-    The TASK_ROUTER role implies acess to creating Tasks in all Workbaskets without having READ permissions for them. This role is used for automateted scripts, not for persons.
+    The TASK_ROUTER role implies access to creating Tasks in all Workbaskets without having READ permissions for them. This role is used for automated scripts, not for persons.
 
 
- You can assigns roles to users or groups in the ```taskana.properties```file. Read more about ldap configuration [here](../configuration/taskana-properties/ldap-configuration.md)
+ You can assign roles to users or groups in the ```taskana.properties``` file. Read more about LDAP configuration [here](../configuration/taskana-properties/ldap-configuration.md)
 
 ## Access to Workbaskets
 
-Kadai Java library uses WorkbasketAccessItems for authorization. WorkbasketAccessItems are stored in the WorkbasketAccessList database table. Each WorkbaketAccessItems contains values for each of the following permissions: *READ, OPEN, APPEND, TRANSFER, DISTRIBUTE and CUSTOM_1 through CUSTOM_12*. A WorkbasketAccessItem belong to a specific Workbasket-User or Workbasket-Group pair. The user or group are specified by their accessId (for example "user-1-1"). The different permissions have following meaning:
+Kadai Java library uses WorkbasketAccessItems for authorization. WorkbasketAccessItems are stored in the WorkbasketAccessList database table. Each WorkbasketAccessItems contains values for each of the following permissions: *READ, OPEN, APPEND, TRANSFER, DISTRIBUTE and CUSTOM_1 through CUSTOM_12*. A WorkbasketAccessItem belongs to a specific Workbasket-User or Workbasket-Group pair. The user or group are specified by their accessId (for example "user-1-1"). The different permissions have the following meaning:
 
 | Permission            | Meaning                                                                                                                                                                                                                                                               |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -45,7 +45,7 @@ Kadai Java library uses WorkbasketAccessItems for authorization. WorkbasketAcces
 | DISTRIBUTE            | The  user is allowed to distribute Tasks from this Workbasket to the  configured distribution targets. For distribution the APPEND and  TRANSFER permissions are checked also.                                                                                        |
 | CUSTOM_1 .. CUSTOM_12 | Permissions to be used in custom code to configure application specific scenarios which are not directly checked by TASKANA.                                                                                                                                          |
 
-### Example WorkbasketAccesList table
+### Example WorkbasketAccessList table
 
 Example WorkbasketAccessItems:
 
@@ -55,13 +55,19 @@ Example WorkbasketAccessItems:
 | WA02 | WB01             | teamlead_2 | Holger  |  true       | true | false | false | true  | true,...true; |      |
 | WA03 | WB01             | group_1   | Schaden |  true       | true | false | true | false | true,...true; |      |
 
-## securityEnabled-flag
+## Disable security using the *securityEnabled* parameter
 
-It is only possible to set the securityEnabled-flag in the TaskanaEngineConfiguration constructor to false if the corresponding ENFORCE_SECURITY flag from the CONFIGURATION table in the database is also set to false. Otherwise the TASKANA start-up process will be stopped.
-
-If no value is set in the database then it is assumed that this is the first TaskanaEngine connecting to the database which then sets it's securityEnabled-flag as a new default.
-
+The securityEnabled-flag can disable authentification for the complete Kadai functionality if set to false. The default value of the flag is true. You can change the value by specifying the *securityEnabled* parameter of the constructor of TaskanaEngineConfiguration. 
 ```
 TaskanaEngineConfiguration(DataSource dataSource, boolean useManagedTransactions,
         boolean securityEnabled, String propertiesFileName, String propertiesSeparator)
 ```
+In the spring boot example, you can add following bean in order to disable security:
+
+    @Bean
+    public TaskanaEngineConfiguration taskanaEngineConfiguration(DataSource dataSource) {
+        return new SpringTaskanaEngineConfiguration(dataSource, true, false, "TASKANA");
+    }
+
+The CONFIGURATION table has a ENFORCE_SECURITY field. If this field is already set, then *securityEnabled* should be set to the same value. If the ENFORCE_SECURITY flag in the database has no value, then the first TaskanaEngine connecting to the database sets its *securityEnabled* as the value of ENFORCE_SECURITY.
+
