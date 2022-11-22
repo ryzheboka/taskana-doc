@@ -24,11 +24,11 @@ The REST API is found underneath ‘/api’ which is the default and cannot be c
 
 ## General TASKANA user-defined configuration
 
-There is also the possibility to specify parameters which can be administered by business administrators in the UI. You can use these parameters for example to let your business administrators configure some behaviour like the routing of tasks or the prioritization without a deployment. The parameters are basically a list of name/value pairs.
+There is also the possibility to configuration parameters in the UI. For example, you can let your business administrators configure some behaviour like the routing of tasks or the prioritization.
 
-You can configure the parameters in the TASKANA UI under the option “UI Settings”. 
+To configure them, go to “Settings” in the Kadai UI. 
 
-**Screenshot**
+![setting](../static/UISettings.png)
 
 These parameters are saved in the CONFIGURATION table in the data base. The data structure is divided in two parts: The fields with their corresponding values and a field named “schema”. That field contains all information which is needed in the UI to display those parameters. The default object can be found here.
 
