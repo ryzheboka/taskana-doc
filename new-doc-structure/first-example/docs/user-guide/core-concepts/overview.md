@@ -9,7 +9,7 @@ import simpleGraph from '!!raw-loader!./task-states.drawio';
 import entities from '!!raw-loader!./entities.drawio';
 import architecture from '!!raw-loader!./architecture.drawio';
 
-Taskana is a Task Management System. This includes defining and creating the tasks, distributing them to the corresponding users and keeping track of the task execution. Taskana also offers options for detailed description of each task using attachments, object references, and many other properties. In the following article, the basic entities of Taskana and related concepts are explained. 
+Kadai is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. Taskana also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of Taskana and related concepts are explained. 
 
 In order to provide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](../java-api-usage). 
 
@@ -25,7 +25,7 @@ Taskana operates using Tasks, Classifications and Workbaskets. Additional entiti
 
 ### Task
 
-The Task entity represents a human task that should be performed by one of the relevant users. A Task is identified by unique id that is generated upon Task creation. 
+The Task entity represents a human task that should be worked on by one of the resposible users. A Task is identified by unique id that cannot be changed after creation. 
 
 Each Task has exactly one Classification and an arbitrary number of Attachments. Each Attachment also has a Classification. These Classifications categorize the Task and the Attachment. They also determine some of their properties. For example, you can prioritize Tasks differently by using different Classifications. To compute the priority of a Task, take the greatest priority of the Classification of the Task and the Classifications of its Attachments. 
 
@@ -33,7 +33,7 @@ The Task is assigned to exactly one Workbasket. A Workbasket describes the group
 
 !! Diagramm fürs Verhältnis zwischen Tasks, Workbaskets und Classifications !! 
 
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. Following diagramm describes the states of a Task. The transitions between the states are defined [here](../reference/spring-boot-example%20copy.md)  
+In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. The following diagramm shows the states of a Task. The transitions between the states are defined [here](../reference/spring-boot-example%20copy.md)  
 
 <Drawio content={simpleGraph} />
 
@@ -74,7 +74,7 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 ### Summary Objects
 
 ***
-Besides Tasks, Classifications and Workbaskets, Kadai also operates using summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. Each summary object refers to a full entity, but only contains the most important information. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information. 
+
 ***
 
 ## Operations on entities
