@@ -10,7 +10,7 @@ We support following different databases:
 - or DB2 version ???
 - or PostgresSQL version ???
 
-Taskana connects to the database via a DataSource. It does not support XADataSources for connections to databases. The database schema can be changed by setting the parameter "taskana.schema" in the "application.properties" file. This applies to Spring environments, only.
+Taskana connects to the database via a DataSource. It does not support XADataSources for connections to databases. In Spring environment, the database schema can be changed by setting the parameter "taskana.schema" in the "application.properties" file.
 
 
 The recommended page size for the database is 32 k. It's needed to create the database schema. The sort order of query results can be changed by the collating sequence that is specified at database creation. The default for the most databases is a case sensitive sort order. If you want query results to be sorted case insensitively, you should specify an appropriate collating sequence.

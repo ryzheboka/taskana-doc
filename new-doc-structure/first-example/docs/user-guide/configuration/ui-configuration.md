@@ -22,26 +22,6 @@ In this case, TASKANA is deployed on localhost, port 8080 using the context root
 
 The REST API is found underneath ‘/api’ which is the default and cannot be changed. Please make sure you use the correct root for the REST API.
 
-## General TASKANA user-defined configuration
-
-There is also the possibility to configuration parameters in the UI. For example, you can let your business administrators configure some behaviour like the routing of tasks or the prioritization.
-
-To configure them, go to “Settings” in the Kadai UI. 
-
-![setting](../static/UISettings.png)
-
-These parameters are saved in the CONFIGURATION table in the data base. The data structure is divided in two parts: The fields with their corresponding values and a field named “schema”. That field contains all information which is needed in the UI to display those parameters. The default object can be found here.
-
-Currently the UI supports the following types of parameters: 
-
-|Type     | What the UI shows                                          |
-|---------|------------------------------------------------------------|
-|text     |an input field where text can be typed in                   |
-|interval |two input fields for numbers, a lower and an upper boundary |
-|color    |a color picker                                              |
-|json     |a text area where a string in json format can be typed in   |
-
-Those parameters can by administered in the UI by opening the side navigation and selecting “UI Settings”.
 
 ## REST API Configuration
 

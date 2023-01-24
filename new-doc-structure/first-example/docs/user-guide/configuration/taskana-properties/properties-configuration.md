@@ -60,4 +60,4 @@ Holidays can customized for the correct computation of duration in workdays.
 - ``taskana.history.deletion.on.task.deletion.enabled``: After deletion of a Task, all history events related to that Task will also be deleted.
 - ``` taskana.historylogger.name```: The name of the logger that writes to the audit file
         example:
-        ``` taskana.historylogger.name=AUDIT ```
+        ``` taskana.historylogger.name=AUDIT ```+

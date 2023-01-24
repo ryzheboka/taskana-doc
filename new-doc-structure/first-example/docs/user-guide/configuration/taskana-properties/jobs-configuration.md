@@ -10,9 +10,9 @@ Jobs are automated process that run in the background of the application. For ex
 
 | Parameter                          | Description                                                     | Sample Value |
 |------------------------------------|-----------------------------------------------------------------|--------------|
-| taskana.jobs.taskupdate.maxRetries | number of automatic retries after the job has failed        | 5            |
-| taskana.jobs.taskupdate.batchSize  | upper bound of how many tasks can be processed by one job           | 45           |
-| taskana.jobs.history.batchSize     | upper bound of how many history events can be processed by one job | 45           |
+| taskana.jobs.maxRetries | number of automatic retries after a job has failed        | 5            |
+| taskana.jobs.batchSize  | upper bound of how many tasks can be processed by one job           | 45           |
+
 
 ## TaskCleanupJob and HistoryCleanupJob Configuration
 
@@ -24,6 +24,7 @@ Jobs are automated process that run in the background of the application. For ex
 | taskana.jobs.history.cleanup.runEvery   | period of time between the executions of the cleanup job on history events (Duration in ISO 8601 format)                                                       | P7D                  |
 | taskana.jobs.history.cleanup.firstRunAt | first time the cleanup job on history events is run (DateTime n ISO 8601 format)                                                              | 2021-08-03T08:00:00Z |
 | taskana.jobs.history.cleanup.minimumAge | the created history event can be deleted by the cleanup only after this period of time or later  (Duration in ISO 8601 format) | P60D                 |
+| taskana.jobs.history.batchSize     | upper bound of how many history events can be processed by one history cleanup job | 45           |
 
 ## TaskUpdatePriorityJob Configuration
 
