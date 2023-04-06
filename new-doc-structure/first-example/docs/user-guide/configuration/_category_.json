@@ -3,6 +3,6 @@
   "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Configure TASKANA for your custom usage"
+    "description": "The articles describe how to configure TASKANA for your custom usage. Most of the configuration options are specified in the two configuration files: application.properties and taskana.properties. You can change the name of the taskana.properties file when creating TaskanaConfiguration via \"Builder initTaskanaProperties(String propertiesFile)\". "
   }
 }

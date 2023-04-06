@@ -1,28 +1,68 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 ---
 
-# Database Configuration
+# Database
 
-We support following different databases:
+In order to use TASKANA, you need to create a database yourself, and then specify it through the [DataSource](#datasource). You can see the list of the supported databases [here](../getting-started/environment.md). 
+The recommended page size for the database is 32 k. It's needed to create the database schema. The sort order of query results can be changed by the collating sequence that is specified at database creation. The default for the most databases is a case sensitive sort order.  If you want query results to be sorted case insensitively, you should specify an appropriate collating sequence.
 
-- H2 version 2.0
-- or DB2 version ???
-- or PostgresSQL version ???
+- Page size: 32k
+- Encoding:  UTF-8
+- Collating sequence examples: 
+        - db2 (case sensitive): IDENTITY
+        - postgres (case sensitive): de_DE.UTF-8
 
-Taskana connects to the database via a DataSource. It does not support XADataSources for connections to databases. In Spring environment, the database schema can be changed by setting the parameter "taskana.schema" in the "application.properties" file.
+Example db2:
+```
+CREATE DATABASE <databaseName> USING CODESET UTF-8 COLLATE USING IDENTITY PAGESIZE 32 K 
 
+```
 
-The recommended page size for the database is 32 k. It's needed to create the database schema. The sort order of query results can be changed by the collating sequence that is specified at database creation. The default for the most databases is a case sensitive sort order. If you want query results to be sorted case insensitively, you should specify an appropriate collating sequence.
+Example Postgres:
+```
+CREATE DATABASE <databaseName> WITH ENCODING 'UTF8' LC_COLLATE='de_DE.UTF-8';
+```
+
+### DataSource
+
+Taskana connects to the database via a DataSource. It does not support XADataSources for connections to databases. The DataSource can be specified during the creation of TaskanaConfiguration. For example as following:
+```
+new TaskanaConfiguration.Builder(dataSource, true, schemaName, false)
+        .initTaskanaProperties(propertiesFileName, delimiter)
+        .build();
+``` 
+In Spring environment, the DataSource has standard spring options that can be configured in the ```application.properties``` file. You can read more about them in the Spring documentation. Here is an example: 
+```
+spring.datasource.url=jdbc:h2:mem:taskana;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;LOCK_MODE=0;
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=sa
+```
+###  SchemaName and Prefilling the Database
+
+Additionally to the DataSource, you can also configure the schemaName. It can be specified during the creation of TaskanaConfiguration, as seen in the example above. The default schemaName is "TASKANA". The  schemaName can also be changed by setting the parameter "taskana.schemaName" in the ```application.properties``` file:
+
+```
+taskana.schemaName=TASKANA
+```
+Additionaly to that, you can configure TASKANA so that it prefills the database with sample data. You can find sample data in the folder ```common/taskana-common-data/src/main/resources/sql/sample-data```. To do that, set the "generateSampleData" property in the ```application.properties``` file to true:
+```
+generateSampleData=true
+```
 
 ## Connection options
 
-→ Since Taskana shall be able to work in managed environments like Spring, JBoss or WebSphere as well as in non-managed environments, it must be able to deal with different environments.
+TASKANA supports three connection management modes: PARTICIPATE, AUTOCOMMIT and EXPLICIT. You can specify the connection management mode when creating TaskanaEngine using 
 
-To handle these requirements, the client can choose between 3 connection management modes for Taskana:
+```
+TaskanaEngine buildTaskanaEngine (TaskanaConfiguration configuration, ConnectionManagementMode connectionManagementMode)
+```
+
+The default mode is PARTICIPATE.
 
 | mode         | description                                                                                                                                                                                                                                                                                           |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| PARTICIPATE  | Taskana  participates in surrounding global transactions. It acquires and  releases connections at begin / end of each API call and relies on the  infrastructure to do commit processing This is the default mode.                                                                                   |
-| AUTOCOMMIT   | Taskana commits each single API call separately                                                                                                                                                                                                                                                       |
-| EXPLICIT     | Taskana  doesn't acquire, commit or close connections. The client is responsible  for opening a connection, passing it to Taskana, committing or  rollbacking it. In order to close a connection, the client has to call either TaskanaEngine.closeConnection() or TaskanaEngine.setConnection(null). |
+| PARTICIPATE  | Taskana  participates in surrounding global transactions. It acquires and  releases connections at begin / end of each API call and relies on the infrastructure to do the commit.                                                                                  |
+| AUTOCOMMIT   | Taskana commits each single API call separately.                                                                                                                                                                                                                                                       |
+| EXPLICIT     | Taskana  doesn't acquire, commit or close connections. The client is responsible  for opening a connection, passing it to Taskana, committing or  rolling it back. In order to close a connection, the client has to call either TaskanaEngine.closeConnection() or TaskanaEngine.setConnection(null). |

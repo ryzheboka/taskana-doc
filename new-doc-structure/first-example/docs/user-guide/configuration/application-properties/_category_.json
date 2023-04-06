@@ -1,8 +1,0 @@
-{
-  "label": "REST API and web properties",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "Configuration using application.properties"
-  }
-}
