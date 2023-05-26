@@ -396,3 +396,33 @@ cn: Organisationseinheit KSC
 uniquemember: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
 uniquemember: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
 objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-1-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-1-2,cn=users,OU=Test,O=TASKANA
+cn: Organisationseinheit KSC 1
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
+uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-1,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-2,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-3,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-4,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-5,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-6,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-7,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-8,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-9,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-10,cn=users,OU=Test,O=TASKANA
+cn: Organisationseinheit KSC 2
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=Organisationseinheit B,cn=organisation,OU=Test,O=TASKANA
+cn: Organisationseinheit B
+objectclass: groupofuniquenames
+objectclass: top
