@@ -14,7 +14,7 @@ Updates Task priority for each Task once in a fixed time interval.
 
 ## UserInfoRefreshJob
 
-Loads User Info into the User Entity from the database once in a fixed time interval.
+Loads User Info into the User table from the .ldif file once in a fixed time interval.
 
 ## TaskCleanupJob
 
