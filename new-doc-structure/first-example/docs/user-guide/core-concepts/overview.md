@@ -9,16 +9,16 @@ import simpleGraph from '!!raw-loader!./task-states.drawio';
 import entities from '!!raw-loader!./entities.drawio';
 import architecture from '!!raw-loader!./architecture.drawio';
 
-Kadai is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. Taskana also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of Taskana and related concepts are explained. 
+TASKANA is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. TASKANA also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of TASKANA and related concepts are explained. 
 
 In order to provide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](../java-api-usage). 
 
 <Drawio content={architecture} />
 
-## Taskana Entities
-All Taskana Entities can be found in the Java API. You can read more about our Java API [here](../java-api-usage.md). For better readability, entities are capitalized in the documentation. 
+## TASKANA Entities
+All TASKANA Entities can be found in the Java API. You can read more about our Java API [here](../java-api-usage.md). For better readability, entities are capitalized in the documentation. 
 
-Taskana operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database-configuration.md). You can see the detailed data model [here](../reference/create-a-page.md).
+TASKANA operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database-configuration.md). You can see the detailed data model [here](../reference/create-a-page.md).
 
 <Drawio content={entities} />
 
@@ -65,7 +65,7 @@ The Classification entity represents a category of Tasks. The Tasks with the sam
 
 There are different options for accessing a Workbasket. You can read more about them and other permissions [here](./security-permissions#access-to-workbaskets.md).
 
-Kadai provides different options for choosing a Workbasket for a specific Task. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
+TASKANA provides different options for choosing a Workbasket for a specific Task. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
 
 ### WorkbasketAccessItem
 
@@ -79,7 +79,7 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 
 ## Operations on entities
 
-Kadai provides following operations on its entities:
+TASKANA provides following operations on its entities:
  - Creating
  - Updating
  - Deleting

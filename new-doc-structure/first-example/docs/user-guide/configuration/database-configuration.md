@@ -26,7 +26,7 @@ CREATE DATABASE <databaseName> WITH ENCODING 'UTF8' LC_COLLATE='de_DE.UTF-8';
 
 ### DataSource
 
-Taskana connects to the database via a DataSource. It does not support XADataSources for connections to databases. The DataSource can be specified during the creation of TaskanaConfiguration. For example as following:
+TASKANA connects to the database via a DataSource. It does not support XADataSources for connections to databases. The DataSource can be specified during the creation of TaskanaConfiguration. For example as following:
 ```
 new TaskanaConfiguration.Builder(dataSource, true, schemaName, false)
         .initTaskanaProperties(propertiesFileName, delimiter)
@@ -63,6 +63,6 @@ The default mode is PARTICIPATE.
 
 | mode         | description                                                                                                                                                                                                                                                                                           |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| PARTICIPATE  | Taskana  participates in surrounding global transactions. It acquires and  releases connections at begin / end of each API call and relies on the infrastructure to do the commit.                                                                                  |
-| AUTOCOMMIT   | Taskana commits each single API call separately.                                                                                                                                                                                                                                                       |
-| EXPLICIT     | Taskana  doesn't acquire, commit or close connections. The client is responsible  for opening a connection, passing it to Taskana, committing or  rolling it back. In order to close a connection, the client has to call either TaskanaEngine.closeConnection() or TaskanaEngine.setConnection(null). |
+| PARTICIPATE  | TASKANA  participates in surrounding global transactions. It acquires and  releases connections at begin / end of each API call and relies on the infrastructure to do the commit.                                                                                  |
+| AUTOCOMMIT   | TASKANA commits each single API call separately.                                                                                                                                                                                                                                                       |
+| EXPLICIT     | TASKANA  doesn't acquire, commit or close connections. The client is responsible  for opening a connection, passing it to TASKANA, committing or  rolling it back. In order to close a connection, the client has to call either TaskanaEngine.closeConnection() or TaskanaEngine.setConnection(null). |
