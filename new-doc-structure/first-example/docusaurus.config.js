@@ -59,7 +59,7 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: 'Kadai',
+        title: 'TASKANA',
         hideOnScroll: true,
         logo: {
           alt: 'My Site Logo',
@@ -71,12 +71,6 @@ const config = {
             docId: 'user-guide/intro',
             position: 'left',
             label: 'User Guide',
-          },
-          {
-            type: 'doc',
-            docId: 'contributor-guide/intro',
-            position: 'left',
-            label: 'Contributor Guide',
           },
           {
             type: 'doc',
