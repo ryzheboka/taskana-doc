@@ -4,7 +4,17 @@ sidebar_position: 2
 
 # Security
 
-## Roles Mapping
+## Users
+
+The configuration of the user-related parameters is in the file ```taskana.properties```. Some parameters allow multiple values specified as a list. In this case, individual values are separated by a configurable separator. Use the *propertiesSeparator* parameter to specify it. If none is provided, the default is "|". If you specify a propertiesSeparator, no list item in the properties file can contain any character from the propertiesSeparator.
+
+| Parameter                                      | Description                                                                                                                                                                                                                                                                                                                                                             | Sample Value                         |
+|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+                                                                     | EXTERNAL \| manual \| autoMAtic \| Process |
+| taskana.user.minimalPermissionsToAssignDomains | The  list of minimal Workbasket permissions of a user needed to belong to  the domain. Needed to determine the domains of a user, which are  aggregated in the getUser() method of the UserService. Values have to match the Enum values of WorkbasketPermission. If this property is not defined the dynamic computation of the domain attribute will not be executed. | READ \| OPEN                           |
+| taskana.addAdditionalUserInfo                  | Add attributes of the user from the USER_INFO table, for example during a Task request or Task Query, the default value is false                                                                                                                                                                                                                                                           | true
+
+### Roles Mapping
 
 TASKANA Roles and their meaning can be looked up [here](../core-concepts/security-permissions#security-roles-in-taskana). For each role, a list of access ids that refer to users or groups can be specified using following keywords:
 
