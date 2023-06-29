@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Example Spring Boot
 
-In the first 4 steps, we will set up Kadai REST API without security. Then, we will show how to use
+In the first 4 steps, we will set up TASKANA REST API without security. Then, we will show how to use
 the resulting REST API with [postman](https://www.postman.com/). This guide then sets up security.
 In the end of the guide, we will add the UI.
 
@@ -22,7 +22,7 @@ In order to set up the example, please install:
 
 Note: Please name your packages, folders and files exactly like in the example!
 
-## Set up Kadai REST-API without security
+## Set up TASKANA REST-API without security
 
 ### Step 1: Initialize an empty project
 
@@ -383,10 +383,10 @@ You can also request Tasks using following command:
 GET http://localhost:8080/taskana/api/v1/tasks
 ```
 
-At this point, full Kadai REST-API functionality is available without security or authorization.
+At this point, full TASKANA REST-API functionality is available without security or authorization.
 They will be added in the next steps.
 
-## Set up Kadai Security
+## Set up TASKANA Security
 
 Our example application uses [ldap](https://ldap.com/learn-about-ldap/) for its authorization.
 First, add a ```security``` package into the ```com.example.demo``` package (in
@@ -702,7 +702,7 @@ response in [postman](https://www.postman.com/):
 
 ![example request](../static/request-security.png)
 
-## Set up Kadai UI
+## Set up TASKANA UI
 
 ### Step 11: Add web dependencies
 

@@ -8,18 +8,18 @@ import simpleGraph from '!!raw-loader!./lib-structure.drawio';
 import entities from '!!raw-loader!./entities.drawio';
 import architecture from '!!raw-loader!./architecture.drawio';
 
-The following article describes the practical implementation of main concepts of Kadai, explained in the [Overview](./overview.md). Please be familiar with the contents of the Overview in order to understand this article.
+The following article describes the practical implementation of main concepts of TASKANA, explained in the [Overview](./overview.md). Please be familiar with the contents of the Overview in order to understand this article.
 
 ## Where to find entities and operations on them
 The Overview describes [entities](./overview.md#taskana-entities) and [operations on them](./overview.md#operations-on-entities). 
 
-The Task, Classification and Workbasket as well as related entities can be found in ``pro.taskana.task.api.models``, ``pro.taskana.classification.api.models``, ``pro.taskana.workbasket.api.models``. Besides Tasks, Classifications and Workbaskets, Kadai also operates using summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. They represent the same concepts as Tasks, Classifications and Workbaskets. Each summary object refers to a full entity, but only contains the most important information. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information. The summary objects can be found in the same package as the complete entity interfaces.
+The Task, Classification and Workbasket as well as related entities can be found in ``pro.taskana.task.api.models``, ``pro.taskana.classification.api.models``, ``pro.taskana.workbasket.api.models``. Besides Tasks, Classifications and Workbaskets, TASKANA also operates using summary objects: TaskSummaries, ClassificationSummaries and WorkbasketSummaries. They represent the same concepts as Tasks, Classifications and Workbaskets. Each summary object refers to a full entity, but only contains the most important information. For example, a TaskSummary with id 1234 refers to the Task with the id 1234. However, the TaskSummary does not contain the Attachment of the Task as well as some other information. The summary objects can be found in the same package as the complete entity interfaces.
 
 Creating, Deleting and Updating can be done using TaskService, ClassificationService and WorkbasketService. The Services can be found in`` pro.taskana.task.api``, ``pro.taskana.classification.api``, ``pro.taskana.workbasket.api``. The corresponding queries can be also found in these packages. They are called  TaskQuery, ClassificationQuery and WorkbasketQuery.
 
 ## The core of the Java-API 
 
-Below is the diagramm that shows different packages that make up the Java-API of Kadai. They can be found in the ``lib/taskana-core`` folder
+Below is the diagramm that shows different packages that make up the Java-API of TASKANA. They can be found in the ``lib/taskana-core`` folder
 <Drawio content={simpleGraph} />
 <br />
 
@@ -49,7 +49,7 @@ Below is the diagramm that shows different packages that make up the Java-API of
 
 
 - ``pro.taskana.common.api``:
-    - TaskanaEngine interface that brings all services of Kadai together
+    - TaskanaEngine interface that brings all services of TASKANA together
     - Other, non-entity-related services
 
 
@@ -65,7 +65,7 @@ Below is the diagramm that shows different packages that make up the Java-API of
     - Used Exceptions 
 
 - ``pro.taskana.spi``: 
-    - contains all Service Provider Interfaces (SPIs) of Kadai. An SPI allows the client to change the behavior of Kadai by implementing the SPI. More about SPIs can be found here (link)
+    - contains all Service Provider Interfaces (SPIs) of TASKANA. An SPI allows the client to change the behavior of TASKANA by implementing the SPI. More about SPIs can be found here (link)
 
 ### How to create an Entity using the Java-API? 
 
@@ -78,12 +78,12 @@ Below is the diagramm that shows different packages that make up the Java-API of
 You can find corresponding functions ```WorkbasketService.newWorkbasket```, ```ClassificationService.newClassification```  ```WorkbasketService.createWorkbasket``` and ```ClassificationService.createClassification``` in other Services. They can be used to create other entities.
 
 ### How to manipulate an Entity using the Java-API? 
-Some properties of an entity can be set via the entity interface (e.g. the Task interface) in the Kadai [Java-API](java-api-usage.md). For example, the method ``  Task.setDescription`` can be used to set the description of a Task.  However, some properties of entities cannot be set this way. For example, a Workbasket has to be specified during the creation of a Task. You can change the Workbasket by transferring the Task using ``TaskService.transfer``. The state of a Task can only be modified by corresponding TaskService methods ``claim``, ``forceClaim``, ``cancelClaim`` etc. You can read more about the status changes here (link).
+Some properties of an entity can be set via the entity interface (e.g. the Task interface) in the TASKANA [Java-API](java-api-usage.md). For example, the method ``  Task.setDescription`` can be used to set the description of a Task.  However, some properties of entities cannot be set this way. For example, a Workbasket has to be specified during the creation of a Task. You can change the Workbasket by transferring the Task using ``TaskService.transfer``. The state of a Task can only be modified by corresponding TaskService methods ``claim``, ``forceClaim``, ``cancelClaim`` etc. You can read more about the status changes here (link).
 
-### How to integrate the Java API of Kadai- into your application?
+### How to integrate the Java API of TASKANA- into your application?
 
-- Find out the DataSource for your Kadai database. You can read here (link) about setting it up
+- Find out the DataSource for your TASKANA database. You can read here (link) about setting it up
 - Pass the DataSource to the constructor of ``pro.taskana.configuration.TaskanaEngineConfiguration``.
-- Build a KadaiEngine using ``TaskanaEngineConfiguration.buildEngine``.
+- Build a TASKANAEngine using ``TaskanaEngineConfiguration.buildEngine``.
 
 You can use the corresponding Services by getting them with the methods ``TaskanaEngine.getClassificationService``, ``TaskanaEngine.getTaskService`` and ``TaskanaEngine.getWorkbasketService``.

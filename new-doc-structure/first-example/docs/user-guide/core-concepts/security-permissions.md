@@ -6,18 +6,18 @@ sidebar_position: 4
 
 ## Security Overview
 
-Kadai Java library uses JAAS subjects for its authentication. Its security features can be used based on the REST service. The authentication cannot be run without the REST service. Client side authorization is required to view Tasks and Workbaskets or to make any changes. If the client side authorization does not work, the unauthorized user will not be able to use Kadai properly.
+TASKANA Java library uses JAAS subjects for its authentication. Its security features can be used based on the REST service. The authentication cannot be run without the REST service. Client side authorization is required to view Tasks and Workbaskets or to make any changes. If the client side authorization does not work, the unauthorized user will not be able to use TASKANA properly.
 
 We provide an example (taskana-rest-spring-example) which is using LDAP. You can build a simple step-by-step example with our [Getting Started](../getting-started/spring-boot-example.md) as well.
 
-Kadai Java library needs its client to provide a mapping to the JAAS Subject used for users and groups. The client should create a JAAS context for the Java library. The ids of users and groups, e.g. "user-1-1" or "admin", are then used for the internal logic in the Java library. Our REST Service already provides LDAP support. When using REST Service with LDAP, you need to provide ??? your LDAP configuration ???
+TASKANA Java library needs its client to provide a mapping to the JAAS Subject used for users and groups. The client should create a JAAS context for the Java library. The ids of users and groups, e.g. "user-1-1" or "admin", are then used for the internal logic in the Java library. Our REST Service already provides LDAP support. When using REST Service with LDAP, you need to provide ??? your LDAP configuration ???
 
 ## Security Roles in TASKANA
 
 Users can have one of the six different roles:
 
 - **USER**
-    The USER role grants access to Taskana. USER is everybody who gets assigned to and completes tasks. 
+    The USER role grants access to TASKANA. USER is everybody who gets assigned to and completes tasks. 
 - **TASK_ADMIN**
     The TASK_ADMIN role includes all permissions on tasks with the exception of deleting a task/tasks. It can also READ all workbaskets in case to create/transfer tasks in/to them.
 - **BUSINESS_ADMINISTRATOR**
@@ -34,7 +34,7 @@ Users can have one of the six different roles:
 
 ## Access to Workbaskets
 
-Kadai Java library uses WorkbasketAccessItems for authorization. WorkbasketAccessItems are stored in the WorkbasketAccessList database table. Each WorkbasketAccessItems contains values for each of the following permissions: *READ, OPEN, APPEND, TRANSFER, DISTRIBUTE and CUSTOM_1 through CUSTOM_12*. A WorkbasketAccessItem belongs to a specific Workbasket-User or Workbasket-Group pair. The user or group are specified by their accessId (for example "user-1-1"). The different permissions have the following meaning:
+TASKANA Java library uses WorkbasketAccessItems for authorization. WorkbasketAccessItems are stored in the WorkbasketAccessList database table. Each WorkbasketAccessItems contains values for each of the following permissions: *READ, OPEN, APPEND, TRANSFER, DISTRIBUTE and CUSTOM_1 through CUSTOM_12*. A WorkbasketAccessItem belongs to a specific Workbasket-User or Workbasket-Group pair. The user or group are specified by their accessId (for example "user-1-1"). The different permissions have the following meaning:
 
 | Permission            | Meaning                                                                                                                                                                                                                                                               |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -57,7 +57,7 @@ Example WorkbasketAccessItems:
 
 ## Disable security using the *securityEnabled* parameter
 
-The securityEnabled-flag can disable authentification for the complete Kadai functionality if set to false. The default value of the flag is true. You can change the value by specifying the *securityEnabled* parameter of the constructor of TaskanaEngineConfiguration. 
+The securityEnabled-flag can disable authentification for the complete TASKANA functionality if set to false. The default value of the flag is true. You can change the value by specifying the *securityEnabled* parameter of the constructor of TaskanaEngineConfiguration. 
 ```
 TaskanaEngineConfiguration(DataSource dataSource, boolean useManagedTransactions,
         boolean securityEnabled, String propertiesFileName, String propertiesSeparator)
