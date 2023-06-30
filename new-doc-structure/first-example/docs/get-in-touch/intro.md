@@ -6,5 +6,5 @@ sidebar_position: 1
 
 Do you have any questions about TASKANA? Do you have a suggestion for improvement? Please use the contact information below to contact us.
 
-> Name: Max Mustermann  
-> E-mail: example@envite.de
+> Name: Holger Hagen  
+> E-mail: holger.hagen@envite.de
