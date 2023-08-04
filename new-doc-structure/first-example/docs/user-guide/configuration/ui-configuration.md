@@ -32,4 +32,4 @@ Some TASKANA UI elements, such as custom properties, can be configured in the js
 
 The default taskana-customization.json will be found in our GitHub repository. 
 
-If you have any questions regarding the UI Customization, please don’t hesitate to [contact us](../../get-in-touch/intro.md).
+If you have any questions regarding the UI Customization, please don’t hesitate to [contact us](../../contact-us/intro.md).
