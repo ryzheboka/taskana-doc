@@ -40,6 +40,14 @@
     font-size: 3em;
 }
 
+.hero h2 {
+    font-family: 'Karla', sans-serif;
+    font-weight: 350;
+    font-size: 3em;
+    text-decoration: underline;
+    text-decoration-color: var(--kadai-color-primary);
+}
+
 @media screen and (max-width: 1024px) {
     .hero {
         flex-direction: column;
