@@ -38,10 +38,6 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -74,37 +70,75 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'get-in-touch/intro',
+            docId: 'contact-us/intro',
             position: 'left',
-            label: 'Get In Touch',
+            label: 'Contact Us',
           },
           {
             href: 'https://github.com/Taskana/taskana',
             label: 'GitHub',
             position: 'right',
           },
+          {
+            href: 'https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html',
+            label: 'REST API Doc',
+            position: 'right',
+          },
+          {
+            href: 'https://taskana.azurewebsites.net/taskana',
+            label: 'Demo App',
+            position: 'right',
+          }
         ],
       },
       footer: {
         style: 'dark',
         links: [
+          {
+            title: "Social",
+            items: [
+              {
+                label: 'Contact Us',
+                to: '/docs/contact-us/intro',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/Taskana/taskana',
+              }
+            ]
 
-          {
-            label: 'User Guide',
-            to: '/docs/user-guide/intro',
           },
           {
-            label: 'Contact Us',
-            to: '/docs/get-in-touch/intro',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/facebook/docusaurus',
-          },
+            title: "Docs:",
+            items: [
 
+              {
+                label: 'User Guide',
+                to: '/docs/user-guide/intro',
+              },
+              {
+                label: 'Java API Documentation',
+                to: 'https://taskana.azurewebsites.net/taskana/docs/java/taskana-core/index.html',
+              },
+              {
+                label: 'REST API Documentation',
+                href: 'https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html',
+              }
+            ]
+          },
+          {
+            title: "Demo App",
+            items: [
+
+              {
+                label: 'Demo App',
+                to: 'https://taskana.azurewebsites.net/taskana',
+              }
+            ]
+          }
 
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
