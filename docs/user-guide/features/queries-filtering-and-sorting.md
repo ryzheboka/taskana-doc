@@ -15,7 +15,7 @@ GET http://localhost:8080/taskana/api/v1/tasks?owner-in=user-1-1&owner-in=user-1
 You can try querying using Postman like in our [Spring Boot example](../getting-started/spring-boot-example%20copy.md#step-5--try-out-the-rest-api).
 Here is an example of the query from our [REST-API doc](../core-concepts/rest-api) using Postman:
 
-![Query](../static/postman-query.png)
+![Query](../static/features/postman-query.png)
 
 More about queries using the REST-API can be found in the [REST-API Documentation](https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html).
 

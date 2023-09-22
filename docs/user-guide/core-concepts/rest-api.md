@@ -4,9 +4,6 @@ sidebar_position: 4
 
 # REST-API
 import Drawio from '@theme/Drawio'
-import simpleGraph from '!!raw-loader!./lib-structure.drawio';
-import entities from '!!raw-loader!./entities.drawio';
-import architecture from '!!raw-loader!./architecture.drawio';
 
 TASKANA provides a REST-API to interact with the TASKANA entities. For example, you can get metadata of Workbaskets, create new Tasks, update Tasks etc.. 
 The path for all requests to TASKANA starts with the following:

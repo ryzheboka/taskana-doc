@@ -5,9 +5,9 @@ sidebar_position: 1
 # Overview
 
 import Drawio from '@theme/Drawio'
-import simpleGraph from '!!raw-loader!./task-states.drawio';
-import entities from '!!raw-loader!./entities.drawio';
-import architecture from '!!raw-loader!./architecture.drawio';
+import simpleGraph from '!!raw-loader!../static/core-concepts/task-states.drawio';
+import entities from '!!raw-loader!../static/core-concepts/entities.drawio';
+import architecture from '!!raw-loader!../static/core-concepts/architecture.drawio';
 
 TASKANA is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. TASKANA also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of TASKANA and related concepts are explained. 
 

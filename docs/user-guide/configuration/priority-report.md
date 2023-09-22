@@ -6,7 +6,7 @@ sidebar_position: 8
 
 TASKANA provides the possibility to customize Priority Reports in the UI. To configure it, go to “Settings” in the TASKANA UI. 
 
-![setting](../static/UISettings.png)
+![setting](../static/configuration/UISettings.png)
 
 Currently the UI supports the following types of parameters: 
 

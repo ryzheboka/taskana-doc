@@ -11,9 +11,9 @@ Common options for jobs customization are listed and explained as following:
 - **First run at**: The date for the first run of the job
 - **Run every**: The interval between individual runs of a job
 
-Additionally, different jobs have other special parameters for customization. 
+Additionally, different jobs have other special parameters for customization which can be found below.
 
-You can also configure the scheduler. In the initial run of the scheduler, all jobs are scheduled for the first time. Each run, the scheduler looks up which jobs are past their due date. These jobs get executed. The behavior of jobs and the scheduler in TASKANA can be customized in the configuration file ```taskana.properties``` with the following parameters:
+You can also configure the scheduler. The scheduler will initialize the first schedule for the jobs. Each run, the scheduler looks up which jobs are past their due date. These jobs get executed. The behavior of jobs and the scheduler in TASKANA can be customized in the configuration file ```taskana.properties``` with the following parameters:
 
 ## Scheduler Configuration
 | Parameter                                | Description                                                    | Sample Value | Default Value |
@@ -22,6 +22,7 @@ You can also configure the scheduler. In the initial run of the scheduler, all j
 | taskana.jobs.scheduler.initialStartDelay | Start delay before the first job gets scheduled                | 30           | 100           |
 | taskana.jobs.scheduler.period            | The time interval between the individual runs of the scheduler | 12           | 5             |
 | taskana.jobs.scheduler.periodTimeUnit    | The unit for scheduler.initialStartDelay and scheduler.period  | HOURS        | MINUTES       |
+
 ## General Jobs Configuration 
 This configuration options are overwritten by job specific configuration options
 
@@ -31,6 +32,7 @@ This configuration options are overwritten by job specific configuration options
 | taskana.jobs.batchSize  | upper bound of how many tasks can be processed by one job                   | 45                   | 100                  |
 | taskana.jobs.runEvery   | period of time between the executions of jobs (Duration in ISO 8601 format) | P1D                  | P1D                  |
 | taskana.jobs.firstRunAt | first time the job is run (DateTime n ISO 8601 format)                      | 2018-07-25T08:00:00Z | 2023-01-01T00:00:00Z |
+| taskana.jobs.lockExpirationPeriod | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time                      | P2D | PT30M |
 
 
 ## Example
@@ -47,20 +49,36 @@ This configuration options are overwritten by job specific configuration options
 - 6th Aril 3am: The Job becomes due. However, it isn't run yet.
 
 
-## TaskCleanupJob, WorkbasketCleanupJob and HistoryCleanupJob Configuration
+## TaskCleanupJob Configuration
 
 | Parameter                                                          | Description                                                                                                                                 | Sample Value         | Default Value |
 |--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------|---------------|
 | taskana.jobs.cleanup.task.enable                                   | Enabling automated cleanup of completed tasks after a period of time specified by job.runEvery                                              | true                 | true          |
 | taskana.jobs.cleanup.task.minimumAge                               | the completed task can be deleted by the cleanup only after this period of time or later  (Duration in ISO 8601 format)                     | P10D                 | P14D          |
 | taskana.jobs.cleanup.task.allCompletedSameParentBusiness           | Prevent deletion of tasks if other tasks with same parent business process ID are not yet completed                                         | false                | true          |
+| taskana.jobs.cleanup.task.lockExpirationPeriod           | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time                                         | P2D               | PT30M          |
+
+## WorkbasketCleanupJob Configuration
+
+
+| Parameter                                                          | Description                                                                                                                                 | Sample Value         | Default Value |
+|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------|---------------|
 | taskana.jobs.cleanup.workbasket.enable                             | Enable WorkbasketCleanupJob to cleanup completed workbaskets after a period of time if no pending tasks                                     | true                 | true          |
+| taskana.jobs.cleanup.workbasket.lockExpirationPeriod                             | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time                                     | P2D                 | PT30M          |
+
+## HistoryCleanupJob Configuration
+
+| Parameter                                                          | Description                                                                                                                                 | Sample Value         | Default Value |
+|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------|---------------|
 | taskana.jobs.cleanup.history.simple.enable                         | Enables the HistoryCleanupJob to delete history events                                                                                      | false                | false         |
-| taskana.jobs.cleanup.history.simple.minimumAge                     | the created history event can be deleted by the cleanup only after this period of time or later  (Duration in ISO 8601 format)              | P60D                 | P14D          |
+| taskana.jobs.cleanup.history.simple.minimumAge                     | a history event may only be deleted by the cleanup after this period of time or later  (Duration in ISO 8601 format)              | P60D                 | P14D          |
 | taskana.jobs.cleanup.history.simple.batchSize                      | upper bound of how many history events can be processed by one history cleanup job                                                          | 45                   | 100           |
 | taskana.jobs.cleanup.history.simple.allCompletedSameParentBusiness | Prevent deletion of Task History Events if other Task History Events with same parent business process ID have types other than "CREATED" 	 | false                | true          |
+| taskana.jobs.cleanup.history.simple.lockExpirationPeriod | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time 	 | P2D                | PT30M          |
+
 
 ## TaskUpdatePriorityJob Configuration
+
 
 | Parameter                             | Description                                                                                      | Sample Value         | Default Value        |
 |---------------------------------------|--------------------------------------------------------------------------------------------------|----------------------|----------------------|
@@ -69,14 +87,17 @@ This configuration options are overwritten by job specific configuration options
 | taskana.jobs.priority.task.runEvery   | period of time between the executions of the TaskUpdatePriorityJob (Duration in ISO 8601 format) | P2D                  | P1D                  |
 | taskana.jobs.priority.task.firstRunAt | first time the job is executed (DateTime in ISO 8601 format)                                     | 2021-08-03T08:00:00Z | 2023-01-01T00:00:00Z |
 | taskana.jobs.priority.task.active     | the job will only be executed if the flag is set to true                                         | true                 |                      |
+| taskana.jobs.priority.task.lockExpirationPeriod     | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time                                        | P2D                 |  PT30M             |
 
 ## UserInfoRefreshJob Configuration
+
 
 | Parameter                            | Description                                                                                   | Sample Value         | Default Value        |
 |--------------------------------------|-----------------------------------------------------------------------------------------------|----------------------|----------------------|
 | taskana.jobs.refresh.user.enable     | Enable job to refresh all user info after a period of time                                    | true                 | false                |
 | taskana.jobs.refresh.user.runEvery   | period of time between the executions of the UserInfoRefreshJob (Duration in ISO 8601 format) | P2D                  | P1D                  |
 | taskana.jobs.refresh.user.firstRunAt | first time the job is executed (DateTime in ISO 8601 format)                                  | 2021-08-03T22:00:00Z | 2023-01-01T23:00:00Z |
+| taskana.jobs.refresh.user.lockExpirationPeriod | period of time the lock is valid (Duration in ISO 8601 format). Should be longer than the longest possible job execution time                               | P2D | PT30M |
 
 ## CustomJobs Configuration
 
