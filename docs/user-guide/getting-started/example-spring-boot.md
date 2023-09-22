@@ -30,11 +30,11 @@ Go to [Spring Initializer](https://start.spring.io/) and create an example Maven
 same options as in the Screenshot, except the spring version. Please check Java 11, then click on "
 Generate".
 
-![empty spring boot project](../static/ProjectInitializer.png)
+![empty spring boot project](../static/getting-started/ProjectInitializer.png)
 
 Unpack the project in the folder of your choice and open it in IntelliJ
 
-![unpacked project](../static/Schritt2.png)
+![unpacked project](../static/getting-started/Schritt2.png)
 
 ### Step 2: Add dependencies
 
@@ -286,7 +286,7 @@ Then, create a java class with the name ```ExampleRestConfiguration``` in the co
 package. This class defines the Beans and their dependencies. Your project structure should look
 like this:
 
-![basic project](../static/rest-api-project.png)
+![basic project](../static/getting-started/rest-api-project.png)
 
 Copy following content into ```ExampleRestConfiguration.java```:
 
@@ -373,7 +373,7 @@ GET http://localhost:8080/taskana/api/v1/classifications
 You should get a list of different Classifications in the body of the response. Here is a screenshot
 of the request and the response in [postman](https://www.postman.com/):
 
-![example request](../static/example-request-classifications.png)
+![example request](../static/getting-started/example-request-classifications.png)
 
 You can also request Tasks using following command:
 
@@ -665,7 +665,7 @@ the ```example-users.ldif``` file here:
             className="button button--secondary button--lg">
   <a
     className="button button--secondary button--lg"
-    href={ require("../static/example-users.zip").default }
+    href={ require("../static/getting-started/example-users.zip").default }
     download
     target="_blank"
   >Download example users </a>
@@ -676,7 +676,7 @@ the ```example-users.ldif``` file here:
 Please unzip the ```example-users``` file and put it into the ```resources``` folder.
 
 Your project structure should now look like this:
-![project structure](../static/project-structure-security.png)
+![project structure](../static/getting-started/project-structure-security.png)
 
 ### Step 10: Try out the REST-API
 
@@ -697,7 +697,7 @@ GET http://localhost:8080/taskana/api/v1/tasks
 It should return a list of Tasks in the response body. Here is a screenshot of the request and the
 response in [postman](https://www.postman.com/):
 
-![example request](../static/request-security.png)
+![example request](../static/getting-started/request-security.png)
 
 ## Set up TASKANA UI
 
@@ -739,7 +739,7 @@ in the ```resources``` folder. You can download the templates folder here:
             className="button button--secondary button--lg">
     <a
     className="button button--secondary button--lg"
-    href={ require("../static/templates.zip").default }
+    href={ require("../static/getting-started/templates.zip").default }
     download
     target="_blank"
   >Download templates </a>
@@ -778,7 +778,7 @@ the ```static``` folder for it. You can download the ```static``` folder here:
             className="button button--secondary button--lg">
     <a
     className="button button--secondary button--lg"
-    href={ require("../static/static.zip").default }
+    href={ require("../static/getting-started/static.zip").default }
     download
     target="_blank"
   >Download static </a>
@@ -794,7 +794,7 @@ the ```com.example.demo.controllers``` folder for further customizations. Please
             className="button button--secondary button--lg">
     <a
     className="button button--secondary button--lg"
-    href={ require("../static/com.zip").default }
+    href={ require("../static/getting-started/com.zip").default }
     download
     target="_blank"
   >Download controllers </a>
@@ -941,19 +941,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 Your project structure should look like this:
 
-![project structure](../static/project-structure-end.png)
+![project structure](../static/getting-started/project-structure-end.png)
 
 ### Step 14: Start and open the application
 
 Recompile the application, then go to the DemoApplication class in the IDE and start it. Then
 type ```localhost:8080/taskana``` into your browser. You should see the login screen:
 
-![Log in](../static/login.png)
+![Log in](../static/getting-started/login.png)
 
 Log in using "admin" as username and "admin" as password. Now, you should see following:
 
-![Workbaskets](../static/workbaskets.png)
+![Workbaskets](../static/getting-started/workbaskets.png)
 
 Press the menu button in the upper left to navigate.
 
-![Navigate](../static/navigate.png)
+![Navigate](../static/getting-started/navigate.png)

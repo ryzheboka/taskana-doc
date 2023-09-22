@@ -4,9 +4,7 @@ sidebar_position: 3
 
 # Java-API usage
 import Drawio from '@theme/Drawio'
-import simpleGraph from '!!raw-loader!./lib-structure.drawio';
-import entities from '!!raw-loader!./entities.drawio';
-import architecture from '!!raw-loader!./architecture.drawio';
+import simpleGraph from '!!raw-loader!../static/core-concepts/lib-structure.drawio';
 
 The following article describes the practical implementation of main concepts of TASKANA, explained in the [Overview](./overview.md). Please be familiar with the contents of the Overview in order to understand this article.
 
