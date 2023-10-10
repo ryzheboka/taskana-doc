@@ -8,15 +8,15 @@ Monitoring is a real time obervation of the current state of work. It allows to 
 
 The data shown by the monitoring includes Tasks and their attributes, like Workbaskets, status, age etc. Tasks fullfilling certain criterias are counted in order to create a statistic representing all current Tasks and their attributes. An example of this can be seen below.
 
-![Tasks by Workbasket and due date: Table](../static/features/MonitoringByWorkbasketAndDueDate.png)
+![Tasks by Workbasket and due date: Table](../static/features/monitoring-by-workbasket-and-due-date.png)
 
 This screenshot shows one of the representations that can be created by the Monitor. It's a table that sums up the number of Tasks by the day of due date and their Workbasket. This table is visualized in the diagram provided by TASKANA UI.
 
-![Tasks by Workbasket and due date: Diagram](../static/features/MonitoringByWorkbasketAndDueDateVisual.png)
+![Tasks by Workbasket and due date: Diagram](../static/features/monitoring-by-workbasket-and-due-date-visual.png)
 
 There are other options for filtering and aggregating Tasks in the TASKANA Monitor. You can see them in detail by swithing tabs in the [monitoring UI](https://taskana.mybluemix.net/taskana/#/taskana/monitor/tasks-priority) as part of our demo application. The username and password for the demo application are "admin" and "admin".
 
 
 Some of the data is additionaly visualized. For example, you can see Tasks divided by their status in a pie chart in TASKANA UI:
 
-![Tasks by Status: Diagram](../static/features/MonitoringTasksByStatus.png)
+![Tasks by Status: Diagram](../static/features/monitoring-tasks-by-status.png)
