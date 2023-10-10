@@ -16,5 +16,5 @@ Currently, TASKANA provides the following SPIs:
 - **pro.taskana.spi.task.api.BeforeRequestChangesProvider** : Add actions on Task that are executed before changes on a reviewd Task have been requested (See more about Task Lifecycle [here](../reference/lifecycle.drawio)).
 - **pro.taskana.spi.task.api.BeforeRequestReviewProvider** : Add actions on Task that are executed before a review on a claimed Task has been requested (See more about Task Lifecycle [here](../reference/lifecycle.drawio)).
 - **pro.taskana.spi.task.api.CreateTaskPreprocessor** : Add actions on Task that are executed before a new is created.
-- **pro.taskana.spi.task.api.ReviewRequiredProvider** : Add actions on Task that are executed after changes on reviewed Task have been requested (See more about Task Lifecycle [here](../reference/task-lifecycle.md)).
+- **pro.taskana.spi.task.api.ReviewRequiredProvider** : Add actions on Task that are executed after changes on reviewed Task have been requested (See more about Task Lifecycle [here](../reference/taskLifecycle.md)).
 - **pro.taskana.spi.user.api.RefreshUserPostprocessor** : Add actions on User that are executed each time after the User is refreshed.

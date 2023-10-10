@@ -65,13 +65,13 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'user-guide/user-guide-intro',
+            docId: 'user-guide/userGuideIntro',
             position: 'left',
             label: 'User Guide',
           },
           {
             type: 'doc',
-            docId: 'contact-us/contact-us',
+            docId: 'contact-us/contactUs',
             position: 'left',
             label: 'Contact Us',
           },
@@ -100,7 +100,7 @@ const config = {
             items: [
               {
                 label: 'Contact Us',
-                to: '/docs/contact-us',
+                to: '/docs/contact-us/contactUs',
               },
               {
                 label: 'GitHub',
@@ -115,7 +115,7 @@ const config = {
 
               {
                 label: 'User Guide',
-                to: '/docs/user-guide/user-guide-intro',
+                to: '/docs/user-guide/userGuideIntro',
               },
               {
                 label: 'Java API Documentation',

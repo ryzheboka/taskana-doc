@@ -8,7 +8,7 @@ Different functionality of TASKANA can be found in different modules. In the fol
 
 ## lib
 
-- **taskana-core** provides the main functionality of TASKANA. You can read more about taskana-core [here](../core-concepts/java-api-usage)
+- **taskana-core** provides the main functionality of TASKANA. You can read more about taskana-core [here](../core-concepts/javaApiUsage)
 - **taskana-spring** configures Spring so that TASKANA can be easily integrated
 - **taskana-spring-example** provides an example usage of taskana-spring
 - **taskana-cdi** uses dependency injection of java(CDI) for configuring TASKANA
