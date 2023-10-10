@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # History and Custom Properties
 
-The concept of History in TASKANA is explained in more detail [here](../features/history-SPI.md). 
+The concept of History in TASKANA is explained in more detail [here](../features/historyServiceSPI.md). 
 
 ## History
 

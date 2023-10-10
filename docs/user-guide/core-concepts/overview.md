@@ -18,7 +18,7 @@ In order to provide its functionality, TASKANA consists of different components.
 ## TASKANA Entities
 All TASKANA Entities can be found in the Java API. You can read more about our Java API [here](./javaApiUsage.md). For better readability, entities are capitalized in the documentation. 
 
-TASKANA operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database-configuration.md). You can see the detailed data model [here](../reference/create-a-page.md).
+TASKANA operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database.md). You can see the detailed data model [here](../reference/dataModel.md).
 
 <Drawio content={entities} />
 
@@ -31,7 +31,7 @@ Each Task has exactly one Classification and an arbitrary number of Attachments.
 
 The Task is assigned to exactly one Workbasket. A Workbasket describes the group of people who can work on this Task. This way, different users have access to different Tasks. 
 
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. The following diagramm shows the states of a Task. The transitions between the states are defined [here](../reference/spring-boot-example%20copy.md)  
+In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. The following diagramm shows the states of a Task. The transitions between the states are defined [here](../reference/taskLifecycle.md)  
 
 <Drawio content={simpleGraph} />
 
@@ -61,13 +61,13 @@ The Classification entity represents a category of Tasks. The Tasks with the sam
 
  A Workbasket is a list of Tasks. It's used to manage the group of people who can work on the Tasks in this list. Each user has access to a set of Workbaskets. For example, each team member has access to the Workbasket of the team. Similar to a Classification, a Workbasket can be identified either by an id or by the (key, domain) pair. There can be multiple Workbaskets with the same key but different domains. 
 
-There are different options for accessing a Workbasket. You can read more about them and other permissions [here](./security-permissions#access-to-workbaskets).
+There are different options for accessing a Workbasket. You can read more about them and other permissions [here](./securityAndPermissions#access-to-workbaskets).
 
 TASKANA provides different options for choosing a Workbasket for a specific Task. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
 
 ### WorkbasketAccessItem
 
-A WorkbasketAccessItem specifies permissions for a given Workbasket and a specific user or group. You can read more about different permissions [here](./security-permissions#access-to-workbaskets). There is also an [example table](./security-permissions.md#example-workbasketaccesitem-table) containing WorkbasketAccessItems. 
+A WorkbasketAccessItem specifies permissions for a given Workbasket and a specific user or group. You can read more about different permissions [here](./securityAndPermissions#access-to-workbaskets). There is also an [example table](./securityAndPermissions.md#example-workbasketaccesslist-table) containing WorkbasketAccessItems. 
 
 ### Summary Objects
 

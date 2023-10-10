@@ -16,7 +16,7 @@ The configuration of the user-related parameters is in the file ```taskana.prope
 
 ### Roles Mapping
 
-TASKANA Roles and their meaning can be looked up [here](../core-concepts/security-permissions#security-roles-in-taskana). For each role, a list of access ids that refer to users or groups can be specified using following keywords:
+TASKANA Roles and their meaning can be looked up [here](../core-concepts/securityAndPermissions#security-roles-in-taskana). For each role, a list of access ids that refer to users or groups can be specified using following keywords:
 
 | Role           | Keyword                     |
 |----------------|-----------------------------|
@@ -38,7 +38,7 @@ taskana.roles.task_admin=taskadmin
 
 ## REST Service Security
 
-As described in [security](../core-concepts/security-permissions.md), taskana-core uses JAAS Subjects for authentication. However, when using the REST service of TASKANA, you need to provide a mapping to the JAAS Subjects. TASKANA shows how to do that in the class BootWebSecurityConfigurer in the ```taskana-rest-spring-example-boot``` module using LDAP. There, you can also lookup additional configuration of TASKANA on REST level. This way, TASKANA provides LDAP support for its REST Service. You can read more about LDAP Configuration [here](ldap-configuration.md). 
+As described in [security](../core-concepts/securityAndPermissions.md), taskana-core uses JAAS Subjects for authentication. However, when using the REST service of TASKANA, you need to provide a mapping to the JAAS Subjects. TASKANA shows how to do that in the class BootWebSecurityConfigurer in the ```taskana-rest-spring-example-boot``` module using LDAP. There, you can also lookup additional configuration of TASKANA on REST level. This way, TASKANA provides LDAP support for its REST Service. You can read more about LDAP Configuration [here](ldap.md). 
 
 Following additional security parameters can be configured in the ```application.properties```:
 

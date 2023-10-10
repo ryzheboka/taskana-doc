@@ -12,7 +12,7 @@ TASKANA provides a REST-API described [here](../core-concepts/restApi). You shou
 GET http://localhost:8080/taskana/api/v1/tasks?owner-in=user-1-1&owner-in=user-1-2
 ```
 
-You can try querying using Postman like in our [Spring Boot example](../getting-started/spring-boot-example%20copy.md#step-5--try-out-the-rest-api).
+You can try querying using Postman like in our [Spring Boot example](../getting-started/exampleSpringBoot.md#step-5-try-out-the-rest-api).
 Here is an example of the query from our [REST-API doc](../core-concepts/restApi) using Postman:
 
 ![Query](../static/features/postman-query.png)

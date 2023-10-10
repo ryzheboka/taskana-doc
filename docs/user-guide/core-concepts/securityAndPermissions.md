@@ -12,7 +12,7 @@ authorization is required to view Tasks and Workbaskets or to make any changes. 
 authorization does not work, the unauthorized user will not be able to use TASKANA properly.
 
 We provide an example (taskana-rest-spring-example) which is using LDAP. You can build a simple
-step-by-step example with our [Getting Started](../getting-started/spring-boot-example copy.md) as well.
+step-by-step example with our [Getting Started](../getting-started/exampleSpringBoot.md) as well.
 
 TASKANA Java library needs its client to provide a mapping to the JAAS Subject used for users and
 groups. The client should create a JAAS context for the Java library. The ids of users and groups,
@@ -41,7 +41,7 @@ Users can have one of the six different roles:
   permissions for them. This role is used for automated scripts, not for persons.
 
 You can assign roles to users or groups in the ```taskana.properties``` file. Read more about LDAP
-configuration [here](../configuration/ldap-configuration.md)
+configuration [here](../configuration/ldap.md)
 
 ## Access to Workbaskets
 

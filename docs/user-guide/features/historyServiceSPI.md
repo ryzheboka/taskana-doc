@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # HistoryService SPI
 
-In order to follow this article, please read [general SPI information](SPI-usage.md) before proceeding.
+In order to follow this article, please read [general SPI information](howToUseServiceProviderInterfaces.md) before proceeding.
 
 The HistoryService can be used for different purposes. In general, it tracks actions performed by TASKANA makes this information available for further usage. Below, you can see example business use cases for the History Service.
 ## Use Cases for the History Service
