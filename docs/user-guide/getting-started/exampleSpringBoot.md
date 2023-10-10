@@ -30,11 +30,11 @@ Go to [Spring Initializer](https://start.spring.io/) and create an example Maven
 same options as in the Screenshot, except the spring version. Please check Java 11, then click on "
 Generate".
 
-![empty spring boot project](../static/getting-started/ProjectInitializer.png)
+![empty spring boot project](../static/getting-started/project-initializer.png)
 
 Unpack the project in the folder of your choice and open it in IntelliJ
 
-![unpacked project](../static/getting-started/Schritt2.png)
+![unpacked project](../static/getting-started/schritt-2.png)
 
 ### Step 2: Add dependencies
 
