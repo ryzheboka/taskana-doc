@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Database
 
-In order to use TASKANA, you need to create a database yourself, and then specify it through the [DataSource](#datasource). You can see the list of the supported databases [here](../getting-started/environment.md). 
+In order to use TASKANA, you need to create a database yourself, and then specify it through the [DataSource](#datasource). You can see the list of the supported databases [here](../getting-started/supportedEnvironments.md). 
 The recommended page size for the database is 32 k. It's needed to create the database schema. The sort order of query results can be changed by the collating sequence that is specified at database creation. The default for the most databases is a case sensitive sort order.  If you want query results to be sorted case insensitively, you should specify an appropriate collating sequence.
 
 - Page size: 32k

@@ -22,4 +22,4 @@ myapp.DmnTaskRouter
 
 If you provide one or multiple implementations according to the description above, TASKANA will invoke the implementations at a specific point. For example, the implementation of the CreateTaskPreprocessor will be invoked before a new Task is inserted into the database. The Javadoc of each SPI describes these invokation conditions.
 
-You can see the list of SPIs provided by TASKANA [here](provided-SPI.md).
+You can see the list of SPIs provided by TASKANA [here](listOfProvidedSPIs.md).
