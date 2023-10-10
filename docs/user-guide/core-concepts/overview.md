@@ -11,12 +11,12 @@ import architecture from '!!raw-loader!../static/core-concepts/architecture.draw
 
 TASKANA is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. TASKANA also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of TASKANA and related concepts are explained. 
 
-In order to provide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](./java-api-usage). 
+In order to provide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](./javaApiUsage). 
 
 <Drawio content={architecture} />
 
 ## TASKANA Entities
-All TASKANA Entities can be found in the Java API. You can read more about our Java API [here](./java-api-usage.md). For better readability, entities are capitalized in the documentation. 
+All TASKANA Entities can be found in the Java API. You can read more about our Java API [here](./javaApiUsage.md). For better readability, entities are capitalized in the documentation. 
 
 TASKANA operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database-configuration.md). You can see the detailed data model [here](../reference/create-a-page.md).
 
@@ -83,7 +83,7 @@ TASKANA provides following operations on its entities:
  - Deleting
  - Querying (additionaly allows filtering and sorting entities by properties)
 
-You can read technical details about operating on entities [here](./java-api-usage.md)
+You can read technical details about operating on entities [here](./javaApiUsage.md)
 
 ## List of important features
 - Monitoring: ???
