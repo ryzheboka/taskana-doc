@@ -8,7 +8,7 @@ Please read [general SPI information](howToUseServiceProviderInterfaces.md) in o
 
 Currently, TASKANA provides the following SPIs:
 
-- **pro.taskana.spi.history.api.TaskanaHistory** : Look up the history of TASKANA. You can read more use cases for HistoryService [here](./historyServiceSPI.md).
+- **pro.taskana.spi.history.api.TaskanaHistory** : Look up the history of TASKANA. You can read more use cases for HistoryService [here](./taskanaHistorySPI.md).
 - **pro.taskana.spi.priority.api.PriorityServiceProvider** : Add rules for the calculation of Task priority.
 - **pro.taskana.spi.routing.api.TaskRoutingProvider** : Add rules for automated Workbasket assignment for some of the new Tasks.
 - **pro.taskana.spi.task.api.AfterRequestChangesProvider** : Add actions on Task that are executed after changes on reviewed Task have been requested (See more about Task Lifecycle [here](../core-concepts/taskLifecycle.md)).
