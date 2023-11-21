@@ -32,11 +32,11 @@ const FeatureList = [
   },
 
   {
-    title: 'Prioritization, Sorting & Filtering',
+    title: 'Prioritization',
     Svg: require('@site/static/img/PriorityNew.png').default,
     description: (
       <>
-        Tasks can be prioritized automatically or manually. TASKANA also provides sorting and filtering by priority or by other attributes.
+        In TASKANA, tasks can be prioritized manually or automatically. They can also be reprioritized dynamically during their lifetime.
       </>
     ),
   }
