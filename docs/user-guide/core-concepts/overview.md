@@ -5,7 +5,6 @@ sidebar_position: 1
 # Overview
 
 import Drawio from '@theme/Drawio'
-import simpleGraph from '!!raw-loader!../static/core-concepts/task-states.drawio';
 import entities from '!!raw-loader!../static/core-concepts/entities.drawio';
 import architecture from '!!raw-loader!../static/core-concepts/architecture.drawio';
 
@@ -31,27 +30,14 @@ Each Task has exactly one Classification and an arbitrary number of Attachments.
 
 The Task is assigned to exactly one Workbasket. A Workbasket describes the group of people who can work on this Task. This way, different users have access to different Tasks. 
 
-In order to enable the Task lifecycle, the Task has a state. For example, after a Task has been created, it's in state READY. The following diagramm shows the states of a Task. The transitions between the states are defined [here](../reference/taskLifecycle.md)  
-
-<Drawio content={simpleGraph} />
-
-Each Task has different timestamps: 
-- **created**: Set automatically during the creation of a Task.
-- **planned**: Set manually. Describes when somebody should start working on the Task.
-- **received**: Can be set manually or automatically. Describes when the Task was first mentioned, even if it's before creation.
-- **due**: Set automatically during creation or update of a Task. Describes deadline for Task completion.
-    - Computed as following:
-    > planned + the greatest service level of the Classification of the Task and the Classification of its Attachment.
-- **claimed**:  Set automatically while a Task is being claimed.
-- **completed**:  Set automatically while a Task is being completed.
-- **modified**: Set automatically while a Task is being modified in any way.
+A Task goes through different states during its existence. The states and their transitions are described by the Task Lifecycle. You can read more about it [here](./taskLifecycle.md)  
 
 ### ObjectReference
 ObjectReference refers to a Task related document or any other real world object that the Task is about. The document is identified by the value field of ObjectReference. Each Task must have one primary ObjectReference. The primary ObjectReference defines the main involved document. A Task can have several secondary ObjectReferences that are also relevant for the Task.
 
 
 ### Attachment
-Similar to ObjectReference, an Attachment describes a Task related document. While an ObjectReference only refers to an object, an Attachment describes it using different attributes. That's why an Attachment has a Classification and an ObjectReference. An example Attachment can describe a letter that lead to the Task Creation. In this case, the ObjectReference of the Attachment will refer to the letter that is stored in a different system. 
+Similar to ObjectReference, an Attachment describes a Task related document. While an ObjectReference only refers to an object, an Attachment describes it using different attributes. That's why an Attachment has a Classification and an ObjectReference. An example Attachment can describe a letter that lead to the Task creation. In this case, the ObjectReference of the Attachment will refer to the letter that is stored in a different system. 
 
 ### Classification
 
@@ -71,9 +57,7 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 
 ### Summary Objects
 
-***
-
-***
+TASKANA provides the possibility to add large attributes to the entities. To minimize the computational load created by these large attributes, TASKANA introduces summaries of its entities. Summary objects contain only the most important information. They are light versions of the original object. For example, TaskSummary doesn't contain Attachments or SecondaryObjectReferences. When asked to return a List of entities, our APIs return summaries of the objects. You can always get the full object using the information from the summary of this object.
 
 ## Operations on entities
 
@@ -81,12 +65,9 @@ TASKANA provides following operations on its entities:
  - Creating
  - Updating
  - Deleting
- - Querying (additionaly allows filtering and sorting entities by properties)
+ - [Querying](../features/queriesFilteringAndSorting.md) (additionaly allows filtering and sorting entities by properties)
 
-You can read technical details about operating on entities [here](./javaApiUsage.md)
+You can read technical details about operating on entities [using the Java-API](./javaApiUsage.md) and [using the REST-API](./restApi.md).
 
 ## List of important features
-- Monitoring: ???
-- History: ???
-- SPIs: ???
-- ... 
+You can look up important features of TASKANA [here](../../category/features).
