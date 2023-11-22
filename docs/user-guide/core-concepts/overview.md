@@ -30,7 +30,7 @@ Each Task has exactly one Classification and an arbitrary number of Attachments.
 
 The Task is assigned to exactly one Workbasket. A Workbasket describes the group of people who can work on this Task. This way, different users have access to different Tasks. 
 
-A Task goes through different states during its existence. The states and their transitions are described by the Task Lifecycle. You can read more about it [here](./taskLifecycle.md)  
+A Task goes through different states during its existence. The states and their transitions are described by the Task Lifecycle. You can read more about it [here](./taskLifecycle.md)
 
 ### ObjectReference
 ObjectReference refers to a Task related document or any other real world object that the Task is about. The document is identified by the value field of ObjectReference. Each Task must have one primary ObjectReference. The primary ObjectReference defines the main involved document. A Task can have several secondary ObjectReferences that are also relevant for the Task.
