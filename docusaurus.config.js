@@ -86,7 +86,8 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://taskana.azurewebsites.net/taskana',
+            type: 'doc',
+            docId: 'demo-app/demoApp',
             label: 'Demo App',
             position: 'right',
           }
@@ -133,7 +134,7 @@ const config = {
 
               {
                 label: 'Demo App',
-                to: 'https://taskana.azurewebsites.net/taskana',
+                to: 'docs/demo-app/demoApp'
               }
             ]
           }
