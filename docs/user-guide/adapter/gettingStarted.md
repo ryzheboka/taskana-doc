@@ -1,26 +1,32 @@
 # Getting Started
-In this article, the set up of Adapter is explained step by step. Additinally, you can try out some of the functionalities of Adapter following the instructions in this article.
+In this article, the set up of the Adapter is explained step by step. Additionally, you can try out some of the functionalities of the Adapter following the instructions in this article.
 
 ## What you'll need
 
 - an IDE of your choice (preferably IntelliJ)
 - Java 17
 - maven
+- Camunda Modeler
+- Docker
 - optional: postman (makes REST API requests easier)
 - Working TASKANA application (see [here](../getting-started/exampleSpringBoot.md) for instructions)
 
 Note: Please name your packages, folders and files exactly like in the example!
 
-## Step 0 (optional): Initialize an emplty Camunda application
+## Step 0 (optional): Initialize an empty Camunda application
 
-If you don't have a Camunda application that you could use for experimenting with Adapter, install a new application. You can use  https://start.camunda.com/ to initialize an empty application. You need to choose Spring 3.1.x and Java 17. Additionally, make sure that the modules "REST API", "Webapps" and "Spin" are chosen.
+If you don't have a Camunda application that you could use for experimenting with the Adapter, install a new application. You can use  https://start.camunda.com/ to initialize an empty application. You need to choose Java 17. Additionally, make sure that the modules "REST API", "Webapps" and "Spin" are chosen and set an admin username and password of your choice.
+
+![Local Image](../static/adapter/camunda-initialization.png)
+
+Unpack the project in a folder of your choice and open it in your IDE.
 
 ## Step 1: Configure your Camunda application
 
-Add a new extension propety to your User Tasks. The name of the property should be taskana.classification-key. It should have an existing classification key as value. If you are using the TASKANA example application, you can enter "L1050" as value.
+Add a new extension property to your User Tasks. The name of the property should be taskana.classification-key. It should have an existing classification key as value. If you are using the TASKANA example application, you can enter "L1050" as value.
 
 Set Spring dependencies version to 3.1.1 in your pom.
-Add following dependencies to your pom:
+Add following dependencies to the dependencies section of your pom:
 
 ```
 <dependency>
@@ -42,7 +48,7 @@ Add following dependencies to your pom:
       <artifactId>postgresql</artifactId>
 </dependency>
 ```
-You need to exclude the following from the org.camunda.bpm.springboot dependency:
+You need to exclude the following from the org.camunda.bpm.springboot dependency with the artifact ID "camunda-bpm-spring-boot-starter-rest":
 ```
 <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
@@ -65,7 +71,31 @@ Then, add a repository to the pom:
   </repository>
 </repositories>
 ```
-Add following files to your resources folder:
+Add the following file to your resources folder:
+
+### taskana-outbox.properties
+```
+taskana.adapter.outbox.schema = taskana_tables
+taskana.adapter.outbox.max.number.of.events = 57
+taskana.adapter.create_outbox_schema = true
+taskana.adapter.outbox.initial.number.of.task.creation.retries = 5
+taskana.adapter.outbox.duration.between.task.creation.retries = PT1H
+
+#taskana.adapter.outbox.datasource.jndi=java:jboss/datasources/ProcessEnginePostgres
+#taskana.adapter.outbox.datasource.jndi=jdbc/ProcessEngine
+
+taskana.adapter.outbox.datasource.driver=org.postgresql.Driver
+taskana.adapter.outbox.datasource.url=jdbc:postgresql://localhost:5102/postgres
+taskana.adapter.outbox.datasource.username=postgres
+taskana.adapter.outbox.datasource.password=postgres
+
+#taskana.adapter.outbox.datasource.url=jdbc:h2:mem:camunda;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;LOCK_MODE=0;DB_CLOSE_ON_EXIT=FALSE;
+#taskana.adapter.outbox.datasource.driver=org.h2.Driver
+#taskana.adapter.outbox.datasource.username=sa
+#taskana.adapter.outbox.datasource.password=sa
+```
+
+If you are not using application.yaml, delete it and add the following file to your resources folder:
 
 ### application.properties
 ```
@@ -101,35 +131,60 @@ spring.datasource.password = postgres
 #spring.datasource.password=sa
 
 ```
+Otherwise, add the following settings to your application.yaml file:
 
-### taskana-outbox.properties
 ```
-taskana.adapter.outbox.schema = taskana_tables
-taskana.adapter.outbox.max.number.of.events = 57
-taskana.adapter.create_outbox_schema = true
-taskana.adapter.outbox.initial.number.of.task.creation.retries = 5
-taskana.adapter.outbox.duration.between.task.creation.retries = PT1H
-
-#taskana.adapter.outbox.datasource.jndi=java:jboss/datasources/ProcessEnginePostgres
-#taskana.adapter.outbox.datasource.jndi=jdbc/ProcessEngine
-
-taskana.adapter.outbox.datasource.driver=org.postgresql.Driver
-taskana.adapter.outbox.datasource.url=jdbc:postgresql://localhost:5102/postgres
-taskana.adapter.outbox.datasource.username=postgres
-taskana.adapter.outbox.datasource.password=postgres
-
-#taskana.adapter.outbox.datasource.url=jdbc:h2:mem:camunda;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;LOCK_MODE=0;DB_CLOSE_ON_EXIT=FALSE;
-#taskana.adapter.outbox.datasource.driver=org.h2.Driver
-#taskana.adapter.outbox.datasource.username=sa
-#taskana.adapter.outbox.datasource.password=sa
+camunda:
+  bpm:
+    admin-user:
+      first-name: admin
+      id: admin
+      last-name: admin
+      password: admin
+    auto-deployment-enabled: true
+    database:
+      type: postgres
+    generic-properties:
+      properties:
+        historyTimeToLive: P180D
+resteasy:
+  jaxrs:
+    app:
+      classes: pro.taskana.adapter.camunda.outbox.rest.config.OutboxRestServiceConfig
+      registration: property
+server:
+  port: 8085
+  servlet:
+    context-path: /example-context-root
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    url: jdbc:postgresql://localhost:5102/postgres
+    username: postgres
+  main:
+    allow-bean-definition-overriding: true
 ```
+
 ## Step 2: Initialize an empty Adapter application
 
-Use the [Spring Initializer](https://start.spring.io/) to initialize a Spring Boot Project. Chose Java 17 And Spring 3.1.x
+Use the [Spring Initializer](https://start.spring.io/) to initialize a Spring Boot Project. Chose Java 17.
+
+![Local Image](../static/adapter/adapter-initialization.png)
+
+Unpack the project in a folder of your choice and open it in your IDE.
 
 ## Step 3: Configure your Adapter application
 
-Add following dependencies to your pom (if they don't already exist):
+Add following annotations to your AdapterApplication:
+
+```
+@EnableScheduling
+@ComponentScan(basePackages = "pro.taskana.adapter")
+@Import({AdapterConfiguration.class})
+```
+Set the spring-boot-starter-parent version to 3.1.11 in your pom.
+Add following dependencies to the dependencies section of your pom (if they don't already exist):
 
 ```
 <dependencies>
@@ -258,19 +313,67 @@ taskana.jobs.enabled=false
 
 ## Step 4: Add SPIs to your Adapter application
 
-SPIs need to be additionally specified in the Adapter application. You can read more about SPIs [here](../features/howToUseServiceProviderInterfaces.md) 
+SPIs need to be additionally specified in the Adapter application. You can read more about SPIs [here](../features/howToUseServiceProviderInterfaces.md).
+The necessary SPI for the Adapter application can be build as follows: First, create a new package with the name taskrouting. Then, create a class in the package taskrouting with the name ExampleTaskRouter. It should look like this:
+```
+import pro.taskana.common.api.TaskanaEngine;
+import pro.taskana.spi.routing.api.TaskRoutingProvider;
+import pro.taskana.task.api.models.Task;
+
+/** This is a sample implementation of TaskRouter. */
+public class ExampleTaskRouter implements TaskRoutingProvider {
+
+  @Override
+  public void initialize(TaskanaEngine taskanaEngine) {
+    // no-op
+  }
+
+  @Override
+  public String determineWorkbasketId(Task task) {
+    return "WBI:100000000000000000000000000000000001";
+  }
+}
+```
+Next, add a new folder to your resources folder and name it META-INF. Create a new folder named services in the folder META-INF, so that services is a subfolder of META-INF. Finally, create a file in the services folder with the name pro.taskana.spi.routing.api.TaskRoutingProvider. This file must contain the fully qualified classname (including the package) of the class ExampleTaskRouter, for example:
+```
+com.example.demo.taskrouting.ExampleTaskRouter
+```
+Make sure there aren't any empty lines in this file. 
+The finished structure of the source folder should look like this:
+
+![Local Image](../static/adapter/adapter-getting-started-project-structure.png)
 
 ## Step 5: Start all applications together
 
-First, check if your postgres dabase is running. For example, start the container provided in the taskana repository using ... 
+First, check if your postgres database is running. For example, start the container provided in the TASKANA repository using "bash ./docker-databases/prepare_db.sh POSTGRES_14 && exit". 
 
-Then, start your taskana application. Start your camunda app next, and login. Last, start the adapter. 
+Then, start your TASKANA application. Start your camunda app next, and login. Last, start the adapter. 
 
 ## Step 6: Try out different functionalities of Adapter. 
 
-1. Start a process with a User Task in Camunda. Open tasklist to see the Camunda Task there. The User Task should be imported to TASKANA automatically. You can check it by making a postgres GET request to taskana, filtering by the correct business-process-id.
+1. Start a process with a User Task in Camunda. Open tasklist to see the Camunda Task there. The User Task should be imported to TASKANA automatically. You can check it by making a postgres GET request to TASKANA using the following request. You have to authenticate yourself using Basic Auth: In postman, go to the "Authorization" tab. There, select basicAuth and type "admin" as user and "admin" as password. Make sure enableCsrf is set to false in the properties of the TASKANA application.
+   ```
+   GET http://localhost:8080/taskana/api/v1/tasks?name-like=Say hello
+   ```
+   It should look like this:
 
-2. Claim the TASKANA Task from the previous step using postman. The Task should get claimed in Camunda automatically
+   ![Local Image](../static/adapter/show-tasks.png)
 
-3. Complete the TASKANA Task from previous step using postgres. The Task should disappear from Camunda Tasklist.
+2. Claim the TASKANA Task from the previous step using postman. Make sure you add the following property to the application.properties file of the adapter application: taskana.adapter.camunda.claiming.enabled=true. To send the POST request, use the same authorization as in the previous step. The Task should get claimed in Camunda automatically.
+   ```
+   POST http://localhost:8080/taskana/api/v1/tasks/{taskid}/claim
+   ```
+   It should look like this:
 
+   ![Local Image](../static/adapter/claimed.png)
+
+3. Complete the TASKANA Task from previous step using postman. To send the POST request, use the same authorization as in the previous step. The Task should disappear from Camunda Tasklist.
+   ```
+   POST http://localhost:8080/taskana/api/v1/tasks/{taskid}/complete
+   ```
+   It should look like this:
+
+   ![Local Image](../static/adapter/completed.png)
+
+
+More functionalities like the cancelling of a claimed task and their URLs can be found in the [full documentation of the REST-API](https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html).
